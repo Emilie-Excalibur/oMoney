@@ -25,7 +25,7 @@
 
       </form>
       <div class="text-center">
-        <a class="d-block small mt-3" href="<?= $viewVars['BaseUri'] ?>/inscription">Pas encore inscrit ? Créer un compte</a>
+        <a class="d-block small mt-3" href="<?= $viewVars['BaseUri'] ?>/register">Pas encore inscrit ? Créer un compte</a>
         <!-- <a class="d-block small" href="forgot-password.php">Forgot Password?</a>-->
       </div>
     </div>
