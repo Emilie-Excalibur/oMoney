@@ -2,6 +2,7 @@
 
 session_start();
 
+
 // Inclu les libraires
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -24,7 +25,7 @@ if(!empty($_POST)) {
     // Récupération des valeurs du formulaire dans des variables
     $name = isset($_POST['username']) ? $_POST['username'] : '';
     $email = isset($_POST['email']) ? $_POST['email'] : '';
-    $password = isset($_POST['password']) ? $_POST['password'] : '';
+    $password = isset($_POST['password_1']) ? password_hash($_POST['password_1'], PASSWORD_DEFAULT) : '';
 
     // Insertion des données dans la BDD
     
@@ -46,8 +47,8 @@ if(!empty($_POST)) {
     } else {
         echo "Un problème est survenu, merci de réessayer ultérieurement";
     }
-}
 
+}
 
 /**
  * GESTION DES ROUTES & AFFICHAGE DES VUES

@@ -166,6 +166,17 @@ var app = {
       errors.push('Le champ mot de passe doit faire au moins 3 caractères');
     }
 
+      // Vérifie si password_1 = password_2
+    if (app.isPasswordValid(app.inputCheckPassword)) {
+      // Action à faire si le champs est valide
+      app.markFieldAsValid(app.inputCheckPassword);
+
+    } else {
+      // Action à faire si le champs est invalide
+      app.markFieldAsInvalid(app.inputCheckPassword);
+      errors.push('Le mot de passe doit correspondre');
+    }
+
     let errorsContainer = document.querySelector('#errors');
 
     // Réinitialise le conteneur d'erreurs

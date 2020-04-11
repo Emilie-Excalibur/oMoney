@@ -22,7 +22,6 @@ class MainController {
         $this->show('login');
     }
 
-
     /**
      * Affiche la page d'erreur
      */
