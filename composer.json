@@ -1,0 +1,10 @@
+{
+    "name": "etudiant/oMoney",
+    "description": "Un site pour gérer son argent",
+    "require": {
+        "altorouter/altorouter": "1.1.0"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^5.0"
+    }
+}

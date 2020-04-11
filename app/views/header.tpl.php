@@ -1,5 +1,3 @@
-<?php session_start(); ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,7 +14,6 @@
     <!-- Custom fonts-->
     <link href="assets/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
-
     <!-- CSS-->
     <link href="assets/css/style.css" rel="stylesheet">
 </head>
@@ -25,7 +22,7 @@
 
     <!-- Header-->
     <header class="bg-dark text-white border-bottom border-white">
-        <a class="navbar-brand" href="index.php">
+        <a class="navbar-brand" href="<?= $viewVars['BaseUri'] ?>/">
             <h1>oMoney</h1>
         </a>
     </header>
@@ -34,21 +31,21 @@
         <!-- Sidebar Holder -->
         <nav id="sidebar">
             <div class="sidebar-header">
-                <h3>Mieux gérer son argent</h3>
+                <h2>Mieux gérer son argent</h2>
             </div>
 
             <ul class="list-unstyled components">
                 <ul class="list-unstyled CTAs">
                     <li>
-                        <a href="">Se connecter</a>
+                        <a href="<?= $viewVars['BaseUri'] ?>/connexion">Se connecter</a>
                     </li>
                     <li>
-                        <a href="">Créer un compte</a>
+                        <a href="<?= $viewVars['BaseUri'] ?>/inscription">Créer un compte</a>
                     </li>
                 </ul>
 
                 <li>
-                    <a href="index.php">Accueil</a>
+                    <a href="<?= $viewVars['BaseUri'] ?>/">Accueil</a>
                 </li>
 
                 <li>
@@ -71,3 +68,17 @@
             </ul>
 
         </nav>
+
+        <!-- Page Content Holder -->
+        <div id="content">
+
+            <!-- Sidebar Button -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <button type="button" id="sidebarCollapse" class="navbar-btn">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </nav>        

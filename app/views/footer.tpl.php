@@ -1,11 +1,11 @@
+  </div>
+<!-- End of page Content Holder -->
 </div>
 <!-- END DIV WRAPPER-->
 
 <footer class="footer text-center">
       Copyright
-    </footer>
-  </div>
-
+</footer>
 
     <!-- JS -->
   <script src="assets/js/jquery.min.js"></script>
