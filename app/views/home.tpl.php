@@ -1,17 +1,3 @@
-<!-- Page Content Holder -->
-<div id="content">
-
-    <!-- Sidebar Button -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <button type="button" id="sidebarCollapse" class="navbar-btn">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-    </nav>
-
     <div class="card text-white bg-success m-2">
         <div class="card-header">Aujourd'hui</div>
         <div class="card-body">
@@ -51,5 +37,3 @@
             <p class="card-text"></p>
         </div>
     </div>
-</div>
-<!-- End of page Content Holder -->
