@@ -11,15 +11,15 @@ class MainController {
     /**
      * Affiche la page d'inscription
      */
-    public function inscription() {
-        $this->show('inscription');
+    public function register() {
+        $this->show('register');
     }
 
     /**
      * Affiche la page de connexion
      */
-    public function connexion() {
-        $this->show('connexion');
+    public function login() {
+        $this->show('login');
     }
 
 

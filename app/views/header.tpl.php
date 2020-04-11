@@ -37,14 +37,14 @@
             <ul class="list-unstyled components">
                 <ul class="list-unstyled CTAs">
                     <li>
-                        <a href="<?= $viewVars['BaseUri'] ?>/connexion">Se connecter</a>
+                        <a href="<?= $viewVars['BaseUri'] ?>/login">Se connecter</a>
                     </li>
                     <li>
-                        <a href="<?= $viewVars['BaseUri'] ?>/inscription">Créer un compte</a>
+                        <a href="<?= $viewVars['BaseUri'] ?>/register">Créer un compte</a>
                     </li>
                 </ul>
 
-                <li>
+                <li class="<?= $viewName === 'home' ? 'active' : ''; ?>">
                     <a href="<?= $viewVars['BaseUri'] ?>/">Accueil</a>
                 </li>
 
@@ -80,5 +80,8 @@
                         <span></span>
                         <span></span>
                     </button>
+
+                    <p class="text-danger">Vous devez être connecté pour visualiser vos dépenses.</p>
+
                 </div>
-            </nav>        
+            </nav>       

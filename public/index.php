@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 // Inclu les libraires
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -22,16 +24,16 @@ $router->map(
 
 $router->map(
     'GET',
-    '/inscription',
-    'inscription',
-    'route_inscription'
+    '/register',
+    'register',
+    'route_register'
 );
 
 $router->map(
     'GET',
-    '/connexion',
-    'connexion',
-    'route_connexion'
+    '/login',
+    'login',
+    'route_login'
 );
 
 

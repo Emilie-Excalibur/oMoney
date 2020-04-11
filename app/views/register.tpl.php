@@ -43,7 +43,7 @@
                 </form>
 
                 <div class="text-center">
-                    <a class="d-block small mt-3" href="<?= $viewVars['BaseUri']; ?>/connexion">Déja inscrit ? Se connecter</a>
+                    <a class="d-block small mt-3" href="<?= $viewVars['BaseUri']; ?>/login">Déja inscrit ? Se connecter</a>
                 </div>
             </div>
         </div>
