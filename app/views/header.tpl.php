@@ -78,7 +78,7 @@
                         </li>
                     </ul>
                 </li>
-                <li>
+                <li class="<?= $viewName === 'historique' ? 'active' : ''; ?>">
                     <a href="<?= $viewVars['BaseUri'] ?>/historique">Historique</a>
                 </li>
 
