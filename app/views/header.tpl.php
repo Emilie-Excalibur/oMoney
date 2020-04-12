@@ -51,9 +51,10 @@
 
                     <?php 
                     // Si utilisateur connecté
-                        if(isset($_SESSION['name'])) :    
+                        if(isset($_SESSION['name'])) : 
+
                     ?>
-                    <div class="user_picture" style="background-color:<?= generateRandomColor();?>">
+                        <div class="user_picture" style="background-color:<?= generateRandomColor();?>">
                         <p class="user_letter"><?= getFirstUserLetter(); ?></p>
                     </div>
                     <p class="text-center"><?= $_SESSION['name']; ?></p>
@@ -86,8 +87,8 @@
                     if(isset($_SESSION['name'])) :
                 ?>
 
-                    <li>
-                        <a href="#">Profil</a>
+                    <li class="<?= $viewName === 'profil' ? 'active' : ''; ?>">
+                        <a href="<?= $viewVars['BaseUri'] ?>/profil">Profil</a>
                     </li>
 
                     <li>
@@ -110,6 +111,8 @@
                         <span></span>
                         <span></span>
                     </button>
+
+                    <p><a href="<?= $viewVars['BaseUri'] ?>/"><i class="fa fa-home"></i></a> / <?= $viewName; ?></p>
 
                     <?php 
                         if(!isset($_SESSION['name'])) :

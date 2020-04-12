@@ -71,13 +71,14 @@ function addUserInfoToDB() {
     $name = isset($_POST['username']) ? $_POST['username'] : '';
     $email = isset($_POST['email']) ? $_POST['email'] : '';
     $password = isset($_POST['password_1']) ? password_hash($_POST['password_1'], PASSWORD_DEFAULT) : '';
+    $picture = isset($_POST['picture']) ? $_POST['picture'] : '';
     
     // Insertion des données dans la BDD
         
     // Initialise PDO à partir de la classe Database
     $pdo = Database::getPDO();
     
-    $insertQuery = "INSERT INTO users (name, email, password) VALUES ('{$name}', '{$email}', '{$password}')";
+    $insertQuery = "INSERT INTO users (name, email, password, picture) VALUES ('{$name}', '{$email}', '{$password}', '{$picture}')";
     
     $nbInsertedValues = $pdo->exec($insertQuery);
     
@@ -87,7 +88,7 @@ function addUserInfoToDB() {
         // Actualise les informations de $_SESSION
         // avec les informations de l'utilisateur
         $_SESSION['name'] = $name;
-
+        $_SESSION['email'] = $email;
         $_SESSION['success'] = 'Vous êtes bien enregistré';
     
         // Redirige vers la page home
@@ -105,7 +106,7 @@ function addUserInfoToDB() {
  * Si oui, connecte l'utilisateur au site
  */
 function checkLoginUserInfo() {
-    $errors= [];
+    $errors = [];
     $name = isset($_POST['username']) ? $_POST['username'] : '';
     $password = isset($_POST['password']) ? $_POST['password'] : '';
 
@@ -157,6 +158,8 @@ function checkLoginUserInfo() {
         // Et redirige vers la page home
         if(count($result) === 1) {
             $_SESSION['name'] = $username;
+            $_SESSION['email'] = $result[0]['email'];
+            $_SESSION['created_at'] = getDateFr($result[0]['created_at']);
 
             $_SESSION['success'] = 'Vous êtes bien connecté';
 
@@ -205,4 +208,15 @@ function getFirstUserLetter() {
 
         return $firstLetter;
     }
+}
+
+/**
+ * Change le format d'une date en jour/mois/année
+ *
+ * @param string $date
+ * @return string
+ */
+function getDateFr($date) {
+    $newDate = date('d/m/Y', strtotime($date));
+    return $newDate;
 }

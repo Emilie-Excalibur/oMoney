@@ -7,8 +7,8 @@
                         <div class="form-row">
                             <div class="col-md-12">
                                 <label for="exampleInputName">Nom</label>
-
-                                <input class="form-control username" id="exampleInputName" type="text" name="username" value="">
+                                   <input class="form-control username" id="exampleInputName" type="text" name="username" value="">
+                                   <small id="passwordHelpBlock" class="form-text text-muted">Le nom doit contenir 3 caractères minimum</small>
                             </div>
                         </div>
                     </div>
@@ -25,6 +25,7 @@
                                 <label for="exampleInputPassword1">Mot de passe</label>
 
                                 <input class="form-control password_1" id="exampleInputPassword1" type="password" name="password_1">
+                                <small id="passwordHelpBlock" class="form-text text-muted">Le mot de passe doit contenir 3 caractères minimum</small>
                             </div>
 
                             <div class="col-md-6">
@@ -33,7 +34,11 @@
                                 <input class="form-control password_2" id="exampleInputPassword2" type="password" name="password_2">
                             </div>
                         </div>
+                    </div>
 
+                    <div class="form-group">
+                        <label for="exampleFormControlFile1">Choisir un avatar</label>
+                        <input type="file" class="form-control-file" id="exampleFormControlFile1" name="picture">
                     </div>
 
                     <div id="errors"></div>
