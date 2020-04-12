@@ -92,6 +92,19 @@ $router->map(
     'route_profil'
 );
 
+$router->map(
+    'GET',
+    '/ajouter-retrait-argent',
+    'retrait',
+    'route_add_expenses'
+);
+
+$router->map(
+    'GET',
+    '/historique',
+    'historique',
+    'route_historique'
+);
 
 $match = $router->match();
 

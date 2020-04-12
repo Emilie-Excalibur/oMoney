@@ -11,18 +11,17 @@ USE `oMoney`;
 
 SET NAMES utf8mb4;
 
-DROP TABLE IF EXISTS `expenses`;
-CREATE TABLE `expenses` (
+DROP TABLE IF EXISTS `account`;
+CREATE TABLE `account` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Identifiant du journal de dépenses',
-  `balance` float(10,2) NOT NULL COMMENT 'Solde de l''utilisateur',
-  `daily` float(10,2) unsigned DEFAULT NULL COMMENT 'Dépenses du jour',
-  `yesterday` float(10,2) unsigned DEFAULT NULL COMMENT 'Dépenses de la veille',
-  `weekly` float(10,2) unsigned DEFAULT NULL COMMENT 'Dépenses de la semaine',
-  `monthly` float(10,2) unsigned DEFAULT NULL COMMENT 'Dépenses du mois',
   `user_id` int(10) unsigned NOT NULL COMMENT 'identifiant de l''utilisateur',
+  `balance` float(10,2) NOT NULL COMMENT 'Solde de l''utilisateur',
+  `sum` float(10,2) NOT NULL COMMENT 'Somme dépensée',
+  `date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp() COMMENT 'Date du retrait d''argent',
+  `title` varchar(255) DEFAULT NULL COMMENT 'Intitulé du retrait',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
-  CONSTRAINT `expenses_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+  CONSTRAINT `account_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -38,6 +37,15 @@ CREATE TABLE `users` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `picture`, `created_at`) VALUES
+(1,	'testUser',	'testUser@gmail.com',	'$2y$10$bOzvxL.uO7jjNhIMWKDlluRD/wQb.UH.l7GwMeslGWqRjtYhas2nG',	NULL,	'2020-04-12 12:54:46'),
+(2,	'Admin',	'adminuser@gmail.com',	'$2y$10$xzJ6n8pGmRJii2l4EBqTAO8KJYgb6WVe7Z9MkrDoGe7FMds5phb5u',	NULL,	'2020-04-12 12:54:46'),
+(3,	'Perceval',	'perceval@kaamelott.fr',	'$2y$10$S2VE5Xc5jg911EmVsjT2q.TsUYEt.lkPuv2ep/3dQ3Gjn0ZROVT2G',	NULL,	'2020-04-12 12:54:46'),
+(4,	'Emilie',	'emiliemaniglier@gmail.com',	'$2y$10$CElc4U3Wr5iYHLL6xZjO8e3UbsF6UlZaq1Vt40paWqVmTxQXvcIC.',	NULL,	'2020-04-12 12:54:46'),
+(5,	'Arthur',	'arthur@kaamelott.fr',	'$2y$10$ZWQpvdhCS81knQn/obBeIOwMBLujUmDXmSGU/OxpAQmH.ewRt6IVy',	NULL,	'2020-04-12 12:55:13'),
+(6,	'Cookie',	'cookies@gmail.com',	'$2y$10$oTyCZ3xaMQDxOgD09J5y5./cNhGl/Mg9D1epECKoEL.bvP93DGELy',	'cupcake-icon4.png',	'2020-04-12 13:03:39'),
+(8,	'Cake',	'cake@gmail.com',	'$2y$10$djLSrjHSvisvj7r7INftR.sVpdu70pBZIKukEc.qtFskv4OVqCcS.',	'cupcake-icon3.png',	'2020-04-12 13:08:07'),
+(9,	'Karadoc',	'karadoc@gmail.com',	'$2y$10$VVEDav1TET7Zpm9ltrcAvORuNsCDvd.L0lDv4Qgj8a/.hdBMSxs9a',	'',	'2020-04-12 13:30:45');
 
 DROP TABLE IF EXISTS `user_picture_color`;
 CREATE TABLE `user_picture_color` (
@@ -141,4 +149,4 @@ INSERT INTO `user_picture_color` (`id`, `color_name`) VALUES
 (92,	'tomato'),
 (93,	'yellowgreen');
 
--- 2020-04-12 13:06:19
+-- 2020-04-12 16:33:09

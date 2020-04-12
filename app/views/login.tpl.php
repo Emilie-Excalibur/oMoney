@@ -5,8 +5,8 @@
 
       <form method="post" action="">
         <div class="form-group">
-          <label for="exampleInputEmail1">Nom</label>
-          <input class="form-control" type="text" name="username">
+          <label for="username">Nom</label>
+          <input class="form-control" type="text" name="username" id="username">
         </div>
 
         <div class="form-group">
