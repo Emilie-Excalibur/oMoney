@@ -1,5 +1,9 @@
 <?php
 
+/* ---------------------------------------------------
+    USER'S FUNCTIONS
+----------------------------------------------------- */
+
 /**
  * Déconnecte l'utilisateur
  */
@@ -159,7 +163,7 @@ function checkLoginUserInfo() {
         if(count($result) === 1) {
             $_SESSION['name'] = $username;
             $_SESSION['email'] = $result[0]['email'];
-            $_SESSION['created_at'] = getDateFr($result[0]['created_at']);
+            $_SESSION['created_at'] = getDateFormat('fr', $result[0]['created_at']);
 
             $_SESSION['success'] = 'Vous êtes bien connecté';
 
@@ -173,6 +177,10 @@ function checkLoginUserInfo() {
 
     }
 }
+
+/* ---------------------------------------------------
+    GENERAL FUNCTIONS
+----------------------------------------------------- */
 
 /**
  * Cherche de façon aléatoire une couleur présente dans la BDD
@@ -216,7 +224,71 @@ function getFirstUserLetter() {
  * @param string $date
  * @return string
  */
-function getDateFr($date) {
-    $newDate = date('d/m/Y', strtotime($date));
+function getDateFormat($lang, $date) {
+    if($lang == 'fr') {
+        $newDate = date('d/m/Y', strtotime($date));
+    } else if($lang == 'eng') {
+        $newDate = date('Y-m-d', strtotime($date));
+    }
     return $newDate;
+}
+
+/**
+ * Récupère la date du jour
+ *
+ * @return string
+ */
+function getDateToday() {
+    $getDate = getdate();
+
+    $date = $getDate['mday'] . '/0' . $getDate['mon'] . '/' . $getDate['year'];
+
+    return $date;
+}
+
+/* ---------------------------------------------------
+    EXPENSES FUNCTIONS
+----------------------------------------------------- */
+
+function addExpenses() {
+    // Récupère les infos du formulaire
+    $balance = isset($_POST['balance']) ? $_POST['balance'] : '';
+    $date = isset($_POST['date']) ? trim($_POST['date']) : '';
+    $title = isset($_POST['title']) ? trim($_POST['title']) : '';
+    $sum = isset($_POST['sum']) ? $_POST['sum'] : '';
+    $email = $_SESSION['email'];
+
+    // Insertion des données dans la BDD
+    $pdo = Database::getPDO();
+
+    // Récupère les infos de l'utilisateur connecté
+    $sql = "SELECT id, `email` 
+    FROM users 
+    WHERE `email` = '$email';
+    ";
+    
+    $pdoStatement = $pdo->query($sql);
+    $userInfo = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
+
+    // Si utilisateur présent en BDD
+    if(count($userInfo) === 1) {
+        // Insert les données dans la BDD
+        $insertQuery = "INSERT INTO account (`user_id`, balance, `date`, title, `sum`) VALUES ('{$userInfo[0]['id']}', '{$balance}', '{$date}', '{$title}', '{$sum}')";
+    
+        $nbInsertedValues = $pdo->exec($insertQuery);
+        
+        // Si l'insertion s'est bien passée    
+        if($nbInsertedValues === 1) {
+            // Redirige vers la page home
+    
+            header('Location:' . $_SERVER['BASE_URI'] . '/');
+            exit;
+        
+        } else {
+            echo "Un problème est survenu, merci de réessayer ultérieurement";
+        } 
+    } else {
+        echo 'L\'opération ne s\'est pas déroulée comme prévue. Etes-vous sûr d\'être correctement enregistré ?';
+    }
+
 }

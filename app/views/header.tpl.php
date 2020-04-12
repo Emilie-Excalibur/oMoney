@@ -112,12 +112,14 @@
                         <span></span>
                     </button>
 
-                    <p><a href="<?= $viewVars['BaseUri'] ?>/"><i class="fa fa-home"></i></a> / <?= $viewName; ?></p>
-
                     <?php 
                         if(!isset($_SESSION['name'])) :
                     ?>
                     <p class="text-danger">Vous devez être connecté pour visualiser vos dépenses.</p>
                     <?php endif; ?>
+
+                    <p><a href="<?= $viewVars['BaseUri'] ?>/"><i class="fa fa-home"></i></a> / <?= $viewName; ?></p>
+
+
                 </div>
             </nav>       

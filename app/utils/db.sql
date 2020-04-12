@@ -44,8 +44,8 @@ INSERT INTO `users` (`id`, `name`, `email`, `password`, `picture`, `created_at`)
 (4,	'Emilie',	'emiliemaniglier@gmail.com',	'$2y$10$CElc4U3Wr5iYHLL6xZjO8e3UbsF6UlZaq1Vt40paWqVmTxQXvcIC.',	NULL,	'2020-04-12 12:54:46'),
 (5,	'Arthur',	'arthur@kaamelott.fr',	'$2y$10$ZWQpvdhCS81knQn/obBeIOwMBLujUmDXmSGU/OxpAQmH.ewRt6IVy',	NULL,	'2020-04-12 12:55:13'),
 (6,	'Cookie',	'cookies@gmail.com',	'$2y$10$oTyCZ3xaMQDxOgD09J5y5./cNhGl/Mg9D1epECKoEL.bvP93DGELy',	'cupcake-icon4.png',	'2020-04-12 13:03:39'),
-(8,	'Cake',	'cake@gmail.com',	'$2y$10$djLSrjHSvisvj7r7INftR.sVpdu70pBZIKukEc.qtFskv4OVqCcS.',	'cupcake-icon3.png',	'2020-04-12 13:08:07'),
-(9,	'Karadoc',	'karadoc@gmail.com',	'$2y$10$VVEDav1TET7Zpm9ltrcAvORuNsCDvd.L0lDv4Qgj8a/.hdBMSxs9a',	'',	'2020-04-12 13:30:45');
+(7,	'Cake',	'cake@gmail.com',	'$2y$10$djLSrjHSvisvj7r7INftR.sVpdu70pBZIKukEc.qtFskv4OVqCcS.',	'cupcake-icon3.png',	'2020-04-12 13:08:07'),
+(8,	'Karadoc',	'karadoc@gmail.com',	'$2y$10$VVEDav1TET7Zpm9ltrcAvORuNsCDvd.L0lDv4Qgj8a/.hdBMSxs9a',	'',	'2020-04-12 13:30:45');
 
 DROP TABLE IF EXISTS `user_picture_color`;
 CREATE TABLE `user_picture_color` (

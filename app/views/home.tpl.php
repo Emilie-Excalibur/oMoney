@@ -1,4 +1,4 @@
-<div class="card text-white m-2">
+    <div class="card text-white my-2">
         <div class="card-header bg-dark">Solde du compte</div>
         <div class="card-body bg-transparent border border-dark">
             <p class="card-text text-center font-weight-bold">
@@ -6,9 +6,15 @@
             </p>
         </div>
     </div>
+
+    <div class="card text-white my-2">
+        <div class="card-header bg-danger">
+            Total des dépenses 
+            <?php if(isset($_SESSION['name'])) : ?>
+            depuis le <?= $_SESSION['created_at']; ?>
+            <?php endif; ?>
+        </div>
     
-    <div class="card text-white m-2">
-        <div class="card-header bg-danger">Total des dépenses</div>
         <div class="card-body bg-transparent border border-danger">
             <p class="card-text text-center">
                 <svg class="circle-chart" viewbox="0 0 33.83098862 33.83098862" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
@@ -22,8 +28,11 @@
         </div>
     </div>
 
-    <div class="card text-white m-2">
-        <div class="card-header bg-success ">Aujourd'hui</div>
+<div class="card_container d-flex flex-wrap">   
+    <div class="card text-white mb-2 col-md-6 p-0">
+        <div class="card-header bg-success ">
+            Aujourd'hui <?= getDateToday(); ?>
+        </div>
         <div class="card-body bg-transparent border border-success">
             <p class="card-text text-center">
                 <svg class="circle-chart" viewbox="0 0 33.83098862 33.83098862" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
@@ -37,7 +46,7 @@
         </div>
     </div>
 
-    <div class="card text-white m-2">
+    <div class="card text-white mb-2 col-md-6 p-0">
         <div class="card-header bg-primary">Hier</div>
         <div class="card-body bg-transparent border border-primary">
             <p class="card-text text-center">
@@ -52,7 +61,7 @@
         </div>
     </div>
 
-    <div class="card text-white m-2">
+    <div class="card text-white mb-2 col-md-6 p-0">
         <div class="card-header bg-info">7 derniers jours</div>
         <div class="card-body bg-transparent border border-info">
             <p class="card-text text-center">
@@ -67,7 +76,7 @@
         </div>
     </div>
 
-    <div class="card text-white m-2">
+    <div class="card text-white mb-2 col-md-6 p-0">
         <div class="card-header bg-warning">Mois</div>
         <div class="card-body bg-transparent border border-warning">
             <p class="card-text text-center">
@@ -81,3 +90,4 @@
             </p>
         </div>
     </div>
+</div> 
