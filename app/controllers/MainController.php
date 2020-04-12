@@ -30,6 +30,21 @@ class MainController {
     }
 
     /**
+     * Affiche la page d'erreurs de connexion
+     */
+    public function errorLog() {
+        $this->show('errorLog');
+    }
+
+    /**
+     * Affiche la page d'erreurs d'inscription
+     */
+    public function errorReg() {
+        $this->show('errorReg');
+    }
+
+
+    /**
      * show() prend en argument un nom de page à afficher
      * Et l'affiche
      * $viewVars est un tableau contenant toutes les informations utiles à l'affichage (peut donc contenir plusieurs infos)

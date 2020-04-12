@@ -2,7 +2,6 @@
 
 session_start();
 
-
 // Inclu les libraires
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -20,35 +19,24 @@ require __DIR__ . '/../app/utils/Database.php';
  */
 
 // Validation des données du formulaire d'inscription
+if(isset($_POST['reg_user'])) {
 
-if(!empty($_POST)) {
-    // Récupération des valeurs du formulaire dans des variables
-    $name = isset($_POST['username']) ? $_POST['username'] : '';
-    $email = isset($_POST['email']) ? $_POST['email'] : '';
-    $password = isset($_POST['password_1']) ? password_hash($_POST['password_1'], PASSWORD_DEFAULT) : '';
+    // Vérifie les informations du formulaire avant de les ajouter en BDD
+    checkRegisterUserInfo();
 
-    // Insertion des données dans la BDD
-    
-    // Initialise PDO à partir de la classe Database
-    $pdo = Database::getPDO();
-
-    $insertQuery = "INSERT INTO users (name, email, password)
-    VALUES ('{$name}', '{$email}', '{$password}')";
-
-    $nbInsertedValues = $pdo->exec($insertQuery);
-
-    if($nbInsertedValues === 1) {
-
-        // Si l'insertion s'est bien passée
-        // Redirige vers la page home
-        header('Location:' . $_SERVER['BASE_URI'] . '/');
-        exit;
-
-    } else {
-        echo "Un problème est survenu, merci de réessayer ultérieurement";
-    }
+    // Ajoute les informations du formulaire dans la BDD
+    addUserInfoToDB();
 
 }
+
+// Validation des données du formulaire de connexion
+if(isset($_POST['login_user'])) {
+    // Vérifie les infos de l'utilisateur
+    // Si celles-ci correspondent à celles existant dans la BDD
+    // Connecte l'utilisateur
+    checkLoginUserInfo();
+}
+
 
 /**
  * GESTION DES ROUTES & AFFICHAGE DES VUES
@@ -83,6 +71,20 @@ $router->map(
     'route_login'
 );
 
+$router->map(
+    'GET',
+    '/errorLog',
+    'errorLog',
+    'route_error_Log'
+);
+
+$router->map(
+    'GET',
+    '/errorReg',
+    'errorReg',
+    'route_error_Reg'
+);
+
 
 $match = $router->match();
 
@@ -94,7 +96,6 @@ if($match) {
 } else {
     $methodToCall = 'error404';
 }
-
 
 
     // Rendu visuel
