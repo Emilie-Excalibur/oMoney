@@ -29,7 +29,7 @@ CREATE TABLE `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id de l''utilisateur',
   `name` varchar(20) NOT NULL COMMENT 'Nom de l''utilisateur',
   `email` varchar(150) NOT NULL COMMENT 'Email de l''utilisateur',
-  `password` varchar(50) NOT NULL COMMENT 'Mot de passe de l''utilisateur',
+  `password` varchar(150) NOT NULL COMMENT 'Mot de passe de l''utilisateur',
   `picture` varchar(255) DEFAULT NULL COMMENT 'Avatar de l''utilisateur',
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)

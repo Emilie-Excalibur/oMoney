@@ -36,12 +36,30 @@
 
             <ul class="list-unstyled components">
                 <ul class="list-unstyled CTAs">
-                    <li>
-                        <a href="<?= $viewVars['BaseUri'] ?>/login">Se connecter</a>
-                    </li>
-                    <li>
-                        <a href="<?= $viewVars['BaseUri'] ?>/register">Créer un compte</a>
-                    </li>
+
+                    <?php 
+                        // Si visiteur
+                        if(!isset($_SESSION['name'])) : 
+                    ?>
+                        <li>
+                            <a href="<?= $viewVars['BaseUri'] ?>/login">Se connecter</a>
+                        </li>
+                        <li>
+                            <a href="<?= $viewVars['BaseUri'] ?>/register">Créer un compte</a>
+                        </li>
+                    <?php endif; ?>
+
+                    <?php 
+                    // Si utilisateur connecté
+                        if(isset($_SESSION['name'])) :    
+                    ?>
+                    <div class="user_picture" style="background-color:<?= generateRandomColor();?>">
+                        <p class="user_letter"><?= getFirstUserLetter(); ?></p>
+                    </div>
+                    <p class="text-center"><?= $_SESSION['name']; ?></p>
+
+                    <?php endif; ?>
+
                 </ul>
 
                 <li class="<?= $viewName === 'home' ? 'active' : ''; ?>">
@@ -62,9 +80,21 @@
                 <li>
                     <a href="#">Historique</a>
                 </li>
-                <li>
-                    <a href="#">Profil</a>
-                </li>
+
+
+                <?php 
+                    if(isset($_SESSION['name'])) :
+                ?>
+
+                    <li>
+                        <a href="#">Profil</a>
+                    </li>
+
+                    <li>
+                        <a href="logout.php">Déconnexion</a>
+                    </li>
+
+                <?php endif; ?>
             </ul>
 
         </nav>
@@ -81,7 +111,10 @@
                         <span></span>
                     </button>
 
+                    <?php 
+                        if(!isset($_SESSION['name'])) :
+                    ?>
                     <p class="text-danger">Vous devez être connecté pour visualiser vos dépenses.</p>
-
+                    <?php endif; ?>
                 </div>
             </nav>       

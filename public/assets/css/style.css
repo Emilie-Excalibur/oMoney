@@ -284,4 +284,18 @@ ul.CTAs a {
     }
 }
 
+/* ---------------------------------------------------
+    USER DEFAULT PICTURE
+----------------------------------------------------- */
 
+.user_picture {
+    margin: auto;
+    width: 150px;
+    height: 150px;   
+    border-radius: 50%;
+}
+
+.user_letter {
+    font-size: 5em;
+    text-align: center;
+}

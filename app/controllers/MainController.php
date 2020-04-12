@@ -22,13 +22,27 @@ class MainController {
         $this->show('login');
     }
 
-
     /**
      * Affiche la page d'erreur
      */
     public function error404() {
         $this->show('error404');
     }
+
+    /**
+     * Affiche la page d'erreurs de connexion
+     */
+    public function errorLog() {
+        $this->show('errorLog');
+    }
+
+    /**
+     * Affiche la page d'erreurs d'inscription
+     */
+    public function errorReg() {
+        $this->show('errorReg');
+    }
+
 
     /**
      * show() prend en argument un nom de page à afficher
