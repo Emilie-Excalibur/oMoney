@@ -85,6 +85,13 @@ $router->map(
     'route_error_Reg'
 );
 
+$router->map(
+    'GET',
+    '/profil',
+    'profil',
+    'route_profil'
+);
+
 
 $match = $router->match();
 
@@ -97,7 +104,7 @@ if($match) {
     $methodToCall = 'error404';
 }
 
-
+//dump($_SESSION);
     // Rendu visuel
     
 // Instanciation de la classe MainController

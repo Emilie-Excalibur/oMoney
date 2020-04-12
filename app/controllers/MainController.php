@@ -43,6 +43,13 @@ class MainController {
         $this->show('errorReg');
     }
 
+    /**
+     * Affiche la page profil de l'utilisateur
+     */
+    public function profil() {
+        $this->show('profil');
+    }
+
 
     /**
      * show() prend en argument un nom de page à afficher
