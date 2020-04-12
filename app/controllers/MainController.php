@@ -50,6 +50,19 @@ class MainController {
         $this->show('profil');
     }
 
+    /**
+     * Affiche la page pour ajouter un retrait d'argent
+     */
+    public function retrait() {
+        $this->show('retrait');
+    }
+
+    /**
+     * Affiche la page de l'historique
+     */
+    public function historique() {
+        $this->show('historique');
+    }
 
     /**
      * show() prend en argument un nom de page à afficher

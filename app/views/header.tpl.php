@@ -67,11 +67,11 @@
                     <a href="<?= $viewVars['BaseUri'] ?>/">Accueil</a>
                 </li>
 
-                <li>
+                <li class="<?= $viewName === 'retrait' ? 'active' : ''; ?>">
                     <a href="#Submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Gestion des dépenses</a>
                     <ul class="collapse list-unstyled" id="Submenu">
                         <li class="list-collapse">
-                            <a href="#">Ajouter un retrait d'argent</a>
+                            <a href="<?= $viewVars['BaseUri'] ?>/ajouter-retrait-argent">Ajouter un retrait d'argent</a>
                         </li>
                         <li class="list-collapse">
                             <a href="#">Ajouter un virement</a>
@@ -79,7 +79,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="#">Historique</a>
+                    <a href="<?= $viewVars['BaseUri'] ?>/historique">Historique</a>
                 </li>
 
 
