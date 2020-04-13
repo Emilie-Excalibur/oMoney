@@ -279,6 +279,112 @@ function getAccountInfo() {
     return $accountInfo;
 }
 
+/**
+ * Modifie le mot de passe de la BDD par
+ * le mot de passe entré par l'utilisateur
+ *
+ * @return errors[]
+ */
+function updatePassword() {
+    $errors=[];
+    $oldPassword = isset($_POST['old_password']) ? $_POST['old_password'] : '';
+    $newPassword = isset($_POST['new_password']) ? $_POST['new_password'] : '';
+    $newPasswordConf = isset($_POST['new_password_conf']) ? $_POST['new_password_conf'] : '';
+    $email = $_SESSION['email'];
+    $pdo = Database::getPDO();
+
+    // Récupère le mot de passe actuel dans la BDD
+    $sql = "SELECT
+    `password`
+    FROM users
+    WHERE email = '$email';
+    ";
+
+    $pdoStatement = $pdo->query($sql);
+    $passwordFromDb = $pdoStatement->fetch(PDO::FETCH_ASSOC);
+
+    // Compare le nouveau mot de passe et la confirmation
+    if($newPassword === $newPasswordConf) {
+        // Si oui, chiffre le mot de passe
+        $newPassword = password_hash($_POST['new_password'], PASSWORD_DEFAULT);
+
+        // Vérifie si l'ancien mot de passe correspond au mot de passe existant dans la BDD
+        if($oldPassword === $passwordFromDb) {
+            // Si oui, actualise le nouveau mot de passe dans la BDD
+            $sqlUpdate = "UPDATE 
+            users 
+            SET `password` = '$newPassword'
+            WHERE email = '$email'";
+
+            $execUpdate = $pdo->exec($sqlUpdate);
+
+            if($execUpdate === 1) {
+                header('Location:' . $_SERVER['BASE_URI'] . '/actualisation');
+            }
+
+        } else {
+            $errors[] = "Ancien mot de passe invalide";
+        }
+    } else {
+        $errors[] = "Mot de passe de confirmation invalide";
+
+    }
+
+    return $errors;
+}
+
+/**
+ * Modifie l'adresse email de la BDD par 
+ * la nouvelle adresse entrée par l'utilisateur
+ *
+ * @return errors[];
+ */
+function updateEmail() {
+    $errors = [];
+    $newEmail = isset($_POST['new_email']) ? $_POST['new_email'] : '';
+    $email = $_SESSION['email'];
+    $pdo = Database::getPDO();
+
+    // Récupère tous les emails de la BDD
+    $sql = "SELECT
+    `email`
+    FROM users;
+    ";
+
+    $pdoStatement = $pdo->query($sql);
+    $emailsFromDb = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
+
+    // Compare chaque email de la BDD avec l'email entré
+    foreach ($emailsFromDb as $currentEmail) {
+        if($newEmail === $currentEmail['email']) {
+            // Si une correspondance est trouvée
+            $errors[] = 'Cette adresse email existe déjà';
+            header('Location:' . $_SERVER['BASE_URI'] . '/actualisation');
+            exit;
+        }
+        else {
+            // Sinon, actualise le mot de passe
+            $sqlUpdate = "UPDATE 
+            users 
+            SET `email` = '$newEmail'
+            WHERE email = '$email'";
+    
+            $execUpdate = $pdo->exec($sqlUpdate);
+
+            if($execUpdate === 1) {
+                // Si l'update s'est bien déroulé
+                // Actualise les données de la session avec la nouvelle adresse email
+                // Redirige vers la page indiquant à l'utilisateur que l'update a été fait
+                $_SESSION['email'] = $newEmail;
+                header('Location:' . $_SERVER['BASE_URI'] . '/actualisation');
+                exit;
+            }
+        }
+    }
+    // Retourne le tableau d'erreur
+    return $errors;
+}
+
 
 
 /* ---------------------------------------------------

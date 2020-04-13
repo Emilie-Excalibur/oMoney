@@ -65,6 +65,14 @@ class MainController {
     }
 
     /**
+     * Affiche la page si actualisation des données utilisateurs 
+     */
+    public function actualisation() {
+        $this->show('actualisation');
+    }
+
+
+    /**
      * show() prend en argument un nom de page à afficher
      * Et l'affiche
      * $viewVars est un tableau contenant toutes les informations utiles à l'affichage (peut donc contenir plusieurs infos)

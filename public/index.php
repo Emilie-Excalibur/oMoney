@@ -43,6 +43,15 @@ if(isset($_POST['add_expenses'])) {
     addExpenses();
 }
 
+// Modification des données utilisateur
+if(isset($_POST['update'])) {
+    //updatePassword();
+
+    // L'utilisateur peut modifier son email
+    updateEmail();
+}
+
+//updatePassword();
 
 /**
  * GESTION DES ROUTES & AFFICHAGE DES VUES
@@ -111,6 +120,14 @@ $router->map(
     'historique',
     'route_historique'
 );
+
+$router->map(
+    'GET',
+    '/actualisation',
+    'actualisation',
+    'route_actualisation'
+);
+
 
 $match = $router->match();
 
