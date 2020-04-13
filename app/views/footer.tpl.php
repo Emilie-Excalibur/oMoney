@@ -4,7 +4,7 @@
 <!-- END DIV WRAPPER-->
 
 <footer class="footer text-center">
-      Copyright
+      Copyright &copy; Emilie Maniglier - 2020
 </footer>
 
     <!-- JS -->
