@@ -39,7 +39,7 @@
 
                     <?php 
                         // Si visiteur
-                        if(!isset($_SESSION['name'])) : 
+                        if(!isset($_SESSION['success'])) : 
                     ?>
                         <li>
                             <a href="<?= $viewVars['BaseUri'] ?>/login">Se connecter</a>
@@ -51,7 +51,7 @@
 
                     <?php 
                     // Si utilisateur connecté
-                        if(isset($_SESSION['name'])) : 
+                        if(isset($_SESSION['success'])) : 
 
                     ?>
                         <div class="user_picture" style="background-color:<?= generateRandomColor();?>">
@@ -84,7 +84,7 @@
 
 
                 <?php 
-                    if(isset($_SESSION['name'])) :
+                    if(isset($_SESSION['success'])) :
                 ?>
 
                     <li class="<?= $viewName === 'profil' ? 'active' : ''; ?>">
@@ -112,12 +112,14 @@
                         <span></span>
                     </button>
 
-                    <p><a href="<?= $viewVars['BaseUri'] ?>/"><i class="fa fa-home"></i></a> / <?= $viewName; ?></p>
-
                     <?php 
-                        if(!isset($_SESSION['name'])) :
+                        if(!isset($_SESSION['success'])) :
                     ?>
                     <p class="text-danger">Vous devez être connecté pour visualiser vos dépenses.</p>
                     <?php endif; ?>
+
+                    <p><a href="<?= $viewVars['BaseUri'] ?>/"><i class="fa fa-home"></i></a> / <?= $viewName; ?></p>
+
+
                 </div>
             </nav>       

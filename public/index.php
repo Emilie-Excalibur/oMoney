@@ -14,6 +14,7 @@ require __DIR__ . '/../app/utils/functions.php';
 // Inclu la classe Database qui sert à se connect à la BDD
 require __DIR__ . '/../app/utils/Database.php';
 
+
 /**
  * DONNEES & BDD
  */
@@ -35,6 +36,11 @@ if(isset($_POST['login_user'])) {
     // Si celles-ci correspondent à celles existant dans la BDD
     // Connecte l'utilisateur
     checkLoginUserInfo();
+}
+
+// Envoi des données du formulaire ajout des dépenses dans la BDD
+if(isset($_POST['add_expenses'])) {
+    addExpenses();
 }
 
 
@@ -118,6 +124,8 @@ if($match) {
 }
 
 //dump($_SESSION);
+
+
     // Rendu visuel
     
 // Instanciation de la classe MainController

@@ -16,14 +16,28 @@ CREATE TABLE `account` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Identifiant du journal de dépenses',
   `user_id` int(10) unsigned NOT NULL COMMENT 'identifiant de l''utilisateur',
   `balance` float(10,2) NOT NULL COMMENT 'Solde de l''utilisateur',
-  `sum` float(10,2) NOT NULL COMMENT 'Somme dépensée',
-  `date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp() COMMENT 'Date du retrait d''argent',
+  `date` date DEFAULT NULL COMMENT 'Date du retrait d''argent',
   `title` varchar(255) DEFAULT NULL COMMENT 'Intitulé du retrait',
+  `sum` float(10,2) NOT NULL COMMENT 'Somme dépensée',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `account_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+INSERT INTO `account` (`id`, `user_id`, `balance`, `date`, `title`, `sum`) VALUES
+(1,	9,	890.12,	'2020-02-14',	'Fleur pour Guenièvre',	35.80),
+(2,	4,	1350.00,	'2020-03-07',	'Sangliers de Cornouailles',	75.99),
+(3,	4,	1274.01,	'2020-04-07',	'Herbes de provence',	4.50),
+(4,	4,	1269.51,	'2020-04-07',	'Fromages à raclette',	21.70),
+(5,	4,	1247.81,	'2020-04-12',	'Appareil à raclette',	43.99),
+(6,	4,	1203.82,	'2020-04-13',	'Epée bien affûtée',	142.80),
+(7,	7,	15642.00,	'2019-12-25',	'Cadeaux noël pour tout le monde',	345.12),
+(8,	7,	15296.88,	'2020-04-12',	'Nouvelle cape',	17.99),
+(9,	2,	1650.00,	'2020-04-03',	'Casque Logitech',	69.99),
+(10,	8,	8760.00,	'2020-03-02',	'Viande grasse',	27.60),
+(11,	8,	8732.40,	'2020-03-15',	'remise d\"aujourdhui',	6.40),
+(12,	6,	4512.00,	'2020-03-26',	'choux-fleur',	3.50),
+(13,	6,	4508.50,	'2020-03-06',	'Livre c\'est la vie',	25.99);
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
@@ -38,14 +52,15 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `picture`, `created_at`) VALUES
-(1,	'testUser',	'testUser@gmail.com',	'$2y$10$bOzvxL.uO7jjNhIMWKDlluRD/wQb.UH.l7GwMeslGWqRjtYhas2nG',	NULL,	'2020-04-12 12:54:46'),
-(2,	'Admin',	'adminuser@gmail.com',	'$2y$10$xzJ6n8pGmRJii2l4EBqTAO8KJYgb6WVe7Z9MkrDoGe7FMds5phb5u',	NULL,	'2020-04-12 12:54:46'),
-(3,	'Perceval',	'perceval@kaamelott.fr',	'$2y$10$S2VE5Xc5jg911EmVsjT2q.TsUYEt.lkPuv2ep/3dQ3Gjn0ZROVT2G',	NULL,	'2020-04-12 12:54:46'),
-(4,	'Emilie',	'emiliemaniglier@gmail.com',	'$2y$10$CElc4U3Wr5iYHLL6xZjO8e3UbsF6UlZaq1Vt40paWqVmTxQXvcIC.',	NULL,	'2020-04-12 12:54:46'),
-(5,	'Arthur',	'arthur@kaamelott.fr',	'$2y$10$ZWQpvdhCS81knQn/obBeIOwMBLujUmDXmSGU/OxpAQmH.ewRt6IVy',	NULL,	'2020-04-12 12:55:13'),
-(6,	'Cookie',	'cookies@gmail.com',	'$2y$10$oTyCZ3xaMQDxOgD09J5y5./cNhGl/Mg9D1epECKoEL.bvP93DGELy',	'cupcake-icon4.png',	'2020-04-12 13:03:39'),
-(8,	'Cake',	'cake@gmail.com',	'$2y$10$djLSrjHSvisvj7r7INftR.sVpdu70pBZIKukEc.qtFskv4OVqCcS.',	'cupcake-icon3.png',	'2020-04-12 13:08:07'),
-(9,	'Karadoc',	'karadoc@gmail.com',	'$2y$10$VVEDav1TET7Zpm9ltrcAvORuNsCDvd.L0lDv4Qgj8a/.hdBMSxs9a',	'',	'2020-04-12 13:30:45');
+(1,	'Admin',	'adminUser@gmail.com',	'$2y$10$MRA3M8KJR.LltD/gBwFyAeBdFxbFkBAKjm6Gftl3/tcp5aBoGjR4e',	'',	'2020-04-13 13:23:40'),
+(2,	'testUser',	'testUser@gmail.com',	'$2y$10$ctsebLcaaIDyK.jgubjjxegl8YvRnjEser0Zc88O9ajnYftfZblra',	'',	'2020-04-13 13:36:57'),
+(3,	'Emilie',	'emiliemaniglier@gmail.com',	'$2y$10$zYc7oo27hjkCEXudRJ1J1uPlLkD/cH1cq8t.R38KXPAnD40hfKgmG',	'',	'2020-04-13 13:37:14'),
+(4,	'Perceval',	'perceval@kaamelott.fr',	'$2y$10$i4.HepFKCBNpYxV43XgYheSZY/0dQGPn3yJC6VPZmakPAKizHU9ne',	'',	'2020-04-13 13:37:41'),
+(6,	'Perceval',	'provencalLeGallois@kaamelott.fr',	'$2y$10$eb2Q7Js.hcqq73HbBPRGnehbNmPpzsyjWrJlAcLGDUATvr/fD7Qti',	'',	'2020-04-13 13:38:50'),
+(7,	'Arthur',	'arthur@kaamelott.fr',	'$2y$10$H8vwmnq2rZUhvCmhdxWWWuC98h61G/hgbAl6RkTkwiqmhKhtYj86a',	'',	'2020-04-13 13:39:07'),
+(8,	'Karadoc',	'karadoc@kaamelott.fr',	'$2y$10$FKNziRmjFEhBXvUGCO8gIeGECGxTO1RUORossaJzOlrjtHD6wFypy',	'',	'2020-04-13 13:39:41'),
+(9,	'Lancelot',	'lancelot@kaamelott.gmail',	'$2y$10$K9xVB1.5R5/TpIIxbbj89eGuSudIGGoVcxJ2AH8rp6xkV9TuzjMYW',	'',	'2020-04-13 13:40:17'),
+(10,	'Merlin',	'magicien@kaamelott.fr',	'$2y$10$pc8Scr9Ojb3iOA1UnRLQdeZ8iyN1yODgHAMejvKww4RrJBJ3UlP7W',	'',	'2020-04-13 14:28:51');
 
 DROP TABLE IF EXISTS `user_picture_color`;
 CREATE TABLE `user_picture_color` (
@@ -149,4 +164,4 @@ INSERT INTO `user_picture_color` (`id`, `color_name`) VALUES
 (92,	'tomato'),
 (93,	'yellowgreen');
 
--- 2020-04-12 16:33:09
+-- 2020-04-13 14:34:55
