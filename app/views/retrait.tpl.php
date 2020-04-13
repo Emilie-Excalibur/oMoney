@@ -1,8 +1,13 @@
+<?php 
+    $accountInfo = getAccountInfo();
+    $sum = sumExpenses();
+    $balance= getBalance();    
+?>
 <form method="post">
 
     <div class="form-group">
         <label for="balance">Solde du compte</label>
-        <input class="form-control" type="number" name="balance" id="balance" min="0" step="0.01">
+        <input class="form-control" type="number" name="balance" id="balance" min="0" step="0.01" value="<?= $balance['balance'] - $sum['sumExpenses']; ?>">
     </div>
 
     <div class="form-group">

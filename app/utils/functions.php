@@ -89,10 +89,17 @@ function addUserInfoToDB() {
     if($nbInsertedValues === 1) {
         // Si l'insertion s'est bien passée
 
+        $sql = "SELECT created_at FROM users WHERE email='$email';";
+
+        $pdoStatement = $pdo->query($sql);
+    
+        $userDateAccount = $pdoStatement->fetch(PDO::FETCH_ASSOC);
+
         // Actualise les informations de $_SESSION
         // avec les informations de l'utilisateur
         $_SESSION['name'] = $name;
         $_SESSION['email'] = $email;
+        $_SESSION['created_at'] = $userDateAccount['created_at'];
         $_SESSION['success'] = 'Vous êtes bien enregistré';
     
         // Redirige vers la page home
@@ -279,9 +286,9 @@ function addExpenses() {
         
         // Si l'insertion s'est bien passée    
         if($nbInsertedValues === 1) {
-            // Redirige vers la page home
+            // Redirige vers la page historique
     
-            header('Location:' . $_SERVER['BASE_URI'] . '/');
+            header('Location:' . $_SERVER['BASE_URI'] . '/historique');
             exit;
         
         } else {
@@ -290,5 +297,73 @@ function addExpenses() {
     } else {
         echo 'L\'opération ne s\'est pas déroulée comme prévue. Etes-vous sûr d\'être correctement enregistré ?';
     }
+}
 
+/**
+ * Récupère les informations du compte où sont enregistrées toutes les dépenses de l'utilisateur connecté
+ *
+ * @return accountInfo[]
+ */
+function getAccountInfo() {
+    // Identification de l'utilisateur connecté grâce
+    // à son email unique
+    $email = $_SESSION['email'];
+
+    $pdo = Database::getPDO();
+
+    // Récupère les informations du compte de l'utilisateur connecté
+    $sql = "SELECT 
+    account.*,
+    users.email 
+    FROM account
+    INNER JOIN users
+    ON account.user_id = users.id
+    WHERE users.email = '$email'
+    ;";
+
+    $pdoStatement = $pdo->query($sql);
+
+    $accountInfo = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
+
+    return $accountInfo;
+}
+
+/**
+ * Récupère la somme de toutes les dépenses
+ * de l'utilisateur connecté via la BDD
+ *
+ * @return sum[]
+ */
+function sumExpenses() {
+    $email = $_SESSION['email'];
+
+    $pdo = Database::getPDO();
+
+    $sql = "SELECT 
+    SUM(`sum`) AS sumExpenses
+    FROM account 
+    INNER JOIN users 
+    ON account.user_id = users.id
+    WHERE users.email = '$email';";
+
+    $pdoStatement = $pdo->query($sql);
+
+    $sum = $pdoStatement->fetch(PDO::FETCH_ASSOC);
+
+    return $sum;
+}
+
+function getBalance() {
+    $pdo = Database::getPDO();
+
+    $sql = "SELECT balance 
+    FROM account
+    WHERE id = 1
+    ;";
+
+    $pdoStatement = $pdo->query($sql);
+
+    $balance = $pdoStatement->fetch(PDO::FETCH_ASSOC);
+
+    return $balance;
 }

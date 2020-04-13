@@ -1,17 +1,33 @@
     <div class="card text-white my-2">
         <div class="card-header bg-dark">Solde du compte</div>
         <div class="card-body bg-transparent border border-dark">
+            
+            <?php 
+                if(isset($_SESSION['success'])) :
+                    $accountInfo = getAccountInfo();
+                    $sum = sumExpenses();
+                    $balance= getBalance();
+                    
+            ?>
             <p class="card-text text-center font-weight-bold">
-            <i class="fa fa-lg fa-money"></i> Solde actuelle : 0€
+                <i class="fa fa-lg fa-money"></i> Solde actuelle : <?= $balance['balance'] - $sum['sumExpenses'] ?>€
             </p>
+
+            <?php else : ?>
+
+            <p class="card-text text-center font-weight-bold">
+                <i class="fa fa-lg fa-money"></i> Solde actuelle : 0€
+            </p>
+
+            <?php endif; ?>
         </div>
     </div>
 
     <div class="card text-white my-2">
         <div class="card-header bg-danger">
             Total des dépenses 
-            <?php if(isset($_SESSION['name'])) : ?>
-            depuis le <?= $_SESSION['created_at']; ?>
+            <?php if(isset($_SESSION['success'])) : ?>
+            depuis le <?= getDateFormat('fr', $_SESSION['created_at']); ?>
             <?php endif; ?>
         </div>
     

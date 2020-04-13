@@ -43,6 +43,7 @@ if(isset($_POST['add_expenses'])) {
     addExpenses();
 }
 
+
 /**
  * GESTION DES ROUTES & AFFICHAGE DES VUES
  */
