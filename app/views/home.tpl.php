@@ -23,7 +23,10 @@
                 $weekExpenses = getExpensesByDate($lastWeek, $today);
                 $monthExpenses = getExpensesByDate($lastMonth, $today);
             ?>
-                <i class="fa fa-lg fa-money"></i> Solde actuel : <?= calculBalance(); ?>€
+                <i class="fa fa-lg fa-money"></i> Solde actuel : 
+                <span class="<?= calculBalance() < 0 ? 'text-danger' : 'text-success'; ?>">
+                    <?= calculBalance(); ?>€
+                </span>
 
             <?php else : ?>
                 <i class="fa fa-lg fa-money"></i> Solde actuel : 0€

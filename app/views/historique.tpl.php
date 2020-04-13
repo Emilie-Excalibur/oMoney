@@ -1,8 +1,24 @@
 <?php
 // Si visiteur
 if (!isset($_SESSION['success'])) :
+require __DIR__. '/../inc/filter.tpl.php';
 ?>
-    <p class="text-danger">Vous devez être connecté pour visualiser vos dépenses.</p>
+            <tr>
+                <th scope="col">1</th>
+                <th scope="col">-</th>
+                <th scope="col">-</th>
+                <th scope="col">-</th>
+            </tr>
+            <tr class="table-danger">
+                <td colspan="3">Somme totale dépensée</td>
+                <td>0 €</td>
+            </tr>
+
+            <tr class="table-info">
+                <td colspan="4">Solde du compte : 0 €</td>
+            </tr>            
+        </tbody>
+    </table>
 
 <?php 
 else: 
@@ -11,40 +27,47 @@ else:
     $accountInfo = getAccountInfo();
     $sum = sumExpenses();
 
+require __DIR__ . '/../inc/filter.tpl.php'; 
+
+$email = $_SESSION['email'];
+$pdo = Database::getPDO();
+
+// Si un tri a été demandé
+// Et si ce tri est date / titre /sum
+if(!empty($_GET['filter']) && $_GET['filter'] === 'date') {
+    // Ecriture de la requête selon le tri demandé
+    $sql = "SELECT *
+    FROM account
+    INNER JOIN users
+    ON account.user_id = users.id
+    WHERE users.email = '$email'
+    ORDER BY account.date ASC
+    ";
+} else if(!empty($_GET['filter']) && $_GET['filter'] === 'title') {
+    $sql = "SELECT *
+    FROM account
+    INNER JOIN users
+    ON account.user_id = users.id
+    WHERE users.email = '$email'
+    ORDER BY account.title ASC
+    ";
+} else if(!empty($_GET['filter']) && $_GET['filter'] === 'sum') {
+    $sql = "SELECT *
+    FROM account
+    INNER JOIN users
+    ON account.user_id = users.id
+    WHERE users.email = '$email'
+    ORDER BY account.sum ASC
+    ";
+}
+
+// Si un tri a été demandé
+// Execution de la requête
+if(!empty($_GET['filter'])) {
+    $pdoStatement = $pdo->query($sql);
+    $filteredList = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
+}
+
+require __DIR__ . '/../inc/table.tpl.php'; 
+endif;
 ?>
-
-<table class="table table-striped text-center">
-    <thead class="thead-dark">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Date</th>
-            <th scope="col">Intitulé</th>
-            <th scope="col">Somme dépensée</th>
-        </tr>
-    </thead>
-    <tbody>
-        
-            <?php 
-                foreach ($accountInfo as $transactionId => $transactionInfo) :
-            ?>
-            <tr>
-            <th scope="row"><?= $transactionId+1 ?></th>
-            <td><?= getDateFormat($transactionInfo['date']); ?></td>
-            <td><?= $transactionInfo['title']; ?></td>
-            <td><?= $transactionInfo['sum']; ?> €</td>
-
-        </tr>
-                <?php endforeach; ?>
-
-        <tr class="table-danger">
-            <td colspan="3">Somme totale dépensée</td>
-            <td><?= $sum['sumExpenses']; ?> €</td>
-        </tr>
-
-        <tr class="table-info">
-            <td colspan="4">Solde du compte : <?= calculBalance(); ?> €</td>
-        </tr>
-    </tbody>
-</table>
-
-<?php endif; ?>
