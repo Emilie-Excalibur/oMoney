@@ -18,7 +18,7 @@ else:
         <tr>
             <th scope="col">#</th>
             <th scope="col">Date</th>
-            <th scope="col">Intitué</th>
+            <th scope="col">Intitulé</th>
             <th scope="col">Somme dépensée</th>
         </tr>
     </thead>
@@ -29,7 +29,7 @@ else:
             ?>
             <tr>
             <th scope="row"><?= $transactionId+1 ?></th>
-            <td><?= getDateFormat('fr', $transactionInfo['date']); ?></td>
+            <td><?= getDateFormat($transactionInfo['date']); ?></td>
             <td><?= $transactionInfo['title']; ?></td>
             <td><?= $transactionInfo['sum']; ?> €</td>
 

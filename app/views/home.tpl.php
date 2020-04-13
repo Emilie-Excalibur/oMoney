@@ -4,16 +4,29 @@
         <p class="card-text text-center font-weight-bold">
 
             <?php
-
+            // Si utilisateur connecté
             if (isset($_SESSION['success'])) :
+                // Toutes les variables nécessaires à l'affichage de la page
                 $accountInfo = getAccountInfo();
                 $sum = sumExpenses();
                 $balance = getBalance();
+
+                // Récupère la date choisie au format Y-m-d
+                $today= convertDate();
+                $yesterday = convertDate(24*60*60);
+                $lastWeek = convertDate(7*24*60*60);
+                $lastMonth = convertDate(4*7*24*60*60);
+
+                // Récupère le total de toutes les dépenses durant la période choisie
+                $todayExpenses= getExpensesByDate($today, $today);
+                $yesterdayExpenses = getExpensesByDate($yesterday, $yesterday);
+                $weekExpenses = getExpensesByDate($lastWeek, $today);
+                $monthExpenses = getExpensesByDate($lastMonth, $today);
             ?>
-                <i class="fa fa-lg fa-money"></i> Solde actuelle : <?= calculBalance(); ?>€
+                <i class="fa fa-lg fa-money"></i> Solde actuel : <?= calculBalance(); ?>€
 
             <?php else : ?>
-                <i class="fa fa-lg fa-money"></i> Solde actuelle : 0€
+                <i class="fa fa-lg fa-money"></i> Solde actuel : 0€
             <?php endif; ?>
         </p>
     </div>
@@ -23,16 +36,28 @@
     <div class="card-header bg-danger">
         Total des dépenses
         <?php if (isset($_SESSION['success'])) : ?>
-            depuis le <?= getDateFormat('fr', $_SESSION['created_at']); ?>
+            <?php
+                if(getExpensesByDateOrder() != false) {
+                    // Si des dépenses ont été ajoutéees
+                    // Affiche la date la plus ancienne
+                    $allExpenses = getExpensesByDateOrder();
+                    $firstExpenses = $allExpenses[0]['date'];
+                    echo 'depuis le ' . getDateFormat($firstExpenses);
+                } else {
+                    echo '';
+                }
+            ?>
         <?php endif; ?>
     </div>
 
     <div class="card-body bg-transparent border border-danger">
-        <p class="card-text text-center">
+        <div class="card-text text-center">
             <svg class="circle-chart" viewbox="0 0 33.83098862 33.83098862" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
                 <circle class="circle-chart__background" stroke="#efefef" stroke-width="2" fill="none" cx="16.91549431" cy="16.91549431" r="15.91549431" />
                 <circle class="circle-chart__circle" stroke="#dc3545" stroke-width="2" stroke-dasharray="<?php 
                     if(isset($_SESSION['success']) && $sum['sumExpenses'] != null) {
+                        // Si utilisateur connecté ET si des dépenses ont été ajoutées
+                        // Calcule et affiche le % des dépenses par rapport au solde du compte
                         echo calculPercentage($sum['sumExpenses'], $balance['balance']);
                     } else {
                         echo "0";
@@ -41,6 +66,8 @@
                     <text class="circle-chart__percent" x="16.91549431" y="15.5" alignment-baseline="central" text-anchor="middle" font-size="6">
                         <?php 
                         if(isset($_SESSION['success']) && $sum['sumExpenses'] != null) {
+                        // Si utilisateur connecté ET si des dépenses ont été ajoutées
+                        // Affiche la somme de toutes les dépenses de l'utilisateur
                             echo $sum['sumExpenses'];
                         } else {
                             echo "0";
@@ -48,25 +75,37 @@
                     </text>
                 </g>
             </svg>
-        </p>
+        </div>
     </div>
 </div>
 
 <div class="card_container d-flex flex-wrap">
     <div class="card text-white mb-2 col-md-6 p-0">
         <div class="card-header bg-success ">
-            Aujourd'hui <?= getDateToday(); ?>
+            Aujourd'hui <?= date('d/m/Y', time()); ?>
         </div>
         <div class="card-body bg-transparent border border-success">
-            <p class="card-text text-center">
+            <div class="card-text text-center">
                 <svg class="circle-chart" viewbox="0 0 33.83098862 33.83098862" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
                     <circle class="circle-chart__background" stroke="#efefef" stroke-width="2" fill="none" cx="16.91549431" cy="16.91549431" r="15.91549431" />
-                    <circle class="circle-chart__circle" stroke="#28a745" stroke-width="2" stroke-dasharray="0,100" stroke-linecap="round" fill="none" cx="16.91549431" cy="16.91549431" r="15.91549431" />
+                    <circle class="circle-chart__circle" stroke="#28a745" stroke-width="2" stroke-dasharray="<?php 
+                        if(isset($_SESSION['success']) && $todayExpenses['dateExpenses'] != null) {
+                            echo calculPercentage($todayExpenses['dateExpenses'], $balance['balance']);
+                        } else {
+                            echo "0";
+                        }; ?>,100" stroke-linecap="round" fill="none" cx="16.91549431" cy="16.91549431" r="15.91549431" />
                     <g class="circle-chart__info">
-                        <text class="circle-chart__percent" x="16.91549431" y="15.5" alignment-baseline="central" text-anchor="middle" font-size="6">0€</text>
+                        <text class="circle-chart__percent" x="16.91549431" y="15.5" alignment-baseline="central" text-anchor="middle" font-size="6">
+                            <?php 
+                            if(isset($_SESSION['success']) && $todayExpenses['dateExpenses'] != null) {
+                                echo $todayExpenses['dateExpenses'];
+                            } else {
+                                echo "0";
+                            }; ?>€
+                        </text>
                     </g>
                 </svg>
-            </p>
+            </div>
         </div>
     </div>
 
@@ -76,9 +115,20 @@
             <p class="card-text text-center">
                 <svg class="circle-chart" viewbox="0 0 33.83098862 33.83098862" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
                     <circle class="circle-chart__background" stroke="#efefef" stroke-width="2" fill="none" cx="16.91549431" cy="16.91549431" r="15.91549431" />
-                    <circle class="circle-chart__circle" stroke="#007bff" stroke-width="2" stroke-dasharray="0,100" stroke-linecap="round" fill="none" cx="16.91549431" cy="16.91549431" r="15.91549431" />
+                    <circle class="circle-chart__circle" stroke="#007bff" stroke-width="2" stroke-dasharray="<?php 
+                        if(isset($_SESSION['success']) && $yesterdayExpenses['dateExpenses'] != null) {
+                            echo calculPercentage($yesterdayExpenses['dateExpenses'], $balance['balance']);
+                        } else {
+                            echo "0";
+                        }; ?>,100" stroke-linecap="round" fill="none" cx="16.91549431" cy="16.91549431" r="15.91549431" />
                     <g class="circle-chart__info">
-                        <text class="circle-chart__percent" x="16.91549431" y="15.5" alignment-baseline="central" text-anchor="middle" font-size="6">0€</text>
+                        <text class="circle-chart__percent" x="16.91549431" y="15.5" alignment-baseline="central" text-anchor="middle" font-size="6">
+                            <?php 
+                            if(isset($_SESSION['success']) && $yesterdayExpenses['dateExpenses'] != null) {
+                                echo $yesterdayExpenses['dateExpenses'];
+                            } else {
+                                echo "0";
+                            }; ?>€</text>
                     </g>
                 </svg>
             </p>
@@ -91,9 +141,20 @@
             <p class="card-text text-center">
                 <svg class="circle-chart" viewbox="0 0 33.83098862 33.83098862" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
                     <circle class="circle-chart__background" stroke="#efefef" stroke-width="2" fill="none" cx="16.91549431" cy="16.91549431" r="15.91549431" />
-                    <circle class="circle-chart__circle" stroke="#00acc1" stroke-width="2" stroke-dasharray="0,100" stroke-linecap="round" fill="none" cx="16.91549431" cy="16.91549431" r="15.91549431" />
+                    <circle class="circle-chart__circle" stroke="#00acc1" stroke-width="2" stroke-dasharray="<?php 
+                        if(isset($_SESSION['success']) && $weekExpenses['dateExpenses'] != null) {
+                            echo calculPercentage($weekExpenses['dateExpenses'], $balance['balance']);
+                        } else {
+                            echo "0";
+                        }; ?>,100" stroke-linecap="round" fill="none" cx="16.91549431" cy="16.91549431" r="15.91549431" />
                     <g class="circle-chart__info">
-                        <text class="circle-chart__percent" x="16.91549431" y="15.5" alignment-baseline="central" text-anchor="middle" font-size="6">0€</text>
+                        <text class="circle-chart__percent" x="16.91549431" y="15.5" alignment-baseline="central" text-anchor="middle" font-size="6">
+                            <?php 
+                            if(isset($_SESSION['success']) && $weekExpenses['dateExpenses'] != null) {
+                                echo $weekExpenses['dateExpenses'];
+                            } else {
+                                echo "0";
+                            }; ?>€</text>
                     </g>
                 </svg>
             </p>
@@ -101,14 +162,25 @@
     </div>
 
     <div class="card text-white mb-2 col-md-6 p-0">
-        <div class="card-header bg-warning">Mois</div>
+        <div class="card-header bg-warning">Mois <?php $date=time(); echo $month=date('F', $date); ?></div>
         <div class="card-body bg-transparent border border-warning">
             <p class="card-text text-center">
                 <svg class="circle-chart" viewbox="0 0 33.83098862 33.83098862" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
                     <circle class="circle-chart__background" stroke="#efefef" stroke-width="2" fill="none" cx="16.91549431" cy="16.91549431" r="15.91549431" />
-                    <circle class="circle-chart__circle" stroke="#ffc107" stroke-width="2" stroke-dasharray="0,100" stroke-linecap="round" fill="none" cx="16.91549431" cy="16.91549431" r="15.91549431" />
+                    <circle class="circle-chart__circle" stroke="#ffc107" stroke-width="2" stroke-dasharray="<?php 
+                        if(isset($_SESSION['success']) && $monthExpenses['dateExpenses'] != null) {
+                            echo calculPercentage($monthExpenses['dateExpenses'], $balance['balance']);
+                        } else {
+                            echo "0";
+                        }; ?>,100" stroke-linecap="round" fill="none" cx="16.91549431" cy="16.91549431" r="15.91549431" />
                     <g class="circle-chart__info">
-                        <text class="circle-chart__percent" x="16.91549431" y="15.5" alignment-baseline="central" text-anchor="middle" font-size="6">0€</text>
+                        <text class="circle-chart__percent" x="16.91549431" y="15.5" alignment-baseline="central" text-anchor="middle" font-size="6">
+                            <?php 
+                            if(isset($_SESSION['success']) && $monthExpenses['dateExpenses'] != null) {
+                                echo $monthExpenses['dateExpenses'];
+                            } else {
+                                echo "0";
+                            }; ?>€</text>
                     </g>
                 </svg>
             </p>

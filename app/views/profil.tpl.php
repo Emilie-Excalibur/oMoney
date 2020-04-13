@@ -21,7 +21,7 @@
 
     <div class="form-group">
         <label for="created_at">Compte créé le </label>
-        <input class="form-control" type="text" id="created_at" placeholder="<?= $_SESSION['created_at']; ?>" readonly>
+        <input class="form-control" type="text" id="created_at" placeholder="<?= getDateFormat($_SESSION['created_at']); ?>" readonly>
     </div>
 
     <button type="submit" class="btn btn-success">Mettre à jour les informations</button>

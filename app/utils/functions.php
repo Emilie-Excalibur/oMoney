@@ -1,4 +1,69 @@
 <?php
+/* ---------------------------------------------------
+    GENERAL FUNCTIONS
+----------------------------------------------------- */
+
+/**
+ * Cherche de façon aléatoire une couleur présente dans la BDD
+ *
+ * @return string
+ */
+function generateRandomColor() {
+    $pdo = Database::getPDO();
+
+    $sql = 'SELECT color_name FROM user_picture_color';
+
+    $pdoStatement = $pdo->query($sql);
+
+    $allColors = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
+
+    $randomColorIndex = rand(0, count($allColors) - 1);
+
+    $randomColor = $allColors[$randomColorIndex]['color_name'];
+
+    return $randomColor;
+}
+
+/**
+ * Récupère la première lettre du nom de l'utilisateur connecté
+ *
+ * @return string (1 letter)
+ */
+function getFirstUserLetter() {
+    if(isset($_SESSION['name'])) {
+        $name = $_SESSION['name'];
+
+        $firstLetter = substr($name, 0, 1);
+
+        return $firstLetter;
+    }
+}
+
+/**
+ * Change le format d'une date en jour/mois/année
+ *
+ * @param string $date
+ * @return string
+ */
+function getDateFormat($date) {
+    $newDate = date('d/m/Y', strtotime($date));
+    return $newDate;
+}
+
+/**
+ * Converti la date du jour sous forme de seconde
+ * en format année-mois-jour
+ * 
+ * N'importe quelle date antérieure à la date du jour actuel peut être obtenue en soustrayant $time
+ *
+ * @param integer $time
+ * @return string
+ */
+function convertDate($time = 0) {
+    $dateBrut = time() - $time;
+    $date = date('Y-m-d', $dateBrut);
+    return $date;
+}
 
 /* ---------------------------------------------------
     USER'S FUNCTIONS
@@ -185,83 +250,49 @@ function checkLoginUserInfo() {
     }
 }
 
-/* ---------------------------------------------------
-    GENERAL FUNCTIONS
------------------------------------------------------ */
-
 /**
- * Cherche de façon aléatoire une couleur présente dans la BDD
+ * Récupère les informations personnelles de l'utilisateur
  *
- * @return string
+ * @return accountInfo[]
  */
-function generateRandomColor() {
+function getAccountInfo() {
+    // Identification de l'utilisateur connecté grâce
+    // à son email unique
+    $email = $_SESSION['email'];
+
     $pdo = Database::getPDO();
 
-    $sql = 'SELECT color_name FROM user_picture_color';
+    // Récupère les informations du compte de l'utilisateur connecté
+    $sql = "SELECT 
+    account.*,
+    users.email 
+    FROM account
+    INNER JOIN users
+    ON account.user_id = users.id
+    WHERE users.email = '$email'
+    ;";
 
     $pdoStatement = $pdo->query($sql);
 
-    $allColors = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
+    $accountInfo = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
 
-    $randomColorIndex = rand(0, count($allColors) - 1);
-
-    $randomColor = $allColors[$randomColorIndex]['color_name'];
-
-    return $randomColor;
+    return $accountInfo;
 }
 
-/**
- * Récupère la première lettre du nom de l'utilisateur connecté
- *
- * @return string (1 letter)
- */
-function getFirstUserLetter() {
-    if(isset($_SESSION['name'])) {
-        $name = $_SESSION['name'];
 
-        $firstLetter = substr($name, 0, 1);
-
-        return $firstLetter;
-    }
-}
-
-/**
- * Change le format d'une date en jour/mois/année
- *
- * @param string $date
- * @return string
- */
-function getDateFormat($lang, $date) {
-    if($lang == 'fr') {
-        $newDate = date('d/m/Y', strtotime($date));
-    } else if($lang == 'eng') {
-        $newDate = date('Y-m-d', strtotime($date));
-    }
-    return $newDate;
-}
-
-/**
- * Récupère la date du jour
- *
- * @return string
- */
-function getDateToday() {
-    $getDate = getdate();
-
-    $date = $getDate['mday'] . '/0' . $getDate['mon'] . '/' . $getDate['year'];
-
-    return $date;
-}
 
 /* ---------------------------------------------------
     EXPENSES FUNCTIONS
 ----------------------------------------------------- */
 
+/**
+ * Ajoute les données du formulaire des dépenses dans la BDD
+ */
 function addExpenses() {
     // Récupère les infos du formulaire
     $balance = isset($_POST['balance']) ? $_POST['balance'] : '';
     $date = isset($_POST['date']) ? trim($_POST['date']) : '';
-    $title = isset($_POST['title']) ? trim($_POST['title']) : '';
+    $title = isset($_POST['title']) ? addslashes($_POST['title']) : '';
     $sum = isset($_POST['sum']) ? $_POST['sum'] : '';
     $email = $_SESSION['email'];
 
@@ -299,34 +330,6 @@ function addExpenses() {
     }
 }
 
-/**
- * Récupère les informations du compte où sont enregistrées toutes les dépenses de l'utilisateur connecté
- *
- * @return accountInfo[]
- */
-function getAccountInfo() {
-    // Identification de l'utilisateur connecté grâce
-    // à son email unique
-    $email = $_SESSION['email'];
-
-    $pdo = Database::getPDO();
-
-    // Récupère les informations du compte de l'utilisateur connecté
-    $sql = "SELECT 
-    account.*,
-    users.email 
-    FROM account
-    INNER JOIN users
-    ON account.user_id = users.id
-    WHERE users.email = '$email'
-    ;";
-
-    $pdoStatement = $pdo->query($sql);
-
-    $accountInfo = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
-
-    return $accountInfo;
-}
 
 /**
  * Récupère la somme de toutes les dépenses
@@ -389,9 +392,14 @@ function calculBalance() {
     // Récupère le solde de l'utilisateur
     $balance= getBalance();
 
-    // Calcul le solde actuel et formate le résultat
-    $currentBalance = $balance['balance'] - $sum['sumExpenses'];
-    $balanceFormatted = number_format($currentBalance, 2, ',', ' ');
+    if($sum != null && $balance != false) {
+        // Calcul le solde actuel et formate le résultat
+        $currentBalance = $balance['balance'] - $sum['sumExpenses'];
+        $balanceFormatted = number_format($currentBalance, 2, ',', ' ');
+    } else {
+        $balanceFormatted = '0';
+    }
+
 
     return $balanceFormatted;
 }
@@ -409,3 +417,57 @@ function calculPercentage($expenses, $balance) {
     return $percentage;
 
 }
+
+/**
+ * Récupère les informations des dépenses de l'utilisateur
+ * triées par date croissante
+ *
+ * @return allExpenses[]
+ */
+function getExpensesByDateOrder() {
+    $email = $_SESSION['email'];
+    $pdo = Database::getPDO();
+
+    $sql = "SELECT *
+    FROM account
+    INNER JOIN users
+    ON account.user_id = users.id
+    WHERE users.email = '$email'
+    ORDER BY account.date ASC
+    ";
+
+    $pdoStatement = $pdo->query($sql);
+        
+    $allExpenses = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
+        
+    return $allExpenses;   
+}
+
+/**
+ * Récupère le total des dépenses réalisées durant une période comprise entre $date et $date2
+ * 
+ * @param string date, date2
+ *
+ * @return todayExpenses[]
+ */
+function getExpensesByDate($date, $date2) {
+    $email = $_SESSION['email'];
+
+    $pdo = Database::getPDO();
+
+    $sql = "SELECT 
+    SUM(`sum`)
+    AS dateExpenses
+    FROM account 
+    INNER JOIN users
+    ON account.user_id = users.id
+    WHERE account.`date` BETWEEN '$date' AND '$date2'
+    AND users.email = '$email';";
+    
+    $pdoStatement = $pdo->query($sql);
+    
+    $expenses = $pdoStatement->fetch(PDO::FETCH_ASSOC);
+        
+    return $expenses;        
+}   
+
