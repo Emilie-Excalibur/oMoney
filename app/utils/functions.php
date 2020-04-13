@@ -353,12 +353,21 @@ function sumExpenses() {
     return $sum;
 }
 
+/**
+ * Récupère le solde du compte de l'utilisateur connecté
+ *
+ * @return balance[]
+ */
 function getBalance() {
+    $email = $_SESSION['email'];
+
     $pdo = Database::getPDO();
 
     $sql = "SELECT balance 
     FROM account
-    WHERE id = 1
+    INNER JOIN users 
+    ON account.user_id = users.id
+    WHERE users.email = '$email'
     ;";
 
     $pdoStatement = $pdo->query($sql);
@@ -366,4 +375,37 @@ function getBalance() {
     $balance = $pdoStatement->fetch(PDO::FETCH_ASSOC);
 
     return $balance;
+}
+
+/**
+ * Calcul le solde actuel de l'utilisateur connecté
+ *
+ * @return float
+ */
+function calculBalance() {
+    // Récupère le total des dépenses
+    $sum = sumExpenses();
+
+    // Récupère le solde de l'utilisateur
+    $balance= getBalance();
+
+    // Calcul le solde actuel et formate le résultat
+    $currentBalance = $balance['balance'] - $sum['sumExpenses'];
+    $balanceFormatted = number_format($currentBalance, 2, ',', ' ');
+
+    return $balanceFormatted;
+}
+
+/**
+ * Calcul le pourcentage des dépenses par rapport au solde
+ *
+ * @param float $expenses
+ * @param float $balance
+ * @return float
+ */
+function calculPercentage($expenses, $balance) {
+    $percentage = ($expenses /  $balance) * 100;
+
+    return $percentage;
+
 }

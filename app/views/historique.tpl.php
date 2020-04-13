@@ -9,12 +9,7 @@ else:
     // Si utilisateur
     // Récupère les infos du compte de l'utilisateur connecté
     $accountInfo = getAccountInfo();
-
-    // Somme de toutes les dépenses de l'utilisateur
     $sum = sumExpenses();
-
-    // Récupère le solde du compte de l'utilisateur
-    $balance= getBalance();
 
 ?>
 
@@ -47,7 +42,7 @@ else:
         </tr>
 
         <tr class="table-info">
-            <td colspan="4">Solde du compte : <?= $balance['balance'] - $sum['sumExpenses']; ?> €</td>
+            <td colspan="4">Solde du compte : <?= calculBalance(); ?> €</td>
         </tr>
     </tbody>
 </table>
