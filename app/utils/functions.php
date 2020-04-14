@@ -475,7 +475,7 @@ function addTransfer() {
             $pdo = Database::getPDO();
 
             // Insert les données dans la BDD
-            $insertQuery = "INSERT INTO `transfer` (`user_id`, `date`, title, `transfer_amount`) VALUES ('{$userInfo[0]['id']}', '{$date}', '{$title}', '{$transfer}')";
+            $insertQuery = "INSERT INTO `account` (`user_id`, `date_transfer`, title_transfer, `transfer_amount`) VALUES ('{$userInfo[0]['id']}', '{$date}', '{$title}', '{$transfer}')";
 
             $nbInsertedValues = $pdo->exec($insertQuery);
 
@@ -535,9 +535,9 @@ function sumTransfer() {
 
     $sql = "SELECT 
     SUM(`transfer_amount`) AS sumTransfer
-    FROM `transfer` 
+    FROM `account` 
     INNER JOIN users 
-    ON `transfer`.user_id = users.id
+    ON account.user_id = users.id
     WHERE users.email = '$email';";
 
     $pdoStatement = $pdo->query($sql);
@@ -580,17 +580,19 @@ function calculBalance() {
     // Récupère le total des dépenses
     $sum = sumExpenses();
 
+    // Récupère le total des virements
+    $sumTransfer = sumTransfer();
+
     // Récupère le solde de l'utilisateur
     $balance= getBalance();
 
     if($sum != null && $balance != false) {
         // Calcul le solde actuel et formate le résultat
-        $currentBalance = $balance['balance'] - $sum['sumExpenses'];
+        $currentBalance = $balance['balance'] - $sum['sumExpenses'] + $sumTransfer['sumTransfer'];
         $balanceFormatted = number_format($currentBalance, 2, ',', ' ');
     } else {
         $balanceFormatted = '0';
     }
-
 
     return $balanceFormatted;
 }

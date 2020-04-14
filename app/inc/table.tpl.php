@@ -6,10 +6,30 @@
 ?>
         <tr>
             <th scope="row"><?= $transactionId + 1 ?></th>
-            <td><?= getDateFormat($transactionInfo['date']); ?></td>
-            <td><?= $transactionInfo['title']; ?></td>
-            <td><?= $transactionInfo['sum']; ?> €</td>
-            <td> - €</td>
+            <td><?php 
+            if($transactionInfo['date'] != null) {
+                echo getDateFormat($transactionInfo['date']);
+            }
+            if($transactionInfo['date_transfer'] != null) {
+                echo getDateFormat($transactionInfo['date_transfer']);
+            }
+             ?></td>
+            <td><?php           
+                if($transactionInfo['title'] != null) {
+                    echo $transactionInfo['title'];
+                }
+                if($transactionInfo['title_transfer'] != null) {
+                    echo $transactionInfo['title_transfer'];
+                } 
+            ?></td>
+            <td><?php 
+                if($transactionInfo['sum'] != null) {
+                    echo $transactionInfo['sum'];
+                } else {
+                    echo '0.00';
+                }
+             ?> €</td>
+            <td><?= $transactionInfo['transfer_amount']; ?> €</td>
 
         </tr>
 <?php
