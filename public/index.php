@@ -45,13 +45,10 @@ if(isset($_POST['add_expenses'])) {
 
 // Modification des données utilisateur
 if(isset($_POST['update'])) {
-    //updatePassword();
-
     // L'utilisateur peut modifier son email
     updateEmail();
-}
 
-//updatePassword();
+}
 
 /**
  * GESTION DES ROUTES & AFFICHAGE DES VUES
@@ -109,6 +106,13 @@ $router->map(
 
 $router->map(
     'GET',
+    '/changer-mot-de-passe',
+    'password',
+    'route_password'
+);
+
+$router->map(
+    'GET',
     '/ajouter-retrait-argent',
     'retrait',
     'route_add_expenses'
@@ -123,9 +127,9 @@ $router->map(
 
 $router->map(
     'GET',
-    '/actualisation',
-    'actualisation',
-    'route_actualisation'
+    '/update',
+    'update',
+    'route_update'
 );
 
 

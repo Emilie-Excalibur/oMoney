@@ -286,7 +286,6 @@ function getAccountInfo() {
  * @return errors[]
  */
 function updatePassword() {
-    $errors=[];
     $oldPassword = isset($_POST['old_password']) ? $_POST['old_password'] : '';
     $newPassword = isset($_POST['new_password']) ? $_POST['new_password'] : '';
     $newPasswordConf = isset($_POST['new_password_conf']) ? $_POST['new_password_conf'] : '';
@@ -319,28 +318,25 @@ function updatePassword() {
             $execUpdate = $pdo->exec($sqlUpdate);
 
             if($execUpdate === 1) {
-                header('Location:' . $_SERVER['BASE_URI'] . '/actualisation');
+                header('Location:' . $_SERVER['BASE_URI'] . '/update');
             }
 
         } else {
-            $errors[] = "Ancien mot de passe invalide";
+            echo "Ancien mot de passe invalide";
         }
     } else {
-        $errors[] = "Mot de passe de confirmation invalide";
+        echo "Mot de passe de confirmation invalide";
 
     }
 
-    return $errors;
 }
 
 /**
  * Modifie l'adresse email de la BDD par 
  * la nouvelle adresse entrée par l'utilisateur
  *
- * @return errors[];
  */
 function updateEmail() {
-    $errors = [];
     $newEmail = isset($_POST['new_email']) ? $_POST['new_email'] : '';
     $email = $_SESSION['email'];
     $pdo = Database::getPDO();
@@ -358,12 +354,10 @@ function updateEmail() {
     foreach ($emailsFromDb as $currentEmail) {
         if($newEmail === $currentEmail['email']) {
             // Si une correspondance est trouvée
-            $errors[] = 'Cette adresse email existe déjà';
-            header('Location:' . $_SERVER['BASE_URI'] . '/actualisation');
-            exit;
+            header('Location:' . $_SERVER['BASE_URI'] . '/update');
         }
         else {
-            // Sinon, actualise le mot de passe
+            // Sinon, actualise l'adresse email
             $sqlUpdate = "UPDATE 
             users 
             SET `email` = '$newEmail'
@@ -376,13 +370,10 @@ function updateEmail() {
                 // Actualise les données de la session avec la nouvelle adresse email
                 // Redirige vers la page indiquant à l'utilisateur que l'update a été fait
                 $_SESSION['email'] = $newEmail;
-                header('Location:' . $_SERVER['BASE_URI'] . '/actualisation');
-                exit;
+                header('Location:' . $_SERVER['BASE_URI'] . '/update');
             }
         }
     }
-    // Retourne le tableau d'erreur
-    return $errors;
 }
 
 

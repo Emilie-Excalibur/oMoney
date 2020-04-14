@@ -91,6 +91,10 @@
                         <a href="<?= $viewVars['BaseUri'] ?>/profil">Profil</a>
                     </li>
 
+                    <li class="<?= $viewName === 'password' ? 'active' : ''; ?>">
+                        <a href="<?= $viewVars['BaseUri'] ?>/changer-mot-de-passe">Changer le mot de passe</a>
+                    </li>
+
                     <li>
                         <a href="logout.php">Déconnexion</a>
                     </li>

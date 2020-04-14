@@ -51,6 +51,13 @@ class MainController {
     }
 
     /**
+     * Affiche la page permettant de changer son mdp
+     */
+    public function password() {
+        $this->show('password');
+    }
+
+    /**
      * Affiche la page pour ajouter un retrait d'argent
      */
     public function retrait() {
@@ -67,8 +74,8 @@ class MainController {
     /**
      * Affiche la page si actualisation des données utilisateurs 
      */
-    public function actualisation() {
-        $this->show('actualisation');
+    public function update() {
+        $this->show('update');
     }
 
 
