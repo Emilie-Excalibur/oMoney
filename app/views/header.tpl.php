@@ -74,7 +74,7 @@
                             <a href="<?= $viewVars['BaseUri'] ?>/ajouter-retrait-argent">Ajouter un retrait d'argent</a>
                         </li>
                         <li class="list-collapse">
-                            <a href="#">Ajouter un virement</a>
+                            <a href="<?= $viewVars['BaseUri'] ?>/ajouter-virement">Ajouter un virement</a>
                         </li>
                     </ul>
                 </li>
@@ -122,7 +122,19 @@
                     <p class="text-danger"> <i class="fa fa-exclamation-circle"></i> Vous devez être connecté pour visualiser vos dépenses.</p>
                     <?php endif; ?>
 
-                    <p><a href="<?= $viewVars['BaseUri'] ?>/"><i class="fa fa-home"></i></a> / <?= $viewName; ?></p>
+                    <p><a href="<?= $viewVars['BaseUri'] ?>/"><i class="fa fa-home"></i></a> / 
+                    <?php if($viewName === 'home') :?>Accueil<?php endif; ?>
+                    <?php if($viewName === 'login' || $viewName === 'errorLog') :?>Se connecter<?php endif; ?>
+                    <?php if($viewName === 'register' || $viewName === 'errorReg') :?>Créer un compte<?php endif; ?>
+                    <?php if($viewName === 'historique') :?>Historique<?php endif; ?>
+                    <?php if($viewName === 'profil' || $viewName === 'update') :?>Profil<?php endif; ?>
+                    <?php if($viewName === 'retrait') :?>Ajouter une dépense<?php endif; ?>
+                    <?php if($viewName === 'transfer') :?>Ajouter un virement<?php endif; ?>
+
+                    <?php if($viewName === 'password') :?>Changer mot de passe<?php endif; ?>
+                    <?php if($viewName === 'error404') :?>Erreur 404<?php endif; ?>
+                </p>
 
                 </div>
-            </nav>       
+            </nav>   
+            

@@ -7,6 +7,7 @@
     <div class="form-group">
         <label for="new_password">Nouveau mot de passe</label>
         <input type="password" class="form-control new_password" id="new_password" name="new_password">
+        <small id="passwordHelpBlock" class="form-text text-muted">Le mot de passe doit contenir 3 caractères minimum</small>
     </div>
 
     <div class="form-group">
