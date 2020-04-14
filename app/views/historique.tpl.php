@@ -44,77 +44,11 @@ require __DIR__ . '/../inc/filter.tpl.php';
 $email = $_SESSION['email'];
 $pdo = Database::getPDO();
 
-// Si un tri a été demandé
-// Et si ce tri est date / titre /sum
-if(!empty($_GET['filter']) && $_GET['filter'] === 'date') {
-    // Ecriture de la requête selon le tri demandé
-    $sql = "SELECT *
-    FROM account
-    INNER JOIN users
-    ON account.user_id = users.id
-    WHERE users.email = '$email'
-    ORDER BY account.date DESC
-    ";
-} else if(!empty($_GET['filter']) && $_GET['filter'] === 'title') {
-    $sql = "SELECT *
-    FROM account
-    INNER JOIN users
-    ON account.user_id = users.id
-    WHERE users.email = '$email'
-    ORDER BY account.title ASC
-    ";
-} else if(!empty($_GET['filter']) && $_GET['filter'] === 'sum') {
-    $sql = "SELECT *
-    FROM account
-    INNER JOIN users
-    ON account.user_id = users.id
-    WHERE users.email = '$email'
-    ORDER BY account.sum ASC
-    ";
-} else if(!empty($_GET['filter']) && $_GET['filter'] === 'today') {
-    $today= convertDate();
-
-    $sql = "SELECT *
-    FROM account 
-    INNER JOIN users
-    ON account.user_id = users.id
-    WHERE account.`date` BETWEEN '$today' AND '$today'
-    AND users.email = '$email';";
-} else if(!empty($_GET['filter']) && $_GET['filter'] === 'yesterday') {
-    $yesterday = convertDate(24*60*60);
-
-    $sql = "SELECT *
-    FROM account 
-    INNER JOIN users
-    ON account.user_id = users.id
-    WHERE account.`date` BETWEEN '$yesterday' AND '$yesterday'
-    AND users.email = '$email';";
-} else if(!empty($_GET['filter']) && $_GET['filter'] === 'week') {
-    $today= convertDate();
-    $lastWeek = convertDate(7*24*60*60);
-
-    $sql = "SELECT *
-    FROM account 
-    INNER JOIN users
-    ON account.user_id = users.id
-    WHERE account.`date` BETWEEN '$lastWeek' AND '$today'
-    AND users.email = '$email';";
-} else if(!empty($_GET['filter']) && $_GET['filter'] === 'week') {
-    $today= convertDate();
-    $lastMonth = convertDate(4*7*24*60*60);
-
-    $sql = "SELECT *
-    FROM account 
-    INNER JOIN users
-    ON account.user_id = users.id
-    WHERE account.`date` BETWEEN '$lastMonth' AND '$today'
-    AND users.email = '$email';";
-}
-
 
 // Si un tri a été demandé
-// Execution de la requête
+// Lis et exécute les requêtes
 if(!empty($_GET['filter'])) {
+    require __DIR__ . '/../utils/filterRequest.php';
     $pdoStatement = $pdo->query($sql);
     $filteredList = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
 }

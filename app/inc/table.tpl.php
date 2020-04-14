@@ -44,26 +44,93 @@
 
         <tr>
             <th scope="row"><?= $listIndex + 1 ?></th>
-            <td><?= getDateFormat($listInfo['date']); ?></td>
-            <td><?= $listInfo['title']; ?></td>
-            <td><?= $listInfo['sum']; ?> €</td>
+            <td><?php 
+            if($listInfo['date'] != null) {
+                echo getDateFormat($listInfo['date']);
+            }
+            if($listInfo['date_transfer'] != null) {
+                echo getDateFormat($listInfo['date_transfer']);
+            }
+             ?></td>
+            <td><?php           
+                if($listInfo['title'] != null) {
+                    echo $listInfo['title'];
+                }
+                if($listInfo['title_transfer'] != null) {
+                    echo $listInfo['title_transfer'];
+                } 
+            ?></td>
+            <td><?php 
+                if($listInfo['sum'] != null) {
+                    echo $listInfo['sum'];
+                } else {
+                    echo '0.00';
+                }
+             ?>  €</td>
+            <td><?php 
+                if($listInfo['transfer_amount'] != null) {
+                    echo $listInfo['transfer_amount'];
+                } else {
+                    echo '0.00';
+                }
+             ?>  €</td>
         </tr>
 <?php 
         endforeach;
     endif; 
+
+    // Si un tri a été demandé
+    if(!empty($_GET['filter'])) :
+        // Lis et execute les requêtes selon le tri
+        require __DIR__ . '/../utils/sumRequest.php';
+        $pdoStatement = $pdo->query($sqlSum);
+        $sumFiltered = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
+    // Affiche les sommes totales dépensées / gagnées selon le tri        
 ?>
 
         <tr class="table-danger">
             <td colspan="3">Somme totale dépensée</td>
-            <td><?= $sum['sumExpenses']; ?> €</td>
+            <td><?php
+            if(isset($sumFiltered[0]['sumExpenses'])) {
+                echo $sumFiltered[0]['sumExpenses'];
+            } else if($sumFiltered[0]['sumExpenses'] == null) {
+                echo '0.00';
+            }
+            ?> €</td>
             <td></td>
         </tr>
 
         <tr class="table-success">
             <td colspan="3">Somme totale gagnée</td>
             <td></td>
-            <td><?= $sumTransfer['sumTransfer']; ?> €</td>
+            <td><?php
+            if(isset($sumFiltered[0]['sumTransfer'])) {
+                echo $sumFiltered[0]['sumTransfer'];
+            } else if($sumFiltered[0]['sumTransfer'] == null){
+                echo '0.00';
+            }
+            ?> €</td>
         </tr>
+<?php 
+    // Si aucun tri n'a été demandé
+    // Affiche la somme de toutes les dépenses/virements
+    else : 
+
+?>
+
+    <tr class="table-danger">
+            <td colspan="3">Somme totale dépensée</td>
+            <td><?= $sum['sumExpenses'];?> €</td>
+            <td></td>
+        </tr>
+
+        <tr class="table-success">
+            <td colspan="3">Somme totale gagnée</td>
+            <td></td>
+            <td><?= $sumTransfer['sumTransfer'];?> €</td>
+        </tr>
+
+<?php endif; ?>
 
         <tr class="table-info">
             <td colspan="5">Solde du compte : <span class="font-weight-bold"><?= calculBalance(); ?> €</span></td>
