@@ -156,16 +156,10 @@ function addUserInfoToDB() {
     if($nbInsertedValues === 1) {
         // Si l'insertion s'est bien passée
 
-        $sql = "SELECT created_at FROM users WHERE email='$email';";
-
-        $pdoStatement = $pdo->query($sql);
-        $userDateAccount = $pdoStatement->fetch(PDO::FETCH_ASSOC);
-
         // Actualise les informations de $_SESSION
         // avec les informations de l'utilisateur
         $_SESSION['name'] = $name;
         $_SESSION['email'] = $email;
-        $_SESSION['created_at'] = $userDateAccount['created_at'];
         $_SESSION['success'] = 'Vous êtes bien enregistré';
     
         // Redirige vers la page home
@@ -309,7 +303,7 @@ function updatePassword() {
         $newPassword = password_hash($_POST['new_password'], PASSWORD_DEFAULT);
 
         // Vérifie si l'ancien mot de passe correspond au mot de passe existant dans la BDD
-        if($oldPassword === $passwordFromDb) {
+        if($oldPassword === $passwordFromDb['password']) {
             // Si oui, actualise le nouveau mot de passe dans la BDD
             $sqlUpdate = "UPDATE 
             users 
@@ -318,7 +312,9 @@ function updatePassword() {
 
             $execUpdate = $pdo->exec($sqlUpdate);
 
+            // Si l'update s'est bien déroulé
             if($execUpdate === 1) {
+                // Redirige l'utilisateur
                 header('Location:' . $_SERVER['BASE_URI'] . '/update');
                 exit;
             }
@@ -330,7 +326,6 @@ function updatePassword() {
         echo "Mot de passe de confirmation invalide";
 
     }
-
 }
 
 /**

@@ -49,6 +49,12 @@ if(isset($_POST['update'])) {
     updateEmail();
 } 
 
+// Modification des données utilisateur
+if(isset($_POST['update_password'])) {
+    // L'utilisateur peut modifier son mot de passe
+    updatePassword();
+} 
+
 /**
  * GESTION DES ROUTES & AFFICHAGE DES VUES
  */
