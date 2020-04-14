@@ -53,3 +53,5 @@
             </div>
         </div>
     </div>
+
+  <script src="assets/js/register.js"></script>

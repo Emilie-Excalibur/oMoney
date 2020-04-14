@@ -51,6 +51,41 @@ class MainController {
     }
 
     /**
+     * Affiche la page d'erreur si changement d'adresse email
+     */
+    public function errorMail() {
+        $this->show('errorMail');
+    }
+
+    /**
+     * Affiche la page si actualisation adresse email
+     */
+    public function update() {
+        $this->show('update');
+    }
+
+    /**
+     * Affiche la page permettant de changer son mdp
+     */
+    public function password() {
+        $this->show('password');
+    }
+
+    /**
+     * Affiche la page d'erreur si changement mot de passe
+     */
+    public function errorPassword() {
+        $this->show('errorPassword');
+    }
+
+    /**
+     * Affiche la page si actualisation du mot de passe
+     */
+    public function updatePassword() {
+        $this->show('updatePassword');
+    }
+
+    /**
      * Affiche la page pour ajouter un retrait d'argent
      */
     public function retrait() {
@@ -62,13 +97,6 @@ class MainController {
      */
     public function historique() {
         $this->show('historique');
-    }
-
-    /**
-     * Affiche la page si actualisation des données utilisateurs 
-     */
-    public function actualisation() {
-        $this->show('actualisation');
     }
 
 

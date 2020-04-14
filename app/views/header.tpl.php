@@ -91,6 +91,10 @@
                         <a href="<?= $viewVars['BaseUri'] ?>/profil">Profil</a>
                     </li>
 
+                    <li class="<?= $viewName === 'password' ? 'active' : ''; ?>">
+                        <a href="<?= $viewVars['BaseUri'] ?>/changer-mot-de-passe">Changer le mot de passe</a>
+                    </li>
+
                     <li>
                         <a href="logout.php">Déconnexion</a>
                     </li>
@@ -115,11 +119,10 @@
                     <?php 
                         if(!isset($_SESSION['success'])) :
                     ?>
-                    <p class="text-danger">Vous devez être connecté pour visualiser vos dépenses.</p>
+                    <p class="text-danger"> <i class="fa fa-exclamation-circle"></i> Vous devez être connecté pour visualiser vos dépenses.</p>
                     <?php endif; ?>
 
                     <p><a href="<?= $viewVars['BaseUri'] ?>/"><i class="fa fa-home"></i></a> / <?= $viewName; ?></p>
-
 
                 </div>
             </nav>       
