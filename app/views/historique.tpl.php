@@ -41,7 +41,7 @@ if(!empty($_GET['filter']) && $_GET['filter'] === 'date') {
     INNER JOIN users
     ON account.user_id = users.id
     WHERE users.email = '$email'
-    ORDER BY account.date ASC
+    ORDER BY account.date DESC
     ";
 } else if(!empty($_GET['filter']) && $_GET['filter'] === 'title') {
     $sql = "SELECT *

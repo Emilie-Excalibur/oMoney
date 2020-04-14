@@ -43,6 +43,11 @@ if(isset($_POST['add_expenses'])) {
     addExpenses();
 }
 
+// Envoi des données du formulaire ajout d'un virement dans la BDD
+if(isset($_POST['add_transfer'])) {
+    addTransfer();
+}
+
 // Modification des données utilisateur
 if(isset($_POST['update'])) {
     // L'utilisateur peut modifier son email
@@ -157,6 +162,14 @@ $router->map(
     'update',
     'route_update'
 );
+
+$router->map(
+    'GET',
+    '/ajouter-virement',
+    'transfer',
+    'route_transfer'
+);
+
 
 
 $match = $router->match();

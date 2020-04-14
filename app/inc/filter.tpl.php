@@ -4,7 +4,7 @@
         <div class="col-auto my-1">
             <select class="custom-select mr-sm-2" id="filter" name="filter">
                 <option selected>Choisir</option>
-                <option value="date">Date</option>
+                <option value="date">Le plus récent</option>
                 <option value="today">Aujourd'hui</option>
                 <option value="yesterday">Hier</option>
                 <option value="week">Cette semaine</option>

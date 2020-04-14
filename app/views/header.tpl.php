@@ -74,7 +74,7 @@
                             <a href="<?= $viewVars['BaseUri'] ?>/ajouter-retrait-argent">Ajouter un retrait d'argent</a>
                         </li>
                         <li class="list-collapse">
-                            <a href="#">Ajouter un virement</a>
+                            <a href="<?= $viewVars['BaseUri'] ?>/ajouter-virement">Ajouter un virement</a>
                         </li>
                     </ul>
                 </li>
@@ -129,9 +129,12 @@
                     <?php if($viewName === 'historique') :?>Historique<?php endif; ?>
                     <?php if($viewName === 'profil' || $viewName === 'update') :?>Profil<?php endif; ?>
                     <?php if($viewName === 'retrait') :?>Ajouter une dépense<?php endif; ?>
+                    <?php if($viewName === 'transfer') :?>Ajouter un virement<?php endif; ?>
+
                     <?php if($viewName === 'password') :?>Changer mot de passe<?php endif; ?>
                     <?php if($viewName === 'error404') :?>Erreur 404<?php endif; ?>
                 </p>
 
                 </div>
-            </nav>       
+            </nav>   
+            

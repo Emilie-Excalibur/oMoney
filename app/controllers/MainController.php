@@ -93,6 +93,13 @@ class MainController {
     }
 
     /**
+     * Affiche la page pour ajouter un virement d'argent
+     */
+    public function transfer() {
+        $this->show('transfer');
+    }
+
+    /**
      * Affiche la page de l'historique
      */
     public function historique() {

@@ -70,6 +70,30 @@ function convertDate($time = 0) {
 ----------------------------------------------------- */
 
 /**
+ * Recupère les informations de l'utilisateur connecté 
+ * grâce à son adresse email unique dans la BDD
+ *
+ * @return userInfo[]
+ */
+function getUserInfos() {
+    $email = $_SESSION['email'];
+
+    // Insertion des données dans la BDD
+    $pdo = Database::getPDO();
+
+    // Récupère les infos de l'utilisateur connecté
+    $sql = "SELECT id, `email` 
+    FROM users 
+    WHERE `email` = '$email';
+    ";
+
+    $pdoStatement = $pdo->query($sql);
+    $userInfo = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
+
+    return $userInfo;
+}
+
+/**
  * Déconnecte l'utilisateur
  */
 function logout() {
@@ -79,7 +103,6 @@ function logout() {
     // Redirige ensuite l'utilisateur vers la page home
     header('Location:' . $_SERVER['BASE_URI'] .'/');
     exit;
-
 }
 
 /**
@@ -90,13 +113,12 @@ function logout() {
  */
 function checkRegisterUserInfo() {
     // Récupère les infos
-    $errors= [];
     $name = isset($_POST['username']) ? $_POST['username'] : '';
     $email = isset($_POST['email']) ? $_POST['email'] : '';
     $password1 = isset($_POST['password_1']) ? $_POST['password_1'] : '';
     $password2 = isset($_POST['password_2']) ? $_POST['password_2'] : '';
 
-    // Vérifie si les champs sont vides
+       // Vérifie si les champs sont vides
     // Et ajoute une erreur si c'est le cas
     if(empty($name)) {
         $errors[] = 'Entrez un nom d\'utilisateur';
@@ -116,7 +138,7 @@ function checkRegisterUserInfo() {
 
     // Requête SQL pour vérifier si le mail entré par l'utilisateur
     // Existe déjà dans la BDD
-    // Si oui, ajoute et affiche erreur
+    // Si oui, Redirige vers page d'erreur
     $pdo = Database::getPDO();
 
     $sqlCheckUser = "SELECT * FROM users WHERE email='$email' LIMIT 1";
@@ -402,22 +424,14 @@ function addExpenses() {
         $date = isset($_POST['date']) ? trim($_POST['date']) : '';
         $title = isset($_POST['title']) ? addslashes($_POST['title']) : '';
         $sum = isset($_POST['sum']) ? $_POST['sum'] : '';
-        $email = $_SESSION['email'];
 
-        // Insertion des données dans la BDD
-        $pdo = Database::getPDO();
-
-        // Récupère les infos de l'utilisateur connecté
-        $sql = "SELECT id, `email` 
-        FROM users 
-        WHERE `email` = '$email';
-        ";
-
-        $pdoStatement = $pdo->query($sql);
-        $userInfo = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
+        // Récupère l'id et l'email de l'utilisateur connecté
+        $userInfo = getUserInfos();
 
         // Si utilisateur présent en BDD
         if(count($userInfo) === 1) {
+            $pdo = Database::getPDO();
+
             // Insert les données dans la BDD
             $insertQuery = "INSERT INTO account (`user_id`, balance, `date`, title, `sum`) VALUES ('{$userInfo[0]['id']}', '{$balance}', '{$date}', '{$title}', '{$sum}')";
 
@@ -437,7 +451,46 @@ function addExpenses() {
             echo 'L\'opération ne s\'est pas déroulée comme prévue. Etes-vous sûr d\'être correctement enregistré ?';
         }
     }
-    
+}
+
+
+function addTransfer() {
+    // Si utilisateur non connecté/enregistré
+    if(!isset($_SESSION['success'])) {
+        // Redirection sur la page d'inscription
+        header('Location:' . $_SERVER['BASE_URI'] . '/register');
+        exit;
+    } else {
+        $date = isset($_POST['date']) ? trim($_POST['date']) : '';
+        $title = isset($_POST['title']) ? addslashes($_POST['title']) : '';
+        $transfer = isset($_POST['transfer_amount']) ? $_POST['transfer_amount'] : '';
+
+        // Récupère l'id et l'email de l'utilisateur connecté
+        $userInfo = getUserInfos();
+
+        // Si utilisateur présent en BDD
+        if (count($userInfo) === 1) {
+            $pdo = Database::getPDO();
+
+            // Insert les données dans la BDD
+            $insertQuery = "INSERT INTO `transfer` (`user_id`, `date`, title, `transfer_amount`) VALUES ('{$userInfo[0]['id']}', '{$date}', '{$title}', '{$transfer}')";
+
+            $nbInsertedValues = $pdo->exec($insertQuery);
+
+            // Si l'insertion s'est bien passée    
+            if($nbInsertedValues === 1) {
+                // Redirige vers la page historique
+
+                header('Location:' . $_SERVER['BASE_URI'] . '/historique');
+                exit;
+            
+            } else {
+                echo "Un problème est survenu, merci de réessayer ultérieurement";
+            }             
+        } else {
+            echo 'L\'opération ne s\'est pas déroulée comme prévue. Etes-vous sûr d\'être correctement enregistré ?';
+        }
+    }
 }
 
 
