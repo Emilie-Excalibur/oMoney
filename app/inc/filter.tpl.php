@@ -24,6 +24,7 @@
                 <th scope="col">Date</th>
                 <th scope="col">Intitulé</th>
                 <th scope="col">Somme dépensée</th>
+                <th scope="col">Virement</th>
             </tr>
         </thead>
         <tbody>

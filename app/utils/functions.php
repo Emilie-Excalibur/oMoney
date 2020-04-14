@@ -453,7 +453,9 @@ function addExpenses() {
     }
 }
 
-
+/**
+ * Ajoute les données du formulaire des virements dans la BDD
+ */
 function addTransfer() {
     // Si utilisateur non connecté/enregistré
     if(!isset($_SESSION['success'])) {
@@ -510,6 +512,32 @@ function sumExpenses() {
     FROM account 
     INNER JOIN users 
     ON account.user_id = users.id
+    WHERE users.email = '$email';";
+
+    $pdoStatement = $pdo->query($sql);
+
+    $sum = $pdoStatement->fetch(PDO::FETCH_ASSOC);
+
+    return $sum;
+}
+
+
+/**
+ * Récupère la somme de toutes les virements
+ * de l'utilisateur connecté via la BDD
+ *
+ * @return sum[]
+ */
+function sumTransfer() {
+    $email = $_SESSION['email'];
+
+    $pdo = Database::getPDO();
+
+    $sql = "SELECT 
+    SUM(`transfer_amount`) AS sumTransfer
+    FROM `transfer` 
+    INNER JOIN users 
+    ON `transfer`.user_id = users.id
     WHERE users.email = '$email';";
 
     $pdoStatement = $pdo->query($sql);

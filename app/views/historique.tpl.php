@@ -25,7 +25,11 @@ else:
     // Si utilisateur
     // Récupère les infos du compte de l'utilisateur connecté
     $accountInfo = getAccountInfo();
+    // Récupère la somme de toutes les dépenses dans la BDD
     $sum = sumExpenses();
+
+    // Récupère la somme de tous les virements dans la BDD
+    $sumTransfer = sumTransfer();
 
 require __DIR__ . '/../inc/filter.tpl.php'; 
 

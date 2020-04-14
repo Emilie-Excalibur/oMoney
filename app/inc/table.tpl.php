@@ -9,6 +9,7 @@
             <td><?= getDateFormat($transactionInfo['date']); ?></td>
             <td><?= $transactionInfo['title']; ?></td>
             <td><?= $transactionInfo['sum']; ?> €</td>
+            <td> - €</td>
 
         </tr>
 <?php
@@ -35,10 +36,17 @@
         <tr class="table-danger">
             <td colspan="3">Somme totale dépensée</td>
             <td><?= $sum['sumExpenses']; ?> €</td>
+            <td></td>
+        </tr>
+
+        <tr class="table-success">
+            <td colspan="3">Somme totale gagnée</td>
+            <td></td>
+            <td><?= $sumTransfer['sumTransfer']; ?> €</td>
         </tr>
 
         <tr class="table-info">
-            <td colspan="4">Solde du compte : <?= calculBalance(); ?> €</td>
+            <td colspan="5">Solde du compte : <span class="font-weight-bold"><?= calculBalance(); ?> €</span></td>
         </tr>
     </tbody>
 </table>
