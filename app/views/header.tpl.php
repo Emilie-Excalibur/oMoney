@@ -119,11 +119,10 @@
                     <?php 
                         if(!isset($_SESSION['success'])) :
                     ?>
-                    <p class="text-danger">Vous devez être connecté pour visualiser vos dépenses.</p>
+                    <p class="text-danger"> <i class="fa fa-exclamation-circle"></i> Vous devez être connecté pour visualiser vos dépenses.</p>
                     <?php endif; ?>
 
                     <p><a href="<?= $viewVars['BaseUri'] ?>/"><i class="fa fa-home"></i></a> / <?= $viewName; ?></p>
-
 
                 </div>
             </nav>       

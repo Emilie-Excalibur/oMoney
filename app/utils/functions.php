@@ -78,6 +78,7 @@ function logout() {
 
     // Redirige ensuite l'utilisateur vers la page home
     header('Location:' . $_SERVER['BASE_URI'] .'/');
+    exit;
 
 }
 
@@ -127,6 +128,7 @@ function checkRegisterUserInfo() {
     if($userInfo['email'] === $email) {
         $errors[] = 'Cette adresse email existe déjà';
         header('Location:' . $_SERVER['BASE_URI'] . '/errorReg');
+        exit;
     }
 
 }
@@ -157,7 +159,6 @@ function addUserInfoToDB() {
         $sql = "SELECT created_at FROM users WHERE email='$email';";
 
         $pdoStatement = $pdo->query($sql);
-    
         $userDateAccount = $pdoStatement->fetch(PDO::FETCH_ASSOC);
 
         // Actualise les informations de $_SESSION
@@ -245,6 +246,7 @@ function checkLoginUserInfo() {
         } else {
             $errors[] = 'Mauvais nom/mot de passe';
             header('Location:' . $_SERVER['BASE_URI'] . '/errorLog');
+            exit;
         }
 
     }
@@ -283,7 +285,6 @@ function getAccountInfo() {
  * Modifie le mot de passe de la BDD par
  * le mot de passe entré par l'utilisateur
  *
- * @return errors[]
  */
 function updatePassword() {
     $oldPassword = isset($_POST['old_password']) ? $_POST['old_password'] : '';
@@ -319,6 +320,7 @@ function updatePassword() {
 
             if($execUpdate === 1) {
                 header('Location:' . $_SERVER['BASE_URI'] . '/update');
+                exit;
             }
 
         } else {
@@ -354,7 +356,8 @@ function updateEmail() {
     foreach ($emailsFromDb as $currentEmail) {
         if($newEmail === $currentEmail['email']) {
             // Si une correspondance est trouvée
-            header('Location:' . $_SERVER['BASE_URI'] . '/update');
+            //header('Location:' . $_SERVER['BASE_URI'] . '/update');
+            return false;
         }
         else {
             // Sinon, actualise l'adresse email
@@ -371,9 +374,11 @@ function updateEmail() {
                 // Redirige vers la page indiquant à l'utilisateur que l'update a été fait
                 $_SESSION['email'] = $newEmail;
                 header('Location:' . $_SERVER['BASE_URI'] . '/update');
+                exit;
             }
         }
     }
+
 }
 
 
@@ -386,45 +391,54 @@ function updateEmail() {
  * Ajoute les données du formulaire des dépenses dans la BDD
  */
 function addExpenses() {
-    // Récupère les infos du formulaire
-    $balance = isset($_POST['balance']) ? $_POST['balance'] : '';
-    $date = isset($_POST['date']) ? trim($_POST['date']) : '';
-    $title = isset($_POST['title']) ? addslashes($_POST['title']) : '';
-    $sum = isset($_POST['sum']) ? $_POST['sum'] : '';
-    $email = $_SESSION['email'];
-
-    // Insertion des données dans la BDD
-    $pdo = Database::getPDO();
-
-    // Récupère les infos de l'utilisateur connecté
-    $sql = "SELECT id, `email` 
-    FROM users 
-    WHERE `email` = '$email';
-    ";
-    
-    $pdoStatement = $pdo->query($sql);
-    $userInfo = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
-
-    // Si utilisateur présent en BDD
-    if(count($userInfo) === 1) {
-        // Insert les données dans la BDD
-        $insertQuery = "INSERT INTO account (`user_id`, balance, `date`, title, `sum`) VALUES ('{$userInfo[0]['id']}', '{$balance}', '{$date}', '{$title}', '{$sum}')";
-    
-        $nbInsertedValues = $pdo->exec($insertQuery);
-        
-        // Si l'insertion s'est bien passée    
-        if($nbInsertedValues === 1) {
-            // Redirige vers la page historique
-    
-            header('Location:' . $_SERVER['BASE_URI'] . '/historique');
-            exit;
-        
-        } else {
-            echo "Un problème est survenu, merci de réessayer ultérieurement";
-        } 
+    // Si utilisateur non connecté/enregistré
+    if(!isset($_SESSION['success'])) {
+        // Redirection sur la page d'inscription
+        header('Location:' . $_SERVER['BASE_URI'] . '/register');
+        exit;
     } else {
-        echo 'L\'opération ne s\'est pas déroulée comme prévue. Etes-vous sûr d\'être correctement enregistré ?';
+        // Sinon, si utilisateur conencté
+        // Récupère les infos du formulaire
+        $balance = isset($_POST['balance']) ? $_POST['balance'] : '';
+        $date = isset($_POST['date']) ? trim($_POST['date']) : '';
+        $title = isset($_POST['title']) ? addslashes($_POST['title']) : '';
+        $sum = isset($_POST['sum']) ? $_POST['sum'] : '';
+        $email = $_SESSION['email'];
+
+        // Insertion des données dans la BDD
+        $pdo = Database::getPDO();
+
+        // Récupère les infos de l'utilisateur connecté
+        $sql = "SELECT id, `email` 
+        FROM users 
+        WHERE `email` = '$email';
+        ";
+
+        $pdoStatement = $pdo->query($sql);
+        $userInfo = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
+
+        // Si utilisateur présent en BDD
+        if(count($userInfo) === 1) {
+            // Insert les données dans la BDD
+            $insertQuery = "INSERT INTO account (`user_id`, balance, `date`, title, `sum`) VALUES ('{$userInfo[0]['id']}', '{$balance}', '{$date}', '{$title}', '{$sum}')";
+
+            $nbInsertedValues = $pdo->exec($insertQuery);
+            
+            // Si l'insertion s'est bien passée    
+            if($nbInsertedValues === 1) {
+                // Redirige vers la page historique
+
+                header('Location:' . $_SERVER['BASE_URI'] . '/historique');
+                exit;
+            
+            } else {
+                echo "Un problème est survenu, merci de réessayer ultérieurement";
+            } 
+        } else {
+            echo 'L\'opération ne s\'est pas déroulée comme prévue. Etes-vous sûr d\'être correctement enregistré ?';
+        }
     }
+    
 }
 
 

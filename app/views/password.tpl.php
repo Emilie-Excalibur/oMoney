@@ -13,4 +13,7 @@
         <label for="new_password_conf">Confirmer le nouveau mot de passe</label>
         <input type="password" class="form-control" id="new_password_conf" name="new_password_conf">
     </div>  
+
+    <button type="submit" class="btn btn-success" name="update_password">Mettre à jour le mot de passe</button>
+
 </form>

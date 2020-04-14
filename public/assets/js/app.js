@@ -198,7 +198,8 @@ var app = {
       // Empêche la soumission du formulaire
       event.preventDefault();
     }
-  }
+  },
+
 };
 
 

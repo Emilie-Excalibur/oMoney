@@ -47,8 +47,7 @@ if(isset($_POST['add_expenses'])) {
 if(isset($_POST['update'])) {
     // L'utilisateur peut modifier son email
     updateEmail();
-
-}
+} 
 
 /**
  * GESTION DES ROUTES & AFFICHAGE DES VUES
