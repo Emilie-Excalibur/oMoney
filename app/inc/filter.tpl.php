@@ -3,12 +3,12 @@
         <label class="mr-sm-2" for="filter">Trier par</label>
         <div class="col-auto my-1">
             <select class="custom-select mr-sm-2" id="filter" name="filter">
-                <option selected>Choisir</option>
+                <option value="all">Tout afficher</option>
                 <option value="date">Le plus récent</option>
                 <option value="today">Aujourd'hui</option>
                 <option value="yesterday">Hier</option>
                 <option value="week">Cette semaine</option>
-                <option value="week">Ce mois</option>
+                <option value="month">Ce mois</option>
                 <option value="title">Ordre alphabétique</option>
                 <option value="sum">Somme dépensée</option>
             </select>
