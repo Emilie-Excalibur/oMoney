@@ -300,11 +300,14 @@ function updatePassword() {
     // Compare le nouveau mot de passe et la confirmation
     if($newPassword === $newPasswordConf) {
         // Si oui, chiffre le mot de passe
-        $newPassword = password_hash($_POST['new_password'], PASSWORD_DEFAULT);
+        $newPassword = password_hash($newPassword, PASSWORD_DEFAULT);
 
         // Vérifie si l'ancien mot de passe correspond au mot de passe existant dans la BDD
-        if($oldPassword === $passwordFromDb['password']) {
-            // Si oui, actualise le nouveau mot de passe dans la BDD
+        $checkPassword = password_verify($oldPassword, $passwordFromDb['password']);
+
+        // si oui
+        if($checkPassword) {
+            // Actualise le nouveau mot de passe dans la BDD
             $sqlUpdate = "UPDATE 
             users 
             SET `password` = '$newPassword'
@@ -315,15 +318,17 @@ function updatePassword() {
             // Si l'update s'est bien déroulé
             if($execUpdate === 1) {
                 // Redirige l'utilisateur
-                header('Location:' . $_SERVER['BASE_URI'] . '/update');
+                header('Location:' . $_SERVER['BASE_URI'] . '/updatePassword');
                 exit;
             }
 
         } else {
-            echo "Ancien mot de passe invalide";
+            header('Location:' . $_SERVER['BASE_URI'] . '/errorPassword');
+            exit;
         }
     } else {
-        echo "Mot de passe de confirmation invalide";
+        header('Location:' . $_SERVER['BASE_URI'] . '/errorPassword');
+        exit;
 
     }
 }
@@ -351,8 +356,7 @@ function updateEmail() {
     foreach ($emailsFromDb as $currentEmail) {
         if($newEmail === $currentEmail['email']) {
             // Si une correspondance est trouvée
-            //header('Location:' . $_SERVER['BASE_URI'] . '/update');
-            return false;
+            header('Location:' . $_SERVER['BASE_URI'] . '/errorMail');
         }
         else {
             // Sinon, actualise l'adresse email
@@ -370,7 +374,7 @@ function updateEmail() {
                 $_SESSION['email'] = $newEmail;
                 header('Location:' . $_SERVER['BASE_URI'] . '/update');
                 exit;
-            }
+            } 
         }
     }
 

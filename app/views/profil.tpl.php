@@ -8,7 +8,7 @@ $userDateAccount = $pdoStatement->fetch(PDO::FETCH_ASSOC);
 //dump($userDateAccount);
 ?>
 
-<form method="post" id="update" action="">
+<form method="post" id="update" action="<?= $viewVars['BaseUri'] ?>/update">
     <div class="form-group">
         <label for="actual_name">Nom</label>
         <input class="form-control" type="text" name="actual_name" value="<?= $_SESSION['name']; ?>" readonly>

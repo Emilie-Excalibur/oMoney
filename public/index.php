@@ -111,9 +111,30 @@ $router->map(
 
 $router->map(
     'GET',
+    '/errorMail',
+    'errorMail',
+    'route_error_Mail'
+);
+
+$router->map(
+    'GET',
     '/changer-mot-de-passe',
     'password',
     'route_password'
+);
+
+$router->map(
+    'GET',
+    '/errorPassword',
+    'errorPassword',
+    'route_error_Password'
+);
+
+$router->map(
+    'GET',
+    '/updatePassword',
+    'updatePassword',
+    'route_update_Password'
 );
 
 $router->map(
