@@ -234,6 +234,11 @@ ul.CTAs a {
     FORMS
 ----------------------------------------------------- */
 
+.small-form {
+    color: #117a8b;
+}
+
+
 #errors {
     display: none;
     color: white;

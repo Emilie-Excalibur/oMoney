@@ -7,31 +7,32 @@
                         <div class="form-row">
                             <div class="col-md-12">
                                 <label for="exampleInputName">Nom</label>
-                                   <input class="form-control username" id="exampleInputName" type="text" name="username" value="">
-                                   <small id="passwordHelpBlock" class="form-text text-muted">Le nom doit contenir 3 caractères minimum</small>
+                                   <input class="form-control username" id="username" type="text" name="username" value="">
+                                   <small id="nameHelp" class="form-text small-form">Le nom doit contenir 3 caractères minimum</small>
                             </div>
                         </div>
                     </div>
-
+                    
                     <div class="form-group">
                         <label for="exampleInputEmail1">Email</label>
 
-                        <input class="form-control email" id="exampleInputEmail1" type="email" aria-describedby="emailHelp" name="email" value="">
+                        <input class="form-control email" id="email" type="email" aria-describedby="emailHelp" name="email" value="">
+                        <small id="emailhelp" class="form-text small-form">Les accents et les caractères spéciaux ! # $ % & ' * + - / = ? ^ _ ` { | } ~ ne sont pas autorisés.</small>
                     </div>
 
                     <div class="form-group">
                         <div class="form-row">
                             <div class="col-md-6">
-                                <label for="exampleInputPassword1">Mot de passe</label>
+                                <label for="password_1">Mot de passe</label>
 
-                                <input class="form-control password_1" id="exampleInputPassword1" type="password" name="password_1">
-                                <small id="passwordHelpBlock" class="form-text text-muted">Le mot de passe doit contenir 3 caractères minimum</small>
+                                <input class="form-control password_1" id="password_1" type="password" name="password_1">
+                                <small id="passwordHelpBlock" class="form-text small-form">Le mot de passe doit contenir 3 caractères minimum</small>
                             </div>
 
                             <div class="col-md-6">
-                                <label for="exampleInputPassword1">Confirmer le mot de passe</label>
+                                <label for="password_2">Confirmer le mot de passe</label>
 
-                                <input class="form-control password_2" id="exampleInputPassword2" type="password" name="password_2">
+                                <input class="form-control password_2" id="passsword_2" type="password" name="password_2">
                             </div>
                         </div>
                     </div>

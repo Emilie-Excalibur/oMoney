@@ -16,18 +16,14 @@
                 $today= convertDate();
                 $yesterday = convertDate(24*60*60);
                 $lastWeek = convertDate(7*24*60*60);
-                $lastMonth = convertDate(4*7*24*60*60);
                 $firstDayOfMonth = new DateTime('first day of this month');
-                $lastDayOfMonth = new DateTime(('last day of this month'));
                 $firstDay = $firstDayOfMonth->format('Y-m-d');
-                $lastDay = $lastDayOfMonth->format('Y-m-d');
-
 
                 // Récupère le total de toutes les dépenses durant la période choisie
                 $todayExpenses= getExpensesByDate($today, $today);
                 $yesterdayExpenses = getExpensesByDate($yesterday, $yesterday);
                 $weekExpenses = getExpensesByDate($lastWeek, $today);
-                $monthExpenses = getExpensesByDate($lastDay, $firstDay);
+                $monthExpenses = getExpensesByDate($firstDay, $today);
             ?>
                 <i class="fa fa-lg fa-money"></i> Solde actuel : 
                 <span class="<?= calculBalance() < 0 ? 'text-danger' : 'text-success'; ?>">
