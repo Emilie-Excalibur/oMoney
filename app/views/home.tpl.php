@@ -43,9 +43,22 @@
             <?php
                 if(getExpensesByDateOrder() != false) {
                     // Si des dépenses ont été ajoutéees
-                    // Affiche la date la plus ancienne
+                    // Recherche les dépenses triées par date
                     $allExpenses = getExpensesByDateOrder();
-                    $firstExpenses = $allExpenses[0]['date'];
+
+                    // Pour chaque résultat trouvé 
+                    foreach ($allExpenses as $expenses) {
+                        // Si la valeur à l'index courant est null
+                        // Continue la boucle
+                        if($expenses['date'] == null) {
+                            continue;
+                        } else {
+                            // Sinon stocke la valeur (=date) dans $firstExpenses
+                            // Stop la boucle
+                            $firstExpenses = $expenses['date'];
+                            break;
+                        }
+                    }
                     echo 'depuis le ' . getDateFormat($firstExpenses);
                 } else {
                     echo '';

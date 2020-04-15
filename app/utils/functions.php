@@ -635,7 +635,8 @@ function getExpensesByDateOrder() {
     $email = $_SESSION['email'];
     $pdo = Database::getPDO();
 
-    $sql = "SELECT *
+    $sql = "SELECT 
+    account.`date`
     FROM account
     INNER JOIN users
     ON account.user_id = users.id
