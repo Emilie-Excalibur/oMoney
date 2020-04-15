@@ -22,7 +22,7 @@
 
     <!-- Header-->
     <header class="bg-dark text-white border-bottom border-white">
-        <a class="navbar-brand" href="<?= $viewVars['BaseUri'] ?>/">
+        <a class="navbar-brand mx-3" href="<?= $viewVars['BaseUri'] ?>/">
             <h1>oMoney</h1>
         </a>
     </header>
