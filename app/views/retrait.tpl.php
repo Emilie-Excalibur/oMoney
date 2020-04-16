@@ -6,11 +6,11 @@
         $balance= getBalance();   
     }
 ?>
-<form method="post">
+<form method="post" id="form-retrait">
 
     <div class="form-group">
         <label for="balance">Solde du compte</label>
-        <input class="form-control" type="number" name="balance" id="balance" step="0.01" value="<?= isset($_SESSION['success']) ? $balance['balance'] - $sum['sumExpenses'] + $sumTransfer['sumTransfer'] : '0'; ?>">
+        <input class="form-control balance" type="number" name="balance" id="balance" step="0.01" value="<?= isset($_SESSION['success']) ? $balance['balance'] - $sum['sumExpenses'] + $sumTransfer['sumTransfer'] : '0'; ?>">
     </div>
 
     <div class="form-group">
@@ -30,3 +30,5 @@
 
     <button type="submit" class="btn btn-primary" name="add_expenses">Ajouter</button>
 </form>
+
+<script src="assets/js/retrait.js"></script>

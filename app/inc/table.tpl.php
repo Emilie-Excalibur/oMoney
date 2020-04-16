@@ -29,7 +29,13 @@
                     echo '0.00';
                 }
              ?> €</td>
-            <td><?= $transactionInfo['transfer_amount']; ?> €</td>
+            <td><?php 
+                if($transactionInfo['transfer_amount'] != null) {
+                    echo $transactionInfo['transfer_amount'];
+                } else {
+                    echo '0.00';
+                }
+             ?> €</td>
 
         </tr>
 <?php
@@ -82,7 +88,6 @@
     // Si un tri a été demandé
     if(!empty($_GET['filter'])) :
         // Lis et execute les requêtes selon le tri
-        require __DIR__ . '/../utils/sumRequest.php';
         $pdoStatement = $pdo->query($sqlSum);
         $sumFiltered = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
     // Affiche les sommes totales dépensées / gagnées selon le tri        
@@ -120,14 +125,26 @@
 
     <tr class="table-danger">
             <td colspan="3">Somme totale dépensée</td>
-            <td><?= $sum['sumExpenses'];?> €</td>
+            <td><?php 
+                if($sum['sumExpenses'] != null) {
+                    echo $sum['sumExpenses'];
+                } else {
+                    echo '0.00';
+                }
+             ?> €</td>
             <td></td>
         </tr>
 
         <tr class="table-success">
             <td colspan="3">Somme totale gagnée</td>
             <td></td>
-            <td><?= $sumTransfer['sumTransfer'];?> €</td>
+            <td><?php 
+                if($sumTransfer['sumTransfer'] != null) {
+                    echo $sumTransfer['sumTransfer'];
+                } else {
+                    echo '0.00';
+                }
+             ?> €</td>
         </tr>
 
 <?php endif; ?>
