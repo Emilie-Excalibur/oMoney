@@ -5,39 +5,24 @@ SET time_zone = '+00:00';
 SET foreign_key_checks = 0;
 SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
-DROP DATABASE IF EXISTS `oMoney`;
-CREATE DATABASE `oMoney` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `oMoney`;
-
 SET NAMES utf8mb4;
 
 DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Identifiant du journal de dépenses',
   `user_id` int(10) unsigned NOT NULL COMMENT 'identifiant de l''utilisateur',
-  `balance` float(10,2) NOT NULL COMMENT 'Solde de l''utilisateur',
+  `balance` float(10,2) DEFAULT NULL COMMENT 'Solde de l''utilisateur',
   `date` date DEFAULT NULL COMMENT 'Date du retrait d''argent',
   `title` varchar(255) DEFAULT NULL COMMENT 'Intitulé du retrait',
-  `sum` float(10,2) NOT NULL COMMENT 'Somme dépensée',
+  `sum` float(10,2) DEFAULT NULL COMMENT 'Somme dépensée',
+  `date_transfer` date DEFAULT NULL COMMENT 'Date du virement',
+  `title_transfer` varchar(255) DEFAULT NULL COMMENT 'Intitulé du virement',
+  `transfer_amount` float(10,2) DEFAULT NULL COMMENT 'Montant du virement',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `account_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `account` (`id`, `user_id`, `balance`, `date`, `title`, `sum`) VALUES
-(1,	9,	890.12,	'2020-02-14',	'Fleur pour Guenièvre',	35.80),
-(2,	4,	1350.00,	'2020-03-07',	'Sangliers de Cornouailles',	75.99),
-(3,	4,	1274.01,	'2020-04-07',	'Herbes de provence',	4.50),
-(4,	4,	1269.51,	'2020-04-07',	'Fromages à raclette',	21.70),
-(5,	4,	1247.81,	'2020-04-12',	'Appareil à raclette',	43.99),
-(6,	4,	1203.82,	'2020-04-13',	'Epée bien affûtée',	142.80),
-(7,	7,	15642.00,	'2019-12-25',	'Cadeaux noël pour tout le monde',	345.12),
-(8,	7,	15296.88,	'2020-04-12',	'Nouvelle cape',	17.99),
-(9,	2,	1650.00,	'2020-04-03',	'Casque Logitech',	69.99),
-(10,	8,	8760.00,	'2020-03-02',	'Viande grasse',	27.60),
-(11,	8,	8732.40,	'2020-03-15',	'remise d\"aujourdhui',	6.40),
-(12,	6,	4512.00,	'2020-03-26',	'choux-fleur',	3.50),
-(13,	6,	4508.50,	'2020-03-06',	'Livre c\'est la vie',	25.99);
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
@@ -51,16 +36,6 @@ CREATE TABLE `users` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `picture`, `created_at`) VALUES
-(1,	'Admin',	'adminUser@gmail.com',	'$2y$10$MRA3M8KJR.LltD/gBwFyAeBdFxbFkBAKjm6Gftl3/tcp5aBoGjR4e',	'',	'2020-04-13 13:23:40'),
-(2,	'testUser',	'testUser@gmail.com',	'$2y$10$ctsebLcaaIDyK.jgubjjxegl8YvRnjEser0Zc88O9ajnYftfZblra',	'',	'2020-04-13 13:36:57'),
-(3,	'Emilie',	'emiliemaniglier@gmail.com',	'$2y$10$zYc7oo27hjkCEXudRJ1J1uPlLkD/cH1cq8t.R38KXPAnD40hfKgmG',	'',	'2020-04-13 13:37:14'),
-(4,	'Perceval',	'perceval@kaamelott.fr',	'$2y$10$i4.HepFKCBNpYxV43XgYheSZY/0dQGPn3yJC6VPZmakPAKizHU9ne',	'',	'2020-04-13 13:37:41'),
-(6,	'Perceval',	'provencalLeGallois@kaamelott.fr',	'$2y$10$eb2Q7Js.hcqq73HbBPRGnehbNmPpzsyjWrJlAcLGDUATvr/fD7Qti',	'',	'2020-04-13 13:38:50'),
-(7,	'Arthur',	'arthur@kaamelott.fr',	'$2y$10$H8vwmnq2rZUhvCmhdxWWWuC98h61G/hgbAl6RkTkwiqmhKhtYj86a',	'',	'2020-04-13 13:39:07'),
-(8,	'Karadoc',	'karadoc@kaamelott.fr',	'$2y$10$FKNziRmjFEhBXvUGCO8gIeGECGxTO1RUORossaJzOlrjtHD6wFypy',	'',	'2020-04-13 13:39:41'),
-(9,	'Lancelot',	'lancelot@kaamelott.gmail',	'$2y$10$K9xVB1.5R5/TpIIxbbj89eGuSudIGGoVcxJ2AH8rp6xkV9TuzjMYW',	'',	'2020-04-13 13:40:17'),
-(10,	'Merlin',	'magicien@kaamelott.fr',	'$2y$10$pc8Scr9Ojb3iOA1UnRLQdeZ8iyN1yODgHAMejvKww4RrJBJ3UlP7W',	'',	'2020-04-13 14:28:51');
 
 DROP TABLE IF EXISTS `user_picture_color`;
 CREATE TABLE `user_picture_color` (
@@ -164,4 +139,4 @@ INSERT INTO `user_picture_color` (`id`, `color_name`) VALUES
 (92,	'tomato'),
 (93,	'yellowgreen');
 
--- 2020-04-13 14:34:55
+-- 2020-04-14 22:04:52

@@ -7,6 +7,7 @@ var app = {
   form: document.querySelector('#register-form'),
 
   init: function () {
+
     app.inputUsername.addEventListener('blur', app.handleinputUsernameBlur);
     app.inputMail.addEventListener('blur', app.handleEmailInputBlur);
     app.inputPassword.addEventListener('blur', app.handleInputPasswordBlur);
@@ -38,8 +39,8 @@ var app = {
     // Récupère le contenu du champs
     let fieldValue = field.value;
 
-    // Le champs est valide s'il contient au moins @
-    if (fieldValue.includes('@')) {
+    // Le champs est valide s'il est sous la forme Chaine.Avec-des_caractères/spéciaux1!@nomdomaine.domaine
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(fieldValue)) {
       return true;
     } else {
       return false;
@@ -154,6 +155,16 @@ var app = {
       errors.push('Le champ nom doit faire au moins 3 caractères');
     }
 
+    if (app.isMailValid(app.inputMail)) {
+      // Action à faire si le champs est valide
+      app.markFieldAsValid(app.inputMail);
+
+    } else {
+      // Action à faire si le champs est invalide
+      app.markFieldAsInvalid(app.inputMail);
+
+      errors.push('L\'adresse email n\'est pas valide');
+    }    
 
     // Revérifie aussi le mot de passe
     if (app.isFieldValid(app.inputPassword)) {
@@ -203,3 +214,4 @@ var app = {
 
 
 document.addEventListener('DOMContentLoaded', app.init);
+
