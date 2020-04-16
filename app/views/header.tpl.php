@@ -22,12 +22,12 @@
 
     <!-- Header-->
     <header class="bg-dark text-white border-bottom border-white">
-        <a class="navbar-brand mx-3" href="<?= $viewVars['BaseUri'] ?>/">
+        <a class="navbar-brand" href="<?= $viewVars['BaseUri'] ?>/">
             <h1>oMoney</h1>
         </a>
     </header>
 
-    <main class="wrapper">
+    <div class="wrapper">
         <!-- Sidebar Holder -->
         <nav id="sidebar">
             <div class="sidebar-header">
@@ -100,11 +100,6 @@
                     </li>
 
                 <?php endif; ?>
-
-                <li class="<?= $viewName === 'comments' ? 'active' : ''; ?> comments">
-                    <a href="<?= $viewVars['BaseUri'] ?>/commentaires">Commentaires</a>
-                </li>
-
             </ul>
 
         </nav>
@@ -122,12 +117,12 @@
                     </button>
 
                     <?php 
-                        if(!isset($_SESSION['success']) && $viewName != 'comments') :
+                        if(!isset($_SESSION['success'])) :
                     ?>
                     <p class="text-danger"> <i class="fa fa-exclamation-circle"></i> Vous devez être connecté pour visualiser vos dépenses.</p>
                     <?php endif; ?>
 
-                    <p class="nav_page"><a href="<?= $viewVars['BaseUri'] ?>/"><i class="fa fa-home"></i></a> / 
+                    <p><a href="<?= $viewVars['BaseUri'] ?>/"><i class="fa fa-home"></i></a> / 
                     <?php if($viewName === 'home') :?>Accueil<?php endif; ?>
                     <?php if($viewName === 'login' || $viewName === 'errorLog') :?>Se connecter<?php endif; ?>
                     <?php if($viewName === 'register' || $viewName === 'errorReg') :?>Créer un compte<?php endif; ?>
@@ -137,7 +132,6 @@
                     <?php if($viewName === 'transfer') :?>Ajouter un virement<?php endif; ?>
 
                     <?php if($viewName === 'password') :?>Changer mot de passe<?php endif; ?>
-                    <?php if($viewName === 'comments') :?>Commentaires<?php endif; ?>
                     <?php if($viewName === 'error404') :?>Erreur 404<?php endif; ?>
                 </p>
 

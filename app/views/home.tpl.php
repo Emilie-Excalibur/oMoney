@@ -1,3 +1,4 @@
+
 <div class="card text-white my-2">
     <div class="card-header bg-dark">Solde du compte</div>
     <div class="card-body bg-transparent border border-dark">
@@ -15,14 +16,13 @@
                 $today= convertDate();
                 $yesterday = convertDate(24*60*60);
                 $lastWeek = convertDate(7*24*60*60);
-                $firstDayOfMonth = new DateTime('first day of this month');
-                $firstDay = $firstDayOfMonth->format('Y-m-d');
+                $lastMonth = convertDate(4*7*24*60*60);
 
                 // Récupère le total de toutes les dépenses durant la période choisie
                 $todayExpenses= getExpensesByDate($today, $today);
                 $yesterdayExpenses = getExpensesByDate($yesterday, $yesterday);
                 $weekExpenses = getExpensesByDate($lastWeek, $today);
-                $monthExpenses = getExpensesByDate($firstDay, $today);
+                $monthExpenses = getExpensesByDate($lastMonth, $today);
             ?>
                 <i class="fa fa-lg fa-money"></i> Solde actuel : 
                 <span class="<?= calculBalance() < 0 ? 'text-danger' : 'text-success'; ?>">
@@ -43,22 +43,9 @@
             <?php
                 if(getExpensesByDateOrder() != false) {
                     // Si des dépenses ont été ajoutéees
-                    // Recherche les dépenses triées par date
+                    // Affiche la date la plus ancienne
                     $allExpenses = getExpensesByDateOrder();
-
-                    // Pour chaque résultat trouvé 
-                    foreach ($allExpenses as $expenses) {
-                        // Si la valeur à l'index courant est null
-                        // Continue la boucle
-                        if($expenses['date'] == null) {
-                            continue;
-                        } else {
-                            // Sinon stocke la valeur (=date) dans $firstExpenses
-                            // Stop la boucle
-                            $firstExpenses = $expenses['date'];
-                            break;
-                        }
-                    }
+                    $firstExpenses = $allExpenses[0]['date'];
                     echo 'depuis le ' . getDateFormat($firstExpenses);
                 } else {
                     echo '';

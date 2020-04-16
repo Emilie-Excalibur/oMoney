@@ -105,13 +105,6 @@ class MainController {
     public function historique() {
         $this->show('historique');
     }
-    
-    /**
-     * Affiche la page de l'historique
-     */
-    public function comments() {
-        $this->show('comments');
-    }
 
 
     /**

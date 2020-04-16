@@ -112,14 +112,13 @@ function logout() {
  * Sinon affiche erreur
  */
 function checkRegisterUserInfo() {
-    $errors=[];
     // Récupère les infos
     $name = isset($_POST['username']) ? $_POST['username'] : '';
     $email = isset($_POST['email']) ? $_POST['email'] : '';
     $password1 = isset($_POST['password_1']) ? $_POST['password_1'] : '';
     $password2 = isset($_POST['password_2']) ? $_POST['password_2'] : '';
 
-    // Vérifie si les champs sont vides / valides
+       // Vérifie si les champs sont vides
     // Et ajoute une erreur si c'est le cas
     if(empty($name)) {
         $errors[] = 'Entrez un nom d\'utilisateur';
@@ -127,9 +126,6 @@ function checkRegisterUserInfo() {
 
     if(empty($email)) {
         $errors[] = 'Entrez une adresse email';
-    }
-    if(preg_match('/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/', $email) == false){
-        $errors[] = 'Adresse email non valide';
     }
 
     if(empty($password1)) {
@@ -140,25 +136,23 @@ function checkRegisterUserInfo() {
         $errors[] = 'Les mots de passe doivent correspondre';
     }
 
-    // Si aucune erreur
-    if(count($errors) === 0) {
-        // Requête SQL pour vérifier si le mail entré par l'utilisateur
-        // Existe déjà dans la BDD
-        // Si oui, Redirige vers page d'erreur
-        $pdo = Database::getPDO();
+    // Requête SQL pour vérifier si le mail entré par l'utilisateur
+    // Existe déjà dans la BDD
+    // Si oui, Redirige vers page d'erreur
+    $pdo = Database::getPDO();
 
-        $sqlCheckUser = "SELECT * FROM users WHERE email='$email' LIMIT 1";
+    $sqlCheckUser = "SELECT * FROM users WHERE email='$email' LIMIT 1";
 
-        $pdoStatement = $pdo->query($sqlCheckUser);
+    $pdoStatement = $pdo->query($sqlCheckUser);
 
-        $userInfo = $pdoStatement->fetch(PDO::FETCH_ASSOC);
-        
-        if($userInfo['email'] === $email) {
-            $errors[] = 'Cette adresse email existe déjà';
-            header('Location:' . $_SERVER['BASE_URI'] . '/errorReg');
-            exit;
-        }
+    $userInfo = $pdoStatement->fetch(PDO::FETCH_ASSOC);
+    
+    if($userInfo['email'] === $email) {
+        $errors[] = 'Cette adresse email existe déjà';
+        header('Location:' . $_SERVER['BASE_URI'] . '/errorReg');
+        exit;
     }
+
 }
 
 /**
@@ -367,15 +361,7 @@ function updatePassword() {
  *
  */
 function updateEmail() {
-    // Vérifie si l'adresse email a un format valide   
-    if(isset($_POST['new_email'])) {
-        if(preg_match('/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/', $_POST['new_email']) == false) {
-            return false;
-        } else {
-            $newEmail = $_POST['new_email'];
-        }
-    }
-
+    $newEmail = isset($_POST['new_email']) ? $_POST['new_email'] : '';
     $email = $_SESSION['email'];
     $pdo = Database::getPDO();
 
@@ -635,8 +621,7 @@ function getExpensesByDateOrder() {
     $email = $_SESSION['email'];
     $pdo = Database::getPDO();
 
-    $sql = "SELECT 
-    account.`date`
+    $sql = "SELECT *
     FROM account
     INNER JOIN users
     ON account.user_id = users.id
@@ -679,32 +664,3 @@ function getExpensesByDate($date, $date2) {
     return $expenses;        
 }   
 
-/* ---------------------------------------------------
-    COMMENTS
------------------------------------------------------ */
-
-function addCommentToDb() {
-    // $name = empty($_POST['username']) ? '' : $_POST['username'];
-    // $content = empty($_POST['comment']) ? '' : $_POST['comment'];
-    $name = isset($_POST['username']) ? addslashes($_POST['username']) : '';
-    $content = isset($_POST['content_comment']) ? addslashes($_POST['content_comment']) : '';
-    $newDate = new DateTime('now');
-    $date = $newDate->format('Y-m-d H:i:s');
-
-    if($content != '') {
-        $pdo = Database::getPDO();
-        $insertQuery = "INSERT INTO `comment` (`name`, `content`, `created_at`) VALUES ('{$name}', '{$content}', '{$date}')";
-        $nbInsertedValues = $pdo->exec($insertQuery);    
-    } else {
-        header('Location:' . $_SERVER['BASE_URI'] . '/commentaires');
-        exit;
-    }
-
-    if($nbInsertedValues === 1) {
-        header('Location:' . $_SERVER['BASE_URI'] . '/commentaires');
-        exit;
-    } else {
-        header('Location:' . $_SERVER['BASE_URI'] . '/error404');
-        exit;
-    }
-}
