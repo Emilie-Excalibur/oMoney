@@ -60,17 +60,10 @@ if(isset($_POST['update_password'])) {
     updatePassword();
 } 
 
-    // Ajout d'un commentaire
-    if (isset($_POST['comment_submit'])) {
-        addCommentToDb();
-    }
-
-
-
-
 /**
  * GESTION DES ROUTES & AFFICHAGE DES VUES
  */
+
 
 // Instanciation d'un nouvel objet de la classe AltoRouter
 $router = new AltoRouter();
@@ -177,12 +170,7 @@ $router->map(
     'route_transfer'
 );
 
-$router->map(
-    'GET',
-    '/commentaires',
-    'comments',
-    'route_comments'
-);
+
 
 $match = $router->match();
 

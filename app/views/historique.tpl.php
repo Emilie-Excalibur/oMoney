@@ -48,7 +48,7 @@ $pdo = Database::getPDO();
 // Si un tri a été demandé
 // Lis et exécute les requêtes
 if(!empty($_GET['filter'])) {
-    require __DIR__ . '/../utils/requests.php';
+    require __DIR__ . '/../utils/filterRequest.php';
     $pdoStatement = $pdo->query($sql);
     $filteredList = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
 }
