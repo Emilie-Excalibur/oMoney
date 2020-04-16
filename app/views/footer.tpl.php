@@ -1,7 +1,7 @@
   </div>
 <!-- End of page Content Holder -->
-</div>
-<!-- END DIV WRAPPER-->
+</main>
+<!-- END of main -->
 
 <footer class="footer text-center">
       Copyright &copy; Emilie Maniglier - 2020

@@ -16,7 +16,7 @@ $userDateAccount = $pdoStatement->fetch(PDO::FETCH_ASSOC);
     <div class="form-group">
         <label for="new_email">Adresse email</label>
         <input type="new_email" class="form-control new_email" id="new_email" aria-describedby="emailHelp" value="<?= $_SESSION['email']; ?>" name="new_email">
-        <small id="emailhelp" class="form-text small-form">Les accents et les caractères spéciaux ! # $ % & ' * + - / = ? ^ _ ` { | } ~ ne sont pas autorisés.</small>
+        <small id="emailhelp" class="form-text small-form">Les accents et les caractères spéciaux ! # $ % & ' * + / = ? ^ ` { | } ~ ne sont pas autorisés.</small>
     </div>
 
     <div class="form-group">

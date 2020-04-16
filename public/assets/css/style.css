@@ -14,6 +14,9 @@ p {
     font-size: 1.1em;
     font-weight: 300;
     line-height: 1.7em;
+}
+
+.nav_page {
     color: #999;
 }
 
@@ -81,8 +84,12 @@ a:focus {
 }
 
 #sidebar ul.components {
-    padding: 20px 0;
     border-bottom: 1px solid white;
+    padding-top: 20px;
+}
+
+.comments {
+    border-top: 1px solid white;
 }
 
 #sidebar ul p {
@@ -127,7 +134,7 @@ ul ul a {
 }
 
 ul.CTAs {
-    padding: 20px;
+    padding: 20px 20px 30px;
 }
 
 ul.CTAs a {
@@ -303,4 +310,27 @@ ul.CTAs a {
 .user_letter {
     font-size: 5em;
     text-align: center;
+}
+
+
+/* ---------------------------------------------------
+    COMMENTS
+----------------------------------------------------- */
+.comment {
+    margin: 2em 0 1em;
+}
+
+.comment-list {
+    margin: 1.5em 0;
+}
+
+.comment-name {
+    border-bottom: 1px solid #56595c;
+    padding: 0.5em 0;
+}
+
+.comment-date {
+    color: #a3a4a7;
+    font-size: 0.8em;
+    font-style: italic;
 }

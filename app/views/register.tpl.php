@@ -17,7 +17,7 @@
                         <label for="exampleInputEmail1">Email</label>
 
                         <input class="form-control email" id="email" type="email" aria-describedby="emailHelp" name="email" value="">
-                        <small id="emailhelp" class="form-text small-form">Les accents et les caractères spéciaux ! # $ % & ' * + - / = ? ^ _ ` { | } ~ ne sont pas autorisés.</small>
+                        <small id="emailhelp" class="form-text small-form">Les accents et les caractères spéciaux ! # $ % & ' * + / = ? ^ ` { | } ~ ne sont pas autorisés.</small>
                     </div>
 
                     <div class="form-group">

@@ -27,7 +27,7 @@
         </a>
     </header>
 
-    <div class="wrapper">
+    <main class="wrapper">
         <!-- Sidebar Holder -->
         <nav id="sidebar">
             <div class="sidebar-header">
@@ -100,6 +100,11 @@
                     </li>
 
                 <?php endif; ?>
+
+                <li class="<?= $viewName === 'comments' ? 'active' : ''; ?> comments">
+                    <a href="<?= $viewVars['BaseUri'] ?>/commentaires">Commentaires</a>
+                </li>
+
             </ul>
 
         </nav>
@@ -117,12 +122,12 @@
                     </button>
 
                     <?php 
-                        if(!isset($_SESSION['success'])) :
+                        if(!isset($_SESSION['success']) && $viewName != 'comments') :
                     ?>
                     <p class="text-danger"> <i class="fa fa-exclamation-circle"></i> Vous devez être connecté pour visualiser vos dépenses.</p>
                     <?php endif; ?>
 
-                    <p><a href="<?= $viewVars['BaseUri'] ?>/"><i class="fa fa-home"></i></a> / 
+                    <p class="nav_page"><a href="<?= $viewVars['BaseUri'] ?>/"><i class="fa fa-home"></i></a> / 
                     <?php if($viewName === 'home') :?>Accueil<?php endif; ?>
                     <?php if($viewName === 'login' || $viewName === 'errorLog') :?>Se connecter<?php endif; ?>
                     <?php if($viewName === 'register' || $viewName === 'errorReg') :?>Créer un compte<?php endif; ?>
@@ -132,6 +137,7 @@
                     <?php if($viewName === 'transfer') :?>Ajouter un virement<?php endif; ?>
 
                     <?php if($viewName === 'password') :?>Changer mot de passe<?php endif; ?>
+                    <?php if($viewName === 'comments') :?>Commentaires<?php endif; ?>
                     <?php if($viewName === 'error404') :?>Erreur 404<?php endif; ?>
                 </p>
 

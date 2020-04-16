@@ -679,3 +679,32 @@ function getExpensesByDate($date, $date2) {
     return $expenses;        
 }   
 
+/* ---------------------------------------------------
+    COMMENTS
+----------------------------------------------------- */
+
+function addCommentToDb() {
+    // $name = empty($_POST['username']) ? '' : $_POST['username'];
+    // $content = empty($_POST['comment']) ? '' : $_POST['comment'];
+    $name = isset($_POST['username']) ? addslashes($_POST['username']) : '';
+    $content = isset($_POST['content_comment']) ? addslashes($_POST['content_comment']) : '';
+    $newDate = new DateTime('now');
+    $date = $newDate->format('Y-m-d H:i:s');
+
+    if($content != '') {
+        $pdo = Database::getPDO();
+        $insertQuery = "INSERT INTO `comment` (`name`, `content`, `created_at`) VALUES ('{$name}', '{$content}', '{$date}')";
+        $nbInsertedValues = $pdo->exec($insertQuery);    
+    } else {
+        header('Location:' . $_SERVER['BASE_URI'] . '/commentaires');
+        exit;
+    }
+
+    if($nbInsertedValues === 1) {
+        header('Location:' . $_SERVER['BASE_URI'] . '/commentaires');
+        exit;
+    } else {
+        header('Location:' . $_SERVER['BASE_URI'] . '/error404');
+        exit;
+    }
+}
