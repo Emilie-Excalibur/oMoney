@@ -196,6 +196,9 @@ ul.CTAs a {
     margin: 5px auto;
 }
 
+.current-balance {
+    color: #56595c;
+}
 
 /* ---------------------------------------------------
     MEDIAQUERIES
