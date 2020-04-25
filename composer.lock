@@ -4,24 +4,29 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ad97dea43b3f4b1dd02eb10405f23938",
+    "content-hash": "0e39e34396625ada479ae400254d7f15",
     "packages": [
         {
             "name": "altorouter/altorouter",
-            "version": "v1.1.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dannyvankooten/AltoRouter.git",
-                "reference": "09d9d946c546bae6d22a7654cdb3b825ffda54b4"
+                "reference": "127f6e96998708a31ef32252985bea82e3b03888"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dannyvankooten/AltoRouter/zipball/09d9d946c546bae6d22a7654cdb3b825ffda54b4",
-                "reference": "09d9d946c546bae6d22a7654cdb3b825ffda54b4",
+                "url": "https://api.github.com/repos/dannyvankooten/AltoRouter/zipball/127f6e96998708a31ef32252985bea82e3b03888",
+                "reference": "127f6e96998708a31ef32252985bea82e3b03888",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "codeclimate/php-test-reporter": "dev-master",
+                "phpunit/phpunit": "5.7.*",
+                "squizlabs/php_codesniffer": "3.4.2"
             },
             "type": "library",
             "autoload": {
@@ -55,10 +60,45 @@
                 "router",
                 "routing"
             ],
-            "time": "2014-04-16T09:44:40+00:00"
-        }
-    ],
-    "packages-dev": [
+            "time": "2019-11-23T11:01:41+00:00"
+        },
+        {
+            "name": "benoclock/alto-dispatcher",
+            "version": "1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/benoclock/AltoDispatcher.git",
+                "reference": "aa05d13d92ae7ac984ec4e63ff439f57fe1efb3d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/benoclock/AltoDispatcher/zipball/aa05d13d92ae7ac984ec4e63ff439f57fe1efb3d",
+                "reference": "aa05d13d92ae7ac984ec4e63ff439f57fe1efb3d",
+                "shasum": ""
+            },
+            "require": {
+                "altorouter/altorouter": ">=1.2",
+                "php": ">=5.6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "Dispatcher.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "benoclock",
+                    "email": "benjamin@oclock.io"
+                }
+            ],
+            "description": "AltoDispatcher is a simple and easy-to-use class for dispatching after AltoRouter routing",
+            "time": "2020-03-12T15:03:34+00:00"
+        },
         {
             "name": "symfony/polyfill-mbstring",
             "version": "v1.15.0",
@@ -194,6 +234,7 @@
             "time": "2020-03-27T16:56:45+00:00"
         }
     ],
+    "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": [],

@@ -1,5 +1,5 @@
 let app = {
-    userEmail: document.querySelector('.new_email'),
+    userEmail: document.querySelector('.email'),
     formUpdate: document.querySelector('#update'),
 
     init: function() {

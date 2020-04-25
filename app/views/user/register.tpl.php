@@ -1,13 +1,25 @@
 <div class="container">
+
+<?php include __DIR__ . '/../partials/errorlist.tpl.php'; ?>
+<div id="errors"></div>
+
+
         <div class="card card-register mx-auto mt-5">
             <div class="card-header">Créer un compte</div>
             <div class="card-body">
+
                 <form method="post" action="" id="register-form">
                     <div class="form-group">
                         <div class="form-row">
                             <div class="col-md-12">
                                 <label for="exampleInputName">Nom</label>
-                                   <input class="form-control username" id="username" type="text" name="username" value="">
+                                   <input 
+                                   class="form-control username" 
+                                   id="username" 
+                                   type="text" 
+                                   name="username" 
+                                   value="<?= isset($user) ? $user->getName() : ''; ?>"
+                                   >
                                    <small id="nameHelp" class="form-text small-form">Le nom doit contenir 3 caractères minimum</small>
                             </div>
                         </div>
@@ -16,7 +28,14 @@
                     <div class="form-group">
                         <label for="exampleInputEmail1">Email</label>
 
-                        <input class="form-control email" id="email" type="email" aria-describedby="emailHelp" name="email" value="">
+                        <input 
+                        class="form-control email" 
+                        id="email" 
+                        type="email" 
+                        aria-describedby="emailHelp" 
+                        name="email" 
+                        value="<?= isset($user) ? $user->getEmail() : ''; ?>"
+                        >
                         <small id="emailhelp" class="form-text small-form">Les accents et les caractères spéciaux ! # $ % & ' * + / = ? ^ ` { | } ~ ne sont pas autorisés.</small>
                     </div>
 
@@ -42,17 +61,15 @@
                         <input type="file" class="form-control-file" id="exampleFormControlFile1" name="picture">
                     </div>
 
-                    <div id="errors"></div>
-
                     <button class="btn btn-info btn-block" name="reg_user">S'inscrire</button>
 
                 </form>
 
                 <div class="text-center">
-                    <a class="d-block small mt-3" href="<?= $viewVars['BaseUri']; ?>/login">Déja inscrit ? Se connecter</a>
+                    <a class="d-block small mt-3" href="<?= $router->generate('user-login');?>">Déja inscrit ? Se connecter</a>
                 </div>
             </div>
         </div>
     </div>
 
-  <script src="assets/js/register.js"></script>
+<script src="assets/js/register.js"></script>
