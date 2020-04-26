@@ -1,3 +1,7 @@
+<?php
+//dd(filter_var());
+?>
+
 <?php include __DIR__ . '/../partials/errorlist.tpl.php'; ?>
 
 <form method="post" action="" id="form-retrait">
@@ -16,7 +20,13 @@
 
     <div class="form-group">
         <label for="date">Date</label>
-        <input class="form-control" type="date" name="date" id="date">
+        <input 
+        class="form-control" 
+        type="date" 
+        name="date" 
+        id="date"
+        value="<?= isset($account) ? $account->getDate() : '';?>"
+        >
     </div>
 
     <div class="form-group">
@@ -48,3 +58,4 @@
 </form>
 
 <script src="assets/js/retrait.js"></script>
+

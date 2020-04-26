@@ -337,3 +337,10 @@ ul.CTAs a {
     font-size: 0.8em;
     font-style: italic;
 }
+
+pre {
+    white-space:pre-wrap;
+    overflow-x:auto;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1em;
+}

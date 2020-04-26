@@ -1,10 +1,4 @@
-<?php
-//dump($transactionList);
-// dump($transactionSum);
-// dump($userTransaction);
-?>
-
-<form method="get" action="">
+<form method="GET" action="">
     <div class="mb-2 d-flex align-items-center">
         <label class="mr-sm-2" for="filter">Trier par</label>
         <div class="col-auto my-1">
@@ -35,55 +29,69 @@
     </thead>
     <tbody>
         <?php
-        if ($transactionList != null) : 
-            foreach ($transactionList as $transactionId => $transaction) : ?>
+        // Si le résultat des requêtes SQL contient des entrées, donc s'il n'est pas false
+        if($filterTransactions != false) {
+            // Récupère les clés du tableau
+            //  -filterSum
+            //  -filterList
+            extract($filterTransactions);
+        }
 
-                <tr>
-                    <td scope="col"><?= $transactionId + 1; ?></td>
-                    <td scope="col">
-                        <?php 
-                            if($transaction->getDate() != null) {
-                                echo $transaction->getDate();
-                            }
-                            if($transaction->getDateTransfer() != null) {
-                                echo $transaction->getDateTransfer();
-                            }
-                        ?>
-                    </td>
-                    <td scope="col">
-                        <?php 
-                            if($transaction->getTitle() != null) {
-                                echo $transaction->getTitle();
-                            }
-                            if($transaction->getTitleTransfer() != null) {
-                                echo $transaction->getTitleTransfer();
-                            }
-                        ?>
-                    </td>
-                    <td scope="col">
-                        <?= 
-                        empty($transaction->getSum()) || $transaction->getSum() == '0.00' ? '' : $transaction->getSum() . ' €'; 
-                        ?>
-                    </td>
-                    <td scope="col">
-                        <?= 
-                        empty($transaction->getTransferAmount()) || $transaction->getTransferAmount() == '0.00' ? '' : $transaction->getTransferAmount() . ' €'; 
-                        ?>
-                    </td>
-                </tr>
+        // Si aucun tri n'a été demandé
+        // Ou si aucune transaction n'a été effectué -> Le résultat des requêtes SQL est false
+        // Ou si le tri 'Afficher Tout' a été demandé
+        if(empty($_GET['filter']) || $filterTransactions === false || $_GET['filter'] === 'all') :
+            // Si La liste des transactions de l'utilisateur connecté n'est pas vide
+            if ($transactionList != null) : 
+                // Affiche toutes les transactions
+                foreach ($transactionList as $transactionId => $transaction) :
+                    require __DIR__ . '/../partials/filterTable.tpl.php';
+      
+                 endforeach; 
+             endif; 
+         endif; 
+
+            // Si un tri a été demandé ET si le résultat de la requête SQL n'est pas vide
+            if(!empty($_GET['filter']) && !empty($filterList)) : 
+        ?>
+            <?php 
+                // Affiche chaque résultat obtenu
+                foreach ($filterList as $transactionId => $transaction) : 
+                require __DIR__ . '/../partials/filterTable.tpl.php';
+            ?>
 
             <?php endforeach; ?>
-        <?php endif; ?>
+        <?php endif;?>
 
             <tr class="table-danger">
                 <td colspan="3">Somme totale dépensée</td>
-                <td><?= $transactionSum['sumExpenses'] == null ? '0.00' : $transactionSum['sumExpenses']; ?> €</td>
+                <td>
+                    <?php 
+                        if(!empty($filterSum)) {
+                            echo $filterSum[0]['sumExpenses'] .' €';
+                        } else if($transactionSum['sumExpenses'] != null) {
+                                echo $transactionSum['sumExpenses'] . ' €';
+                        } else {
+                            echo '0.00 €';
+                        }
+                    ?> 
+                </td>
                 <td></td>
             </tr>
             <tr class="table-success">
                 <td colspan="3">Somme totale gagnée</td>
                 <td></td>
-                <td><?= $transactionSum['sumIncome'] == null ? '0.00' : $transactionSum['sumIncome']; ?> €</td>
+                <td>
+                    <?php
+                        if(!empty($filterSum)) {
+                            echo $filterSum[0]['sumIncome'] .' €';
+                        } else if($transactionSum['sumIncome'] != null) {
+                                echo $transactionSum['sumIncome'] . ' €';
+                        } else {
+                            echo '0.00 €';
+                        }
+                    ?> 
+                </td>
             </tr>
 
             <tr class="table-info">

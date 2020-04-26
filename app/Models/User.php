@@ -226,4 +226,32 @@ class User extends CoreModel {
         }
         return false;
     }
+
+    /**
+     * Modifie dans la BDD le mot de passe de l'utilisateur connecté
+     *
+     * @param [string] $userEmail
+     * @return bool
+     */
+    public function updatePassword($userEmail) {
+        $pdo = Database::getPDO();
+
+        $sql = 'UPDATE users 
+        SET 
+            `password` = :password,
+            updated_at = NOW()
+        WHERE email = :email;';
+
+        $pdoStatement = $pdo->prepare($sql);
+        $pdoStatement->bindValue(':password', $this->password, PDO::PARAM_STR);
+        $pdoStatement->bindValue(':email', $userEmail, PDO::PARAM_STR);
+
+        $executed = $pdoStatement->execute();
+        $updatedRows = $pdoStatement->rowCount();
+
+        if($executed && $updatedRows === 1) {
+            return true;
+        }
+        return false;
+    }
 }

@@ -38,6 +38,20 @@ $router->map(
     'main-home'
 );
 
+$router->map(
+    'GET',
+    '/commentaires',
+    'CommentController::comments',
+    'comments-comments'
+);
+
+$router->map(
+    'POST',
+    '/commentaires',
+    'CommentController::add'
+);
+
+
 /* =======================
         USER CONNEXION
    =======================
@@ -91,7 +105,19 @@ $router->map(
 $router->map(
     'POST',
     '/profil',
-    'UserController::update'
+    'UserController::updateProfil'
+);
+
+$router->map(
+    'GET',
+    '/password',
+    'UserController::password',
+    'user-password'
+);
+$router->map(
+    'POST',
+    '/password',
+    'UserController::updatePassword'
 );
 
 /* =======================
@@ -131,32 +157,6 @@ $router->map(
     '/income',
     'AccountController::addIncome'
 );
-
-
-/*
-
-
-$router->map(
-    'GET',
-    '/changer-mot-de-passe',
-    'password',
-    'route_password'
-);
-
-
-$router->map(
-    'GET',
-    '/updatePassword',
-    'updatePassword',
-    'route_update_Password'
-);
-
-$router->map(
-    'GET',
-    '/commentaires',
-    'comments',
-    'route_comments'
-); */
 
 
 /* -------------

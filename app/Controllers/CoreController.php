@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 use App\Models\Account;
+use App\Models\UserPictureColor;
+
 
 abstract class CoreController {
     /**
@@ -15,7 +17,7 @@ abstract class CoreController {
         // On globalise $router car on ne sait pas faire mieux pour l'instant
         global $router;
 
-        $viewVars['connectedUser'] = isset($_SESSION['connectedUser']) ? $_SESSION['connectedUser'] : null;
+        $viewVars['connectedUser'] = isset($_SESSION['connectedUser']) ? true : false;
 
         // Si utilisateur connecté
         if(!empty($_SESSION['connectedUser'])) {
@@ -25,16 +27,23 @@ abstract class CoreController {
             $transactionSum = Account::findSum($_SESSION['connectedUser']->getEmail());
             // Récupère les informations sur les dépenses/revenus de l'utilisateur sous forme d'un tableau avec une entrée unique contenant un objet de type Account
             $userTransaction = Account::find($_SESSION['connectedUser']->getEmail());
+            $name = $_SESSION['connectedUser']->getName();
+            $firstLetter = substr($name, 0, 1);
+            $color = UserPictureColor::find();
         } else {
             // Sinon, si visiteur
             $transactionList = null;
             $transactionSum = null;
             $userTransaction = null;
+            $firstLetter = null;
+            $color = null;
         }
 
         $viewVars['transactionList'] = $transactionList;
         $viewVars['transactionSum'] = $transactionSum;
         $viewVars['userTransaction'] = $userTransaction;
+        $viewVars['firstLetter'] = $firstLetter;
+        $viewVars['color'] = $color;
 
 
         // Comme $viewVars est déclarée comme paramètre de la méthode show()

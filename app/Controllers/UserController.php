@@ -245,7 +245,7 @@ class UserController extends CoreController
      * Méthode HTTP: POST
      * @return void
      */
-    public function update() {
+    public function updateProfil() {
         $this->checkAuthorization();
 
         $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
@@ -336,4 +336,102 @@ class UserController extends CoreController
             ]);
         }
     }
+
+    /**
+     * Affiche la page pour changer le mot de passe
+     *
+     * @return void
+     */
+    public function password() {
+        $this->checkAuthorization();
+        $pageName = 'Changer le mot de passe';
+        $this->show('user/password', [
+            'pageName' => $pageName
+        ]);
+    }
+
+    /**
+     * Modifie le mot de passe de l'utilisateur conencté
+     *
+     * Méthode HTTP : POST
+     * @return void
+     */
+    public function updatePassword() {
+        $this->checkAuthorization();
+
+        $oldPassword = filter_input(INPUT_POST, 'old_password', FILTER_SANITIZE_STRING);
+        $newPassword = filter_input(INPUT_POST, 'new_password', FILTER_SANITIZE_STRING);
+        $confPassword = filter_input(INPUT_POST, 'new_password_conf', FILTER_SANITIZE_STRING);
+
+        $errorList = [];
+
+        if(strlen($oldPassword) < 3)  {
+            $errorList[] = 'Le mot de passe doit contenir 3 caractères minimum';
+        }
+
+        if(empty($oldPassword)) {
+            $errorList[] = 'Merci de renseigner votre mot de passe actuel';
+        }
+
+        if(empty($newPassword)) {
+            $errorList[] = 'Merci de renseigner votre nouveau mot de passe';
+        }
+
+        if(empty($confPassword)) {
+            $errorList[] = 'Merci de confirmer votre nouveau mot de passe';
+        }
+
+        if($newPassword !== $confPassword) {
+            $errorList[] = 'Les mots de passe doivent correspondre';
+        }
+
+        // S'il n'y a pas d'erreurs jusque là
+        if(empty($errorList)) {
+            // Recherche les informations de l'utilisateur connecté grâce à son email unique
+            $user = User::findByMail($_SESSION['connectedUser']->getEmail());
+
+            // Si aucun résultat trouvé
+            if($user == false) {
+                $errorList[] = 'Vous n\'avez pas les droits pour modifier ce mot de passe !';
+            }
+
+            // Compare le mot de passe entré dans le formulaire avec celui de la BDD
+            $checkPassword = password_verify($oldPassword, $user->getPassword());
+
+            // Si une correspondance est trouvée
+            if($checkPassword) {
+                // Hache le mot de passe 
+                $password = password_hash($newPassword, PASSWORD_DEFAULT);
+
+                // Redéfinis la valeur du mot de passe de l'utilisateur connecté
+                $user->setPassword($password);
+
+                // Actualise le mot de passe dans la BDD
+                $executed = $user->updatePassword($_SESSION['connectedUser']->getEmail());
+
+                // Si l'update s'est bien déroulé
+                if($executed) {
+                    $success = 'Le mot de passe a bien été mis à jour';
+
+                    $this->show('user/password', [
+                        'success' => $success
+                    ]);
+                } else {
+                    $errorList[] = 'La mise a jour du mot de passe a échoué, merci de recommencer.';
+                }
+            } else {
+                // Sinon, si le mot de passe entré n'est pas le même que celui de la BDD, ajoute une erreur
+                $errorList[] = 'Le mot de passe actuel est invalide';
+            }
+        }
+
+        if(!empty($errorList)) {
+            $pageName = 'Mot de passe invalide';
+            $this->show('user/password', [
+                'errorList' => $errorList,
+                'pageName' => $pageName
+            ]);
+        }
+    }
+
 }

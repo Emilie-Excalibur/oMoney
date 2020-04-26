@@ -16,7 +16,7 @@
         type="text"
         id="name"
         name="name" 
-        value="<?= isset($user) ? $user->getName() : $connectedUser->getName(); ?>"
+        value="<?= isset($user) ? $user->getName() : $_SESSION['connectedUser']->getName(); ?>"
         >
     </div>
 
@@ -28,7 +28,7 @@
         id="email" 
         aria-describedby="emailHelp" 
         name="email"
-        value="<?= isset($user) ? $user->getEmail() : $connectedUser->getEmail(); ?>"
+        value="<?= isset($user) ? $user->getEmail() : $_SESSION['connectedUser']->getEmail(); ?>"
         >
         <small id="emailhelp" class="form-text small-form">Les accents et les caractères spéciaux ! # $ % & ' * + / = ? ^ ` { | } ~ ne sont pas autorisés.</small>
     </div>
