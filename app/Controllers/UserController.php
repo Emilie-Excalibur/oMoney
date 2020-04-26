@@ -242,7 +242,7 @@ class UserController extends CoreController
 
     /**
      * Modifie les informations de l'utilisateur connecté dans la BDD
-     *
+     * Méthode HTTP: POST
      * @return void
      */
     public function update() {
@@ -266,6 +266,10 @@ class UserController extends CoreController
 
         if(empty($name)) {
             $errorList[] = 'Merci de renseigner votre nom';
+        }
+
+        if(strlen($name) < 3) {
+            $errorList[] = 'Le nom doit contenir 3 caractères minimum';
         }
 
         // Recherche tous les emails dans la BDD
@@ -296,12 +300,13 @@ class UserController extends CoreController
                 // Actualise les données de la session avec la nouvelle adresse email
                 $_SESSION['connectedUser']->setEmail($newEmail);
                 $_SESSION['connectedUser']->setName($name);
-
+                $creationDate = $user->getCreatedAt();
 
                 $success = 'Les informations ont bien été mises à jour';
 
                 $this->show('user/profil', [
-                    'success' => $success
+                    'success' => $success,
+                    'creationDate' => $creationDate
                 ]);
 
             // Si au contraire il y a eu un soucis
@@ -312,14 +317,22 @@ class UserController extends CoreController
             }
         }
 
+        // S'il y a eu des erreurs
         if(!empty($errorList)) {
+            // Récupère les informations erronées dans une nouvelle instance USer
+            // Pour pouvoir préremplir les champs
             $user = new User();
             $user->setName(filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING));
             $user->setEmail(filter_input(INPUT_POST, 'email',FILTER_SANITIZE_EMAIL));
 
+            // Récupère la date de création du compte de l'utilisateur connecté
+            $user = User::findByMail($_SESSION['connectedUser']->getEmail());
+            $creationDate = $user->getCreatedAt();
+
             $this->show('user/profil', [
                 'user' => $user,
-                'errorList' => $errorList
+                'errorList' => $errorList,
+                'creationDate' => $creationDate
             ]);
         }
     }

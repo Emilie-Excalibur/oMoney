@@ -13,7 +13,9 @@ class AccountController extends CoreController {
     public function history()
     {
         $pageName = 'Historique';
-        $this->show('account/history', ['pageName' => $pageName]);
+        $this->show('account/history', [
+            'pageName' => $pageName
+            ]);
     }
 
     /**
@@ -23,13 +25,8 @@ class AccountController extends CoreController {
      */
     public function expenses() {
         $pageName = 'Ajouter des dépenses';
-        $email = $_SESSION['connectedUser']->getEmail();
-
-        $userExpenses = Account::find($email);
-
         $this->show('account/expenses', [
-            'pageName' => $pageName,
-            'userExpenses' => $userExpenses
+            'pageName' => $pageName
             ]);
     }
 
@@ -45,6 +42,7 @@ class AccountController extends CoreController {
 
     /**
      * Ajoute les dépenses de l'utilisateur connecté dans la BDD
+     * Méthode HTTP : POST
      *
      * @return void
      */
@@ -106,7 +104,6 @@ class AccountController extends CoreController {
                 }
             }
         }
-
 
         // S'il y a eu des erreurs
         if(!empty($errorList)) {

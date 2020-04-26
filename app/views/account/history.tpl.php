@@ -1,3 +1,9 @@
+<?php
+//dump($transactionList);
+// dump($transactionSum);
+// dump($userTransaction);
+?>
+
 <form method="get" action="">
     <div class="mb-2 d-flex align-items-center">
         <label class="mr-sm-2" for="filter">Trier par</label>
@@ -28,26 +34,66 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td scope="col">1</td>
-            <td scope="col">-</td>
-            <td scope="col">-</td>
-            <td scope="col">-</td>
-            <td scope="col">-</td>
-        </tr>
-        <tr class="table-danger">
-            <td colspan="3">Somme totale dépensée</td>
-            <td>0 €</td>
-            <td></td>
-        </tr>
-        <tr class="table-success">
-            <td colspan="3">Somme totale gagnée</td>
-            <td></td>
-            <td>0 €</td>
-        </tr>
+        <?php
+        if ($transactionList != null) : 
+            foreach ($transactionList as $transactionId => $transaction) : ?>
 
-        <tr class="table-info">
-            <td colspan="5">Solde du compte : 0 €</td>
-        </tr>
+                <tr>
+                    <td scope="col"><?= $transactionId + 1; ?></td>
+                    <td scope="col">
+                        <?php 
+                            if($transaction->getDate() != null) {
+                                echo $transaction->getDate();
+                            }
+                            if($transaction->getDateTransfer() != null) {
+                                echo $transaction->getDateTransfer();
+                            }
+                        ?>
+                    </td>
+                    <td scope="col">
+                        <?php 
+                            if($transaction->getTitle() != null) {
+                                echo $transaction->getTitle();
+                            }
+                            if($transaction->getTitleTransfer() != null) {
+                                echo $transaction->getTitleTransfer();
+                            }
+                        ?>
+                    </td>
+                    <td scope="col">
+                        <?= 
+                        empty($transaction->getSum()) || $transaction->getSum() == '0.00' ? '' : $transaction->getSum() . ' €'; 
+                        ?>
+                    </td>
+                    <td scope="col">
+                        <?= 
+                        empty($transaction->getTransferAmount()) || $transaction->getTransferAmount() == '0.00' ? '' : $transaction->getTransferAmount() . ' €'; 
+                        ?>
+                    </td>
+                </tr>
+
+            <?php endforeach; ?>
+        <?php endif; ?>
+
+            <tr class="table-danger">
+                <td colspan="3">Somme totale dépensée</td>
+                <td><?= $transactionSum['sumExpenses'] == null ? '0.00' : $transactionSum['sumExpenses']; ?> €</td>
+                <td></td>
+            </tr>
+            <tr class="table-success">
+                <td colspan="3">Somme totale gagnée</td>
+                <td></td>
+                <td><?= $transactionSum['sumIncome'] == null ? '0.00' : $transactionSum['sumIncome']; ?> €</td>
+            </tr>
+
+            <tr class="table-info">
+                <td colspan="5">Solde du compte :
+                <span class="font-weight-bold">
+                    <?= $userTransaction != false ?
+                        $userTransaction->getBalance() - $transactionSum['sumExpenses'] + $transactionSum['sumIncome'] . ' €' : '0.00 €'; 
+                    ?>
+                </span>
+                </td>
+            </tr>
     </tbody>
 </table>

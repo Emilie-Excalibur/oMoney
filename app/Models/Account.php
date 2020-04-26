@@ -261,4 +261,24 @@ class Account extends CoreModel {
         $transactionList = $pdoStatement->fetchAll(PDO::FETCH_CLASS, 'App\Models\Account');
         return $transactionList;
     }
+
+    public static function findSum($userEmail) {
+        $pdo = Database::getPDO();
+    
+        $sql = 'SELECT 
+        SUM(`transfer_amount`) AS sumIncome,
+        SUM(`sum`) AS sumExpenses
+        FROM `account` 
+        INNER JOIN users 
+        ON account.user_id = users.id
+        WHERE users.email = :email;';
+    
+        $pdoStatement = $pdo->prepare($sql);
+        $pdoStatement->bindValue(':email', $userEmail, PDO::PARAM_STR);
+
+        $pdoStatement->execute();
+        $transaction = $pdoStatement->fetch(PDO::FETCH_ASSOC);
+        return $transaction;
+    }
+
 }

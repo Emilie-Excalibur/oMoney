@@ -10,7 +10,7 @@
         name="balance" 
         id="balance" 
         step="0.01" 
-        value="<?= isset($userExpenses) ? $userExpenses->getBalance() : ''; ?>"
+        value="<?= $userTransaction != false ? $userTransaction->getBalance() - $transactionSum['sumExpenses'] + $transactionSum['sumIncome'] : '0.00'; ?>"
         >
     </div>
 

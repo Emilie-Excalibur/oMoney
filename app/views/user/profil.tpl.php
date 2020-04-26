@@ -35,7 +35,7 @@
 
     <div class="form-group">
         <label for="created_at">Compte créé le </label>
-        <input class="form-control" type="text" id="created_at" value="<?= isset($creationDate) ? $creationDate : ''; ?>" readonly>
+        <input class="form-control" type="text" id="created_at" value="<?= !empty($creationDate) ? $creationDate : ''; ?>" readonly>
     </div>
 
     <div id="errors"></div>

@@ -192,10 +192,8 @@ class User extends CoreModel {
         if ($executed && $insertedRows === 1) {
             $this->id = $pdo->lastInsertId();
             return true;
-
         }
         return false;
-
     }
 
 

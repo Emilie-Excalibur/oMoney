@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers;
+use App\Models\Account;
 
 abstract class CoreController {
     /**
@@ -15,6 +16,26 @@ abstract class CoreController {
         global $router;
 
         $viewVars['connectedUser'] = isset($_SESSION['connectedUser']) ? $_SESSION['connectedUser'] : null;
+
+        // Si utilisateur connecté
+        if(!empty($_SESSION['connectedUser'])) {
+            // Récupère la liste de toutes ses transactions (dépenses et revenus) sous la forme d'un tableau contenant un objet de type Account à chaque index
+            $transactionList = Account::findAll($_SESSION['connectedUser']->getEmail());
+            // Récupère les sommes de ses dépenses et de ses revenus
+            $transactionSum = Account::findSum($_SESSION['connectedUser']->getEmail());
+            // Récupère les informations sur les dépenses/revenus de l'utilisateur sous forme d'un tableau avec une entrée unique contenant un objet de type Account
+            $userTransaction = Account::find($_SESSION['connectedUser']->getEmail());
+        } else {
+            // Sinon, si visiteur
+            $transactionList = null;
+            $transactionSum = null;
+            $userTransaction = null;
+        }
+
+        $viewVars['transactionList'] = $transactionList;
+        $viewVars['transactionSum'] = $transactionSum;
+        $viewVars['userTransaction'] = $userTransaction;
+
 
         // Comme $viewVars est déclarée comme paramètre de la méthode show()
         // les vues y ont accès

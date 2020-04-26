@@ -1,7 +1,5 @@
 
 <?php 
-$date = new DateTime('now');
-//dd($date);
 //dump($connectedUser); ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,13 +12,13 @@ $date = new DateTime('now');
     <title>oMoney | <?= isset($pageName) ? $pageName : ''; ?></title>
 
     <!-- Bootstrap core CSS-->
-    <link href="<?= $assetsBaseUri; ?>css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?= $baseUri; ?>/assets/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom fonts-->
-    <link href="<?= $assetsBaseUri; ?>css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= $baseUri; ?>/assets/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <!-- CSS-->
-    <link href="<?= $assetsBaseUri; ?>css/style.css" rel="stylesheet">
+    <link href="<?= $baseUri; ?>/assets/css/style.css" rel="stylesheet">
 </head>
 
 <body class="bg-light">
