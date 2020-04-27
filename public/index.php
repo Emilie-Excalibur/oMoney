@@ -1,79 +1,31 @@
 <?php
 
-session_start();
-
 // Inclu les libraires
-require __DIR__ . '/../vendor/autoload.php';
-
-// Inclu les controllers
-require __DIR__ . '/../app/controllers/MainController.php';
-
-// Inclu les fonctions utiles au site
-require __DIR__ . '/../app/utils/functions.php';
-
-// Inclu la classe Database qui sert à se connect à la BDD
-require __DIR__ . '/../app/utils/Database.php';
-
-
-/**
- * DONNEES & BDD
- */
-
-// Validation des données du formulaire d'inscription
-if(isset($_POST['reg_user'])) {
-
-    // Vérifie les informations du formulaire avant de les ajouter en BDD
-    checkRegisterUserInfo();
-
-    // Ajoute les informations du formulaire dans la BDD
-    addUserInfoToDB();
-
-}
-
-// Validation des données du formulaire de connexion
-if(isset($_POST['login_user'])) {
-    // Vérifie les infos de l'utilisateur
-    // Si celles-ci correspondent à celles existant dans la BDD
-    // Connecte l'utilisateur
-    checkLoginUserInfo();
-}
-
-// Envoi des données du formulaire ajout des dépenses dans la BDD
-if(isset($_POST['add_expenses'])) {
-    addExpenses();
-}
-
-// Envoi des données du formulaire ajout d'un virement dans la BDD
-if(isset($_POST['add_transfer'])) {
-    addTransfer();
-}
-
-// Modification des données utilisateur
-if(isset($_POST['update'])) {
-    // L'utilisateur peut modifier son email
-    updateEmail();
-} 
-
-// Modification des données utilisateur
-if(isset($_POST['update_password'])) {
-    // L'utilisateur peut modifier son mot de passe
-    updatePassword();
-} 
-
-    // Ajout d'un commentaire
-    if (isset($_POST['comment_submit'])) {
-        addCommentToDb();
-    }
-
-
+require_once '../vendor/autoload.php';
+session_start();
 
 
 /**
  * GESTION DES ROUTES & AFFICHAGE DES VUES
  */
 
-// Instanciation d'un nouvel objet de la classe AltoRouter
+// création de l'objet router
+// Cet objet va gérer les routes pour nous, et surtout il va 
 $router = new AltoRouter();
+
+// le répertoire (après le nom de domaine) dans lequel on travaille est celui-ci
+// Mais on pourrait travailler sans sous-répertoire
+// Si il y a un sous-répertoire
+if (array_key_exists('BASE_URI', $_SERVER)) {
+    // Alors on définit le basePath d'AltoRouter
+    $router->setBasePath($_SERVER['BASE_URI']);
+    // ainsi, nos routes correspondront à l'URL, après la suite de sous-répertoire
+}
+// sinon
+else {
+    // On donne une valeur par défaut à $_SERVER['BASE_URI'] car c'est utilisé dans le CoreController
+    $_SERVER['BASE_URI'] = '';
+}
 
 // Définition de la route de base du projet
 $router->setBasePath($_SERVER['BASE_URI']);
@@ -82,128 +34,149 @@ $router->setBasePath($_SERVER['BASE_URI']);
 $router->map(
     'GET',
     '/',
-    'home',
-    'route_home'
-);
-
-$router->map(
-    'GET',
-    '/register',
-    'register',
-    'route_register'
-);
-
-$router->map(
-    'GET',
-    '/login',
-    'login',
-    'route_login'
-);
-
-$router->map(
-    'GET',
-    '/errorLog',
-    'errorLog',
-    'route_error_Log'
-);
-
-$router->map(
-    'GET',
-    '/errorReg',
-    'errorReg',
-    'route_error_Reg'
-);
-
-$router->map(
-    'GET',
-    '/profil',
-    'profil',
-    'route_profil'
-);
-
-$router->map(
-    'GET',
-    '/errorMail',
-    'errorMail',
-    'route_error_Mail'
-);
-
-$router->map(
-    'GET',
-    '/changer-mot-de-passe',
-    'password',
-    'route_password'
-);
-
-$router->map(
-    'GET',
-    '/errorPassword',
-    'errorPassword',
-    'route_error_Password'
-);
-
-$router->map(
-    'GET',
-    '/updatePassword',
-    'updatePassword',
-    'route_update_Password'
-);
-
-$router->map(
-    'GET',
-    '/ajouter-retrait-argent',
-    'retrait',
-    'route_add_expenses'
-);
-
-$router->map(
-    'GET',
-    '/historique',
-    'historique',
-    'route_historique'
-);
-
-$router->map(
-    'GET',
-    '/update',
-    'update',
-    'route_update'
-);
-
-$router->map(
-    'GET',
-    '/ajouter-virement',
-    'transfer',
-    'route_transfer'
+    'MainController::home',
+    'main-home'
 );
 
 $router->map(
     'GET',
     '/commentaires',
-    'comments',
-    'route_comments'
+    'CommentController::comments',
+    'comments-comments'
 );
 
+$router->map(
+    'POST',
+    '/commentaires',
+    'CommentController::add'
+);
+
+
+/* =======================
+        USER CONNEXION
+   =======================
+*/
+
+ $router->map(
+    'GET',
+    '/register',
+    'UserController::register',
+    'user-register'
+);
+
+$router->map(
+    'POST',
+    '/register',
+    'UserController::checkRegister'
+);
+
+$router->map(
+    'GET',
+    '/login',
+    'UserController::login',
+    'user-login'
+);
+
+$router->map(
+    'POST',
+    '/login',
+    'UserController::checkLogin'
+);
+
+$router->map(
+    'GET',
+    '/logout',
+    'UserController::logout',
+    'user-logout'
+);
+
+/* =======================
+        USER INFO
+   =======================
+*/
+
+$router->map(
+    'GET',
+    '/profil',
+    'UserController::profil',
+    'user-profil'
+);
+
+$router->map(
+    'POST',
+    '/profil',
+    'UserController::updateProfil'
+);
+
+$router->map(
+    'GET',
+    '/password',
+    'UserController::password',
+    'user-password'
+);
+$router->map(
+    'POST',
+    '/password',
+    'UserController::updatePassword'
+);
+
+/* =======================
+        USER'S ACCOUNT
+   =======================
+*/
+
+$router->map(
+    'GET',
+    '/history',
+    'AccountController::history',
+    'account-history'
+);
+
+$router->map(
+    'GET',
+    '/expenses',
+    'AccountController::expenses',
+    'account-expenses'
+);
+
+$router->map(
+    'POST',
+    '/expenses',
+    'AccountController::addExpenses'
+);
+
+$router->map(
+    'GET',
+    '/income',
+    'AccountController::income',
+    'account-income'
+);
+
+$router->map(
+    'POST',
+    '/income',
+    'AccountController::addIncome'
+);
+
+
+/* -------------
+--- DISPATCH ---
+--------------*/
+
+// On demande à AltoRouter de trouver une route qui correspond à l'URL courante
 $match = $router->match();
 
-// Si la route demandée dans l'URL existe
-if($match) {
-    // Récupère le nom de la méthode qu'il faudra appeler 
-    // pour afficher la page
-    $methodToCall = $match['target'];
-} else {
-    $methodToCall = 'error404';
-}
+// Ensuite, pour dispatcher le code dans la bonne méthode, du bon Controller
+// On délègue à une librairie externe : https://packagist.org/packages/benoclock/alto-dispatcher
+// 1er argument : la variable $match retournée par AltoRouter
+// 2e argument : le "target" (controller & méthode) pour afficher la page 404
+$dispatcher = new Dispatcher($match, '\App\Controllers\ErrorController::err404');
 
-//dump($_SESSION);
+// On précise le namespace pour tous les controllers
+// Ce qui évite de les réécrire à chaque fois
+$dispatcher->setControllersNamespace('\App\Controllers\\');
 
-
-    // Rendu visuel
-    
-// Instanciation de la classe MainController
-$controller = new MainController();
-
-// Appel la méthode correspondante du controller afin d'afficher la page demandée
-$controller->$methodToCall();
+// Une fois le "dispatcher" configuré, on lance le dispatch qui va exécuter la méthode du controller
+$dispatcher->dispatch();
 
 
