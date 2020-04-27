@@ -12,12 +12,13 @@
                     <div class="form-group">
                         <div class="form-row">
                             <div class="col-md-12">
-                                <label for="exampleInputName">Nom</label>
+                                <label for="username">Nom</label>
                                    <input 
                                    class="form-control username" 
                                    id="username" 
                                    type="text" 
                                    name="username" 
+                                   placeholder="Votre nom"
                                    value="<?= isset($user) ? $user->getName() : ''; ?>"
                                    >
                                    <small id="nameHelp" class="form-text small-form">Le nom doit contenir 3 caractères minimum</small>
@@ -26,13 +27,13 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Email</label>
-
+                        <label for="email">Email</label>
                         <input 
                         class="form-control email" 
                         id="email" 
                         type="email" 
                         aria-describedby="emailHelp" 
+                        placeholder="Votre email"
                         name="email" 
                         value="<?= isset($user) ? $user->getEmail() : ''; ?>"
                         >
@@ -44,21 +45,26 @@
                             <div class="col-md-6">
                                 <label for="password_1">Mot de passe</label>
 
-                                <input class="form-control password_1" id="password_1" type="password" name="password_1">
-                                <small id="passwordHelpBlock" class="form-text small-form">Le mot de passe doit contenir 3 caractères minimum</small>
+                                <input 
+                                class="form-control password_1" id="password_1" 
+                                type="password" 
+                                name="password_1"
+                                placeholder="Votre mot de passe"
+                                >
+                                <small id="password_1" class="form-text small-form">Le mot de passe doit contenir 3 caractères minimum</small>
                             </div>
 
                             <div class="col-md-6">
                                 <label for="password_2">Confirmer le mot de passe</label>
 
-                                <input class="form-control password_2" id="passsword_2" type="password" name="password_2">
+                                <input class="form-control password_2" id="passsword_2" type="password" name="password_2" placeholder="Confirmer votre mot de passe">
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="exampleFormControlFile1">Choisir un avatar</label>
-                        <input type="file" class="form-control-file" id="exampleFormControlFile1" name="picture">
+                        <label for="picture">Choisir un avatar</label>
+                        <input type="file" class="form-control-file" id="picture" name="picture">
                     </div>
 
                     <button class="btn btn-info btn-block" name="reg_user">S'inscrire</button>

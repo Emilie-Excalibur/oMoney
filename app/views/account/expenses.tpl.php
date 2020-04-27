@@ -1,10 +1,6 @@
-<?php
-//dd(filter_var());
-?>
-
 <?php include __DIR__ . '/../partials/errorlist.tpl.php'; ?>
 
-<form method="post" action="" id="form-retrait">
+<form method="POST" action="" id="form-retrait">
 
     <div class="form-group">
         <label for="balance">Solde du compte</label>

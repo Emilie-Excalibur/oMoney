@@ -292,7 +292,7 @@ class UserController extends CoreController
             $user->setName($name);
             $user->setEmail($newEmail);
 
-            $executed = $user->update();
+            $executed = $user->updateProfil();
 
             // Si tout s'est bien passé
             if ($executed) {
@@ -303,8 +303,10 @@ class UserController extends CoreController
                 $creationDate = $user->getCreatedAt();
 
                 $success = 'Les informations ont bien été mises à jour';
+                $pageName = 'Profil mis à jour';
 
                 $this->show('user/profil', [
+                    'pageName' => $pageName,
                     'success' => $success,
                     'creationDate' => $creationDate
                 ]);
@@ -329,7 +331,11 @@ class UserController extends CoreController
             $user = User::findByMail($_SESSION['connectedUser']->getEmail());
             $creationDate = $user->getCreatedAt();
 
+            $pageName = 'Mauvaises informations de profil';
+
+            // envoi des erreurs et des informations erronées à la vue
             $this->show('user/profil', [
+                'pageName' => $pageName,
                 'user' => $user,
                 'errorList' => $errorList,
                 'creationDate' => $creationDate

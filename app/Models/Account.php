@@ -285,7 +285,6 @@ class Account extends CoreModel {
      * @return Account[]
      */
     public static function findAll($userEmail) {
-
         $pdo = Database::getPDO();
 
         $sql = 'SELECT 
@@ -295,6 +294,34 @@ class Account extends CoreModel {
         INNER JOIN users
         ON account.user_id = users.id
         WHERE users.email = :email
+        ;';
+
+        $pdoStatement = $pdo->prepare($sql);
+        $pdoStatement->bindValue(':email', $userEmail, PDO::PARAM_STR);
+
+        $pdoStatement->execute();
+        $transactionList = $pdoStatement->fetchAll(PDO::FETCH_CLASS, 'App\Models\Account');
+        return $transactionList;
+    }
+
+    /**
+     * Récupère toutes les transactions de l'utilisateur connecté
+     * par ordre croissant de date (du plus ancien au plus récent)
+     *
+     * @param [int] $userEmail
+     * @return []
+     */
+    public static function findAllByDate($userEmail) {
+        $pdo = Database::getPDO();
+
+        $sql = 'SELECT 
+        account.*,
+        users.email 
+        FROM account
+        INNER JOIN users
+        ON account.user_id = users.id
+        WHERE users.email = :email
+        ORDER By `date` ASC
         ;';
 
         $pdoStatement = $pdo->prepare($sql);
@@ -422,25 +449,6 @@ class Account extends CoreModel {
             WHERE users.email = :email
             ORDER BY account.date DESC, account.date_transfer DESC;
             ';    
-        } else if(!empty($_GET['filter']) && $_GET['filter'] === 'title') {
-            $sql = 'SELECT *
-            FROM account
-            INNER JOIN users
-            ON account.user_id = users.id
-            WHERE users.email = :email
-            ORDER BY account.title ASC, account.title_transfer ASC;
-            ';
-
-            $sqlSum='SELECT 
-            SUM(`sum`) AS sumExpenses,
-            SUM(transfer_amount) as sumIncome
-            FROM account
-            INNER JOIN users
-            ON account.user_id = users.id
-            WHERE users.email = :email
-            ORDER BY account.title ASC, account.title_transfer ASC;
-            ';
-
         } else if(!empty($_GET['filter']) && $_GET['filter'] === 'sum') {
             $sql = 'SELECT *
             FROM account

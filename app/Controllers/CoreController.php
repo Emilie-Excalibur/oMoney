@@ -23,10 +23,17 @@ abstract class CoreController {
         if(!empty($_SESSION['connectedUser'])) {
             // Récupère la liste de toutes ses transactions (dépenses et revenus) sous la forme d'un tableau contenant un objet de type Account à chaque index
             $transactionList = Account::findAll($_SESSION['connectedUser']->getEmail());
+
             // Récupère les sommes de ses dépenses et de ses revenus
             $transactionSum = Account::findSum($_SESSION['connectedUser']->getEmail());
+
             // Récupère les informations sur les dépenses/revenus de l'utilisateur sous forme d'un tableau avec une entrée unique contenant un objet de type Account
             $userTransaction = Account::find($_SESSION['connectedUser']->getEmail());
+
+            // Récupère toutes les transactions par date croissante (du plus ancien au plus récent)
+            $expensesByDate = Account::findAllByDate($_SESSION['connectedUser']->getEmail());
+
+            // Récupère les informations de l'utilisateur (nom, première lettre de son nom)
             $name = $_SESSION['connectedUser']->getName();
             $firstLetter = substr($name, 0, 1);
             $color = UserPictureColor::find();
@@ -35,15 +42,19 @@ abstract class CoreController {
             $transactionList = null;
             $transactionSum = null;
             $userTransaction = null;
+            $expensesByDate = null;
             $firstLetter = null;
             $color = null;
         }
 
+        // Ajoute les valeurs dans viewVars pour pouvoir les transmettre à toutes les vues après
         $viewVars['transactionList'] = $transactionList;
         $viewVars['transactionSum'] = $transactionSum;
         $viewVars['userTransaction'] = $userTransaction;
+        $viewVars['expensesByDate'] = $expensesByDate;
+
         $viewVars['firstLetter'] = $firstLetter;
-        $viewVars['color'] = $color;
+        $viewVars['color'] = $color; 
 
 
         // Comme $viewVars est déclarée comme paramètre de la méthode show()

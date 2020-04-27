@@ -9,7 +9,6 @@
                 <option value="yesterday">Hier</option>
                 <option value="week">Cette semaine</option>
                 <option value="month">Ce mois</option>
-                <option value="title">Ordre alphabétique</option>
                 <option value="sum">Somme dépensée</option>
             </select>
         </div>
@@ -40,13 +39,12 @@
         // Si aucun tri n'a été demandé
         // Ou si aucune transaction n'a été effectué -> Le résultat des requêtes SQL est false
         // Ou si le tri 'Afficher Tout' a été demandé
-        if(empty($_GET['filter']) || $filterTransactions === false || $_GET['filter'] === 'all') :
+        if(empty($_GET['filter']) || $filterTransactions === false) :
             // Si La liste des transactions de l'utilisateur connecté n'est pas vide
             if ($transactionList != null) : 
                 // Affiche toutes les transactions
                 foreach ($transactionList as $transactionId => $transaction) :
                     require __DIR__ . '/../partials/filterTable.tpl.php';
-      
                  endforeach; 
              endif; 
          endif; 
@@ -68,9 +66,9 @@
                 <td>
                     <?php 
                         if(!empty($filterSum)) {
-                            echo $filterSum[0]['sumExpenses'] .' €';
+                            echo number_format($filterSum[0]['sumExpenses'], 2, ',', ' ') .' €';
                         } else if($transactionSum['sumExpenses'] != null) {
-                                echo $transactionSum['sumExpenses'] . ' €';
+                                echo number_format($transactionSum['sumExpenses'], 2, ',', ' ') . ' €';
                         } else {
                             echo '0.00 €';
                         }
@@ -84,9 +82,9 @@
                 <td>
                     <?php
                         if(!empty($filterSum)) {
-                            echo $filterSum[0]['sumIncome'] .' €';
+                            echo number_format($filterSum[0]['sumIncome'], 2, ',', ' ') .' €';
                         } else if($transactionSum['sumIncome'] != null) {
-                                echo $transactionSum['sumIncome'] . ' €';
+                                echo number_format($transactionSum['sumIncome'], 2, ',', ' ') . ' €';
                         } else {
                             echo '0.00 €';
                         }
@@ -97,8 +95,7 @@
             <tr class="table-info">
                 <td colspan="5">Solde du compte :
                 <span class="font-weight-bold">
-                    <?= $userTransaction != false ?
-                        $userTransaction->getBalance() - $transactionSum['sumExpenses'] + $transactionSum['sumIncome'] . ' €' : '0.00 €'; 
+                    <?= $userTransaction != false ? number_format($userTransaction->getBalance() - $transactionSum['sumExpenses'] + $transactionSum['sumIncome'], 2, ',', ' ') . ' €' : '0.00 €'; 
                     ?>
                 </span>
                 </td>

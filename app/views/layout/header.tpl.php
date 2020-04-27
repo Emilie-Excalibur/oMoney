@@ -7,15 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <title>oMoney <?= isset($pageName) ? '| ' . $pageName : ''; ?></title>
+    <link rel="shortcut icon" href="<?= $assetsBaseUri; ?>images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="<?= $assetsBaseUri; ?>images/favicon.ico" type="image/gif" sizes="16x16">
 
     <!-- Bootstrap core CSS-->
-    <link href="<?= $baseUri; ?>/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?= $assetsBaseUri; ?>css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom fonts-->
-    <link href="<?= $baseUri; ?>/assets/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= $assetsBaseUri; ?>css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <!-- CSS-->
-    <link href="<?= $baseUri; ?>/assets/css/style.css" rel="stylesheet">
+    <link href="<?= $assetsBaseUri; ?>css/style.css" rel="stylesheet">
 </head>
 
 <body class="bg-light">

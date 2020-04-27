@@ -71,6 +71,7 @@ a:focus {
     transform-origin: bottom left;
 }
 
+
 #sidebar.active {
     margin-left: -250px;
     transform: rotateY(100deg);

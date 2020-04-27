@@ -22,12 +22,12 @@
     </td>
     <td scope="col">
         <?=
-            empty($transaction->getSum()) || $transaction->getSum() == '0.00' ? '' : $transaction->getSum() . ' €';
+            empty($transaction->getSum()) || $transaction->getSum() == '0.00' ? '' : number_format($transaction->getSum(), 2, ',', ' ') . ' €';
         ?>
     </td>
     <td scope="col">
         <?=
-            empty($transaction->getTransferAmount()) || $transaction->getTransferAmount() == '0.00' ? '' : $transaction->getTransferAmount() . ' €';
+            empty($transaction->getTransferAmount()) || $transaction->getTransferAmount() == '0.00' ? '' : number_format($transaction->getTransferAmount(), 2, ',', ' ') . ' €';
         ?>
     </td>
 </tr>

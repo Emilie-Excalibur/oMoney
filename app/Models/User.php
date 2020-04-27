@@ -130,6 +130,12 @@ class User extends CoreModel {
         return $result;
     }
 
+    /**
+     * Récupère les informations d'un utilisateur en fonction de son nom
+     *
+     * @param [string] $name
+     * @return User
+     */
     public static function findByName($name) {
         $pdo = Database::getPDO();
         $sql = 'SELECT * FROM users WHERE `name`= :name';
@@ -142,6 +148,13 @@ class User extends CoreModel {
         return $users;
     }
 
+    /**
+     * Récupèr eles informations d'un utilisateur en fonction de son nom ET de son mot de passe
+     *
+     * @param [string] $name
+     * @param [string] $password
+     * @return User
+     */
     public static function findByNameAndPassword($name, $password) {
         $pdo = Database::getPDO();
         $sql = 'SELECT * 
@@ -202,7 +215,7 @@ class User extends CoreModel {
      *
      * @return bool
      */
-    public function update() {
+    public function updateProfil() {
         $pdo = Database::getPDO();
 
         $sql ='UPDATE `users`

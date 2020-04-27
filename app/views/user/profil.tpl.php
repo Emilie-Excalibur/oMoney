@@ -8,7 +8,7 @@
 
 <?php endif; ?>
 
-<form method="post" id="update" action="">
+<form method="POST" id="update" action="">
     <div class="form-group">
         <label for="name">Nom</label>
         <input 
@@ -35,7 +35,7 @@
 
     <div class="form-group">
         <label for="created_at">Compte créé le </label>
-        <input class="form-control" type="text" id="created_at" value="<?= !empty($creationDate) ? $creationDate : ''; ?>" readonly>
+        <input class="form-control" type="text" id="created_at" value="<?= !empty($creationDate) ? date('d/m/Y H:i:s', strtotime($creationDate)) : ''; ?>" readonly>
     </div>
 
     <div id="errors"></div>

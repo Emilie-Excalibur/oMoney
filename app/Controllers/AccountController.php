@@ -58,6 +58,7 @@ class AccountController extends CoreController {
         // Vérifie qu'il s'agit bien d'un utilisateur connecté
         $this->checkAuthorization();
 
+        // Récupère les valeurs des champs
         $balance = filter_input(INPUT_POST, 'balance', FILTER_SANITIZE_NUMBER_FLOAT, 
         FILTER_FLAG_ALLOW_FRACTION);
         $date = trim(filter_input(INPUT_POST, 'date', FILTER_SANITIZE_STRING));
@@ -65,14 +66,28 @@ class AccountController extends CoreController {
         $sum = filter_input(INPUT_POST, 'sum',  FILTER_SANITIZE_NUMBER_FLOAT, 
         FILTER_FLAG_ALLOW_FRACTION);
 
+        // Crée un nouvel objet DateTime pour récupérer la date du jour
+        $todayObject = new \DateTime('Today');
+        // Formate la date sous forme Année-Mois-Jour
+        $today = $todayObject->format('Y-m-d');
+
         $errorList = [];
 
         if(empty($balance)) {
             $errorList[] = 'Merci de renseigner le solde de votre compte';
         }
+
+        // Dans la BDD, les virements sont stockés sous la forme de décimaux (10,2)
+        // La limite autorisée est donc de 12 chiffres maximum dont 2 après la virgule
+        if($balance > 9999999999.99) {
+            $errorList[] = 'Le montant de la dépense dépasse la limite autorisée';
+        }
         if(empty($date)) {
             $errorList[] = 'Merci de renseigner une date';
         }
+        if($date > $today) {
+            $errorList[] = 'La date entrée est postérieure à la date du jour: ' . date('d/m/Y', strtotime($today));
+        } 
         if(empty($title)) {
             $errorList[] = 'L\'intitulé est invalide';
         }
@@ -81,6 +96,12 @@ class AccountController extends CoreController {
         }
         if(empty($sum)) {
             $errorList[] = 'Merci de renseigner un montant';
+        }
+        if($sum > $balance) {
+            $errorList[] = 'Vous n\'avez pas assez d\'argent sur votre compte pour réaliser cette dépense';
+        }
+        if($sum > 9999999999.99) {
+            $errorList[] = 'Le montant du virement dépasse la somme autorisée';
         }
 
         // Si pas d'erreurs
@@ -121,11 +142,13 @@ class AccountController extends CoreController {
         if(!empty($errorList)) {
             $account = new Account();
             $account->setTitle(filter_input(INPUT_POST, 'title',  FILTER_SANITIZE_STRING));
-            $account->setSum(INPUT_POST, 'sum',  FILTER_SANITIZE_NUMBER_FLOAT, 
+            $account->setSum(INPUT_POST, 'sum', FILTER_SANITIZE_NUMBER_FLOAT, 
             FILTER_FLAG_ALLOW_FRACTION);
             $account->setDate(filter_input(INPUT_POST, 'date', FILTER_SANITIZE_STRING));
+            $pageName = 'Informations incorrectes';
 
             $this->show('account/expenses', [
+                'pageName' => $pageName,
                 'errorList' => $errorList,
                 'account' => $account
             ]);
@@ -146,11 +169,17 @@ class AccountController extends CoreController {
         $transfer_amount = filter_input(INPUT_POST, 'transfer_amount',  FILTER_SANITIZE_NUMBER_FLOAT, 
         FILTER_FLAG_ALLOW_FRACTION);
 
+        $todayObject = new \DateTime('Today');
+        $today = $todayObject->format('Y-m-d');
+
         $errorList = [];
 
         if(empty($date)) {
             $errorList[] = 'Merci de renseigner une date';
         }
+        if($date > $today) {
+            $errorList[] = 'La date entrée est postérieure à la date du jour: ' . date('d/m/Y', strtotime($today));
+        } 
         if(empty($title)) {
             $errorList[] = 'L\'intitulé est invalide';
         }
@@ -159,6 +188,11 @@ class AccountController extends CoreController {
         }
         if(empty($transfer_amount)) {
             $errorList[] = 'Merci de renseigner un montant';
+        }
+        // Dans la BDD, les virements sont stockés sous la forme de décimaux (10,2)
+        // La limite autorisée est donc de 12 chiffres maximum dont 2 après la virgule
+        if($transfer_amount > 9999999999.99) {
+            $errorList[] = 'Le montant du virement dépasse la limite autorisée';
         }
 
         // Si pas d'erreurs
@@ -201,8 +235,10 @@ class AccountController extends CoreController {
             $account->setDateTransfer(filter_input(INPUT_POST, 'date',  FILTER_SANITIZE_STRING));
             $account->setTransferAmount(INPUT_POST, 'transfer_amount',  FILTER_SANITIZE_NUMBER_FLOAT, 
             FILTER_FLAG_ALLOW_FRACTION);
+            $pageName = 'Informations incorrectes';
 
             $this->show('account/income', [
+                'pageName' => $pageName,
                 'errorList' => $errorList,
                 'account' => $account
             ]);

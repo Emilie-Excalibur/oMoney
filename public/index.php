@@ -24,7 +24,7 @@ if (array_key_exists('BASE_URI', $_SERVER)) {
 // sinon
 else {
     // On donne une valeur par défaut à $_SERVER['BASE_URI'] car c'est utilisé dans le CoreController
-    $_SERVER['BASE_URI'] = '/';
+    $_SERVER['BASE_URI'] = '';
 }
 
 // Définition de la route de base du projet
