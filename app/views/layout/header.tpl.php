@@ -25,9 +25,9 @@
     <!-- Header-->
     <header class="bg-dark text-white border-bottom border-white">
         <a class="navbar-brand mx-3" href="<?= $router->generate('main-home'); ?>">
-            <h1>oMoney</h1>
+            <h1>oMoney <span>Version 2.0</span></h1>
+            
         </a>
-        <div class="alert alert-danger text-center">oMoney est actuellement en pleine rénovation, merci de ne pas faire de transactions durant cette periode !</div>
     </header>
 
     <main class="wrapper">

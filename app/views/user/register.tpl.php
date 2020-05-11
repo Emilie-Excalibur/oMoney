@@ -3,12 +3,11 @@
 <?php include __DIR__ . '/../partials/errorlist.tpl.php'; ?>
 <div id="errors"></div>
 
-
         <div class="card card-register mx-auto mt-5">
             <div class="card-header">Créer un compte</div>
             <div class="card-body">
 
-                <form method="post" action="" id="register-form">
+                <form method="post" action="" id="register-form" enctype="multipart/form-data">
                     <div class="form-group">
                         <div class="form-row">
                             <div class="col-md-12">
@@ -62,12 +61,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="picture">Choisir un avatar</label>
-                        <input type="file" class="form-control-file" id="picture" name="picture">
-                    </div>
-
-                    <button class="btn btn-info btn-block" name="reg_user">S'inscrire</button>
+                    <button class="btn btn-info btn-block">S'inscrire</button>
 
                 </form>
 

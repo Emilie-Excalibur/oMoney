@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 use App\Models\Account;
+use App\Models\User;
 use App\Models\UserPictureColor;
 
 
@@ -33,6 +34,9 @@ abstract class CoreController {
             // Récupère toutes les transactions par date croissante (du plus ancien au plus récent)
             $expensesByDate = Account::findAllByDate($_SESSION['connectedUser']->getEmail());
 
+            // Récupềre le profil de l'utilisateur connecté
+            $userInfo = User::findByMail($_SESSION['connectedUser']->getEmail());
+
             // Récupère les informations de l'utilisateur (nom, première lettre de son nom)
             $name = $_SESSION['connectedUser']->getName();
             $firstLetter = substr($name, 0, 1);
@@ -43,6 +47,8 @@ abstract class CoreController {
             $transactionSum = null;
             $userTransaction = null;
             $expensesByDate = null;
+
+            $userInfo = null;
             $firstLetter = null;
             $color = null;
         }
@@ -53,6 +59,7 @@ abstract class CoreController {
         $viewVars['userTransaction'] = $userTransaction;
         $viewVars['expensesByDate'] = $expensesByDate;
 
+        $viewVars['userInfo'] = $userInfo;
         $viewVars['firstLetter'] = $firstLetter;
         $viewVars['color'] = $color; 
 

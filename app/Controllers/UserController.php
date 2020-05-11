@@ -65,7 +65,6 @@ class UserController extends CoreController
                 $errorList[] = 'Mauvais nom';
                 $userPassword = null;
                 $username = null;
-
             } else {
                 // Sinon, pour chaque résultat obtenu
                 //(note : Le nom n'est pas unique, on peut donc avoir plusieurs personnes avec le même nom mais avec des mots de passe différents)
@@ -184,7 +183,6 @@ class UserController extends CoreController
                 $newUser->setName($name);
                 $newUser->setEmail($email);
                 $newUser->setPassword($password);
-                //$newUser->setCreatedAt();
 
                 // Ajoute l'utilisateur dans la BDD
                 $executed = $newUser->insert();
@@ -245,7 +243,8 @@ class UserController extends CoreController
      * Méthode HTTP: POST
      * @return void
      */
-    public function updateProfil() {
+    public function updateProfil()
+    {
         $this->checkAuthorization();
 
         $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
@@ -256,19 +255,19 @@ class UserController extends CoreController
         $errorList = [];
 
         // Vérifie si l'adresse email a un format valide   
-        if(preg_match('/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/', $newEmail) == false) {
+        if (preg_match('/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/', $newEmail) == false) {
             $errorList[] = 'Adresse email invalide';
-        } 
+        }
 
-        if(empty($newEmail)) {
+        if (empty($newEmail)) {
             $errorList[] = 'Merci de renseigner votre adresse email';
         }
 
-        if(empty($name)) {
+        if (empty($name)) {
             $errorList[] = 'Merci de renseigner votre nom';
         }
 
-        if(strlen($name) < 3) {
+        if (strlen($name) < 3) {
             $errorList[] = 'Le nom doit contenir 3 caractères minimum';
         }
 
@@ -277,14 +276,14 @@ class UserController extends CoreController
 
         // Compare chaque email de la BDD avec l'email entré
         foreach ($userList as $user) {
-            if($newEmail === $user->getEmail()) {
+            if ($newEmail === $user->getEmail()) {
                 // Si une correspondance est trouvée
                 $errorList[] = 'Cette adresse email existe déjà';
             }
         }
 
         // S'il n'y a pas d'erreur jusque là
-        if (empty($errorList)) {  
+        if (empty($errorList)) {
             // Recherche l'utilisateur actuellement connecté par son email   
             $user = User::findByMail($email);
 
@@ -296,7 +295,7 @@ class UserController extends CoreController
 
             // Si tout s'est bien passé
             if ($executed) {
-                
+
                 // Actualise les données de la session avec la nouvelle adresse email
                 $_SESSION['connectedUser']->setEmail($newEmail);
                 $_SESSION['connectedUser']->setName($name);
@@ -311,7 +310,7 @@ class UserController extends CoreController
                     'creationDate' => $creationDate
                 ]);
 
-            // Si au contraire il y a eu un soucis
+                // Si au contraire il y a eu un soucis
             } else {
 
                 // Ajoute un message d'erreur
@@ -320,12 +319,12 @@ class UserController extends CoreController
         }
 
         // S'il y a eu des erreurs
-        if(!empty($errorList)) {
+        if (!empty($errorList)) {
             // Récupère les informations erronées dans une nouvelle instance USer
             // Pour pouvoir préremplir les champs
             $user = new User();
             $user->setName(filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING));
-            $user->setEmail(filter_input(INPUT_POST, 'email',FILTER_SANITIZE_EMAIL));
+            $user->setEmail(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL));
 
             // Récupère la date de création du compte de l'utilisateur connecté
             $user = User::findByMail($_SESSION['connectedUser']->getEmail());
@@ -348,7 +347,8 @@ class UserController extends CoreController
      *
      * @return void
      */
-    public function password() {
+    public function password()
+    {
         $this->checkAuthorization();
         $pageName = 'Changer le mot de passe';
         $this->show('user/password', [
@@ -362,7 +362,8 @@ class UserController extends CoreController
      * Méthode HTTP : POST
      * @return void
      */
-    public function updatePassword() {
+    public function updatePassword()
+    {
         $this->checkAuthorization();
 
         $oldPassword = filter_input(INPUT_POST, 'old_password', FILTER_SANITIZE_STRING);
@@ -371,33 +372,33 @@ class UserController extends CoreController
 
         $errorList = [];
 
-        if(strlen($oldPassword) < 3)  {
+        if (strlen($oldPassword) < 3) {
             $errorList[] = 'Le mot de passe doit contenir 3 caractères minimum';
         }
 
-        if(empty($oldPassword)) {
+        if (empty($oldPassword)) {
             $errorList[] = 'Merci de renseigner votre mot de passe actuel';
         }
 
-        if(empty($newPassword)) {
+        if (empty($newPassword)) {
             $errorList[] = 'Merci de renseigner votre nouveau mot de passe';
         }
 
-        if(empty($confPassword)) {
+        if (empty($confPassword)) {
             $errorList[] = 'Merci de confirmer votre nouveau mot de passe';
         }
 
-        if($newPassword !== $confPassword) {
+        if ($newPassword !== $confPassword) {
             $errorList[] = 'Les mots de passe doivent correspondre';
         }
 
         // S'il n'y a pas d'erreurs jusque là
-        if(empty($errorList)) {
+        if (empty($errorList)) {
             // Recherche les informations de l'utilisateur connecté grâce à son email unique
             $user = User::findByMail($_SESSION['connectedUser']->getEmail());
 
             // Si aucun résultat trouvé
-            if($user == false) {
+            if ($user == false) {
                 $errorList[] = 'Vous n\'avez pas les droits pour modifier ce mot de passe !';
             }
 
@@ -405,7 +406,7 @@ class UserController extends CoreController
             $checkPassword = password_verify($oldPassword, $user->getPassword());
 
             // Si une correspondance est trouvée
-            if($checkPassword) {
+            if ($checkPassword) {
                 // Hache le mot de passe 
                 $password = password_hash($newPassword, PASSWORD_DEFAULT);
 
@@ -416,7 +417,7 @@ class UserController extends CoreController
                 $executed = $user->updatePassword($_SESSION['connectedUser']->getEmail());
 
                 // Si l'update s'est bien déroulé
-                if($executed) {
+                if ($executed) {
                     $success = 'Le mot de passe a bien été mis à jour';
 
                     $this->show('user/password', [
@@ -431,7 +432,7 @@ class UserController extends CoreController
             }
         }
 
-        if(!empty($errorList)) {
+        if (!empty($errorList)) {
             $pageName = 'Mot de passe invalide';
             $this->show('user/password', [
                 'errorList' => $errorList,
@@ -439,5 +440,4 @@ class UserController extends CoreController
             ]);
         }
     }
-
 }
